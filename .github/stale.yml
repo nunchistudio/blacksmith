@@ -1,0 +1,28 @@
+only: issues
+
+daysUntilStale: 90
+daysUntilClose: 30
+
+staleLabel: "waiting"
+unmarkComment: false
+
+exemptLabels:
+  - "bug"
+  - "enhancement"
+  - "thinking"
+
+markComment: |
+  Hey there,
+
+  Since this issue hasn't had any activity in a while we are going to automatically close it in 30 days. If you are still seeing this issue with the latest version of Blacksmith, please respond here and we will keep this open and take another look at this.
+
+  Thank you.
+
+closeComment: |
+  Hi,
+
+  This issue will be automatically closed because there hasn't been any activity for a few months.
+
+  Feel free to [open a new one](https://github.com/nunchistudio/blacksmith/issues/new) if you still experience this problem with the latest version of Blacksmith.
+
+  Thank you.

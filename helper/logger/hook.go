@@ -1,0 +1,61 @@
+package logger
+
+import (
+	"encoding/json"
+
+	"github.com/sirupsen/logrus"
+
+	"github.com/nunchistudio/blacksmith/helper/errors"
+)
+
+/*
+UsingError respect the logrus Hook interface and allows the Blacksmith logger
+to format errors across adapters and in the application.
+*/
+type UsingError struct{}
+
+/*
+Levels return the level used by the hook. Use for error level and above.
+*/
+func (hook *UsingError) Levels() []logrus.Level {
+	return []logrus.Level{
+		logrus.ErrorLevel,
+		logrus.FatalLevel,
+		logrus.PanicLevel,
+	}
+}
+
+/*
+Fire format the given message to an appropriate error.
+*/
+func (hook *UsingError) Fire(entry *logrus.Entry) error {
+
+	// Make sure the data is not nil.
+	if entry.Data == nil {
+		entry.Data = logrus.Fields{}
+	}
+
+	// Unmarshal the message.
+	var err errors.Error
+	json.Unmarshal([]byte(entry.Message), &err)
+
+	// Use the given message as the error message.
+	entry.Message = err.Message
+
+	// Add a status code if needed.
+	if err.StatusCode > 0 {
+		entry.Data["statusCode"] = err.StatusCode
+	}
+
+	// Add validations if needed.
+	if err.Validations != nil && len(err.Validations) > 0 {
+		entry.Data["validations"] = err.Validations
+	}
+
+	// Add meta info for HTTP response if needed.
+	if err.Meta != nil {
+		entry.Data["meta"] = err.Meta
+	}
+
+	return nil
+}

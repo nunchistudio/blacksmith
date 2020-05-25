@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+# contact_links:
+#   - name: "Question and feedback"
+#     url: "https://github.com/nunchistudio/blacksmith/discussions"
+#     about: "Question and feedback are centralised in GitHub Discussions"
+#   - name: "Feature request"
+#     url: "https://github.com/nunchistudio/blacksmith/discussions"
+#     about: "Before requesting a new feature, it must be approved using GitHub Discussions"
+#   - name: "Blacksmith Enterprise"
+#     url: "https://success.nunchi.studio/hc/en-us/requests/new"
+#     about: "If your question or bug is related to the Enterprise version of Blacksmith, please create a request using the Nunchi Success Portal"
