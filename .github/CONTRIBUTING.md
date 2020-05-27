@@ -22,12 +22,16 @@ contribution guidelines as light but rock-solid as possible.
 
 - Your pull request targets the `development` branch and is up-to-date with this
   branch.
-- Commit messages must start with a capitalized and short summary (max. 50 chars)
-  written in the imperative, followed by an optional, more detailed explanatory
-  text which is separated from the summary by an empty line.
+- Commit messages and pull requests must respect the
+  [Conventional Commits Specification](https://www.conventionalcommits.org/).
+  The types and scopes to follow can be found on the
+  [`semantic.yml` file](https://github.com/nunchistudio/blacksmith/blob/master/.github/semantic.yml).
 - You sign every Git commits using your real name and real email address. If you
   set your `user.name` and `user.email` git configs, you can sign your commit
-  automatically using `git commit -s`.
+  automatically using `git commit -s`. Example:
+  ```bash
+  $ git commit -s -am "feat(store): Add Delete() method"
+  ```
 - You agree to both the product license and the Developer Certificate of Origin
   as defined in Exhibit A.
 

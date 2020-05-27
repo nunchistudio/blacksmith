@@ -1,0 +1,26 @@
+titleAndCommits: true
+allowMergeCommits: true
+allowRevertCommits: true
+
+types:
+  - "feat"
+  - "fix"
+  - "docs"
+  - "style"
+  - "refactor"
+  - "perf"
+  - "test"
+  - "revert"
+
+scopes:
+  - "destination"
+  - "gateway"
+  - "pubsub"
+  - "scheduler"
+  - "source"
+  - "store"
+  - "wanderer"
+  - "errors"
+  - "logger"
+  - "mutex"
+  - "sqlike"
