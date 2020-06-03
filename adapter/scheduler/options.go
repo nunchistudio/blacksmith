@@ -132,7 +132,7 @@ It returns the scheduler interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Scheduler, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "scheduler", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceScheduler, opts.From)
 	if err != nil {
 		return nil, err
 	}

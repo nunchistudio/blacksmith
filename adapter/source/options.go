@@ -119,7 +119,7 @@ It returns the source interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Source, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "source", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceSource, opts.From)
 	if err != nil {
 		return nil, err
 	}

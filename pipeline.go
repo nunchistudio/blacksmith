@@ -3,8 +3,6 @@ package blacksmith
 import (
 	"sync"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/nunchistudio/blacksmith/adapter/destination"
 	"github.com/nunchistudio/blacksmith/adapter/gateway"
 	"github.com/nunchistudio/blacksmith/adapter/pubsub"
@@ -12,6 +10,8 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/source"
 	"github.com/nunchistudio/blacksmith/adapter/store"
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
+
+	"github.com/sirupsen/logrus"
 )
 
 /*

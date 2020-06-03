@@ -1,41 +1,37 @@
 package adapter
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"path/filepath"
 	"plugin"
 	"runtime"
+	"strings"
 
 	"github.com/nunchistudio/blacksmith/helper/errors"
 	"github.com/nunchistudio/blacksmith/version"
 
 	"github.com/hashicorp/go-getter"
+	"github.com/mitchellh/go-homedir"
 )
 
 /*
-src is the HTTP server where releases can be downloaded from.
+dst is the relative path on the local machine where adapters (Go plugins) will
+be installed to.
 */
-var src = "https://github.com/nunchistudio/blacksmith/releases/download/" + version.Blacksmith() + "/"
-
-/*
-dst is the destination on the local machine where adapters (Go plugins) will be
-installed to.
-*/
-var dst = ".blacksmith/plugins/" + version.Blacksmith() + "/"
+var dst = filepath.Join(".blacksmith", "plugins", version.Blacksmith())
 
 /*
 LoadPlugin tries to load a Go plugin given an adapter kind and ID. If the adapter
 does not exist on the local machine it will download it.
 */
-func LoadPlugin(ctx context.Context, kind string, from string) (plugin.Symbol, error) {
+func LoadPlugin(kind string, from string) (plugin.Symbol, error) {
 	fail := &errors.Error{
 		Message:     fmt.Sprintf("%s/%s: Failed to load Go plugin", kind, from),
 		Validations: []errors.Validation{},
 	}
 
-	// Find the current working directory.
+	// Find the working directory.
 	wd, err := os.Getwd()
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
@@ -45,22 +41,64 @@ func LoadPlugin(ctx context.Context, kind string, from string) (plugin.Symbol, e
 		return nil, fail
 	}
 
-	// A Go plugin name looks like this: "destination-postgres.so".
-	filename := kind + "-" + from + ".so"
+	// Find the user's home directory.
+	ud, err := homedir.Dir()
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+		})
 
-	// Save the real path of the plugin.
-	file := filepath.Join(wd, dst, filename)
+		return nil, fail
+	}
 
-	// If the Go plugin doesn't exist, download it.
-	if _, err := os.Stat(file); os.IsNotExist(err) {
-		err = downloadPlugin(ctx, wd, kind, from)
+	// We need to know if the plugin has been found. If so, where is it?
+	var isPluginInstalled bool
+	var foundAt string
+
+	// A Go plugin name looks like this "store-postgres_darwin-amd64.so" or like
+	// this "store-postgres_docker-alpine.so" if an environment has been specified.
+	filename := kind + "-" + from
+
+	// Add the appropriate suffix to the file name.
+	var suffix string = runtime.GOOS + "-" + runtime.GOARCH
+	if os.Getenv("BLACKSMITH_ENV") != "" {
+		suffix = os.Getenv("BLACKSMITH_ENV")
+	}
+
+	// Only deal with ".so" files.
+	filename += "_" + suffix + ".so"
+
+	// Possible directories to look at. We first look at the root directory, then
+	// at the user's home directory, and finally at the working directory.
+	locations := []string{
+		filepath.Join(dst, filename),
+		filepath.Join(ud, dst, filename),
+		filepath.Join(wd, dst, filename),
+	}
+
+	// Look for the plugin file. If it has been found, save its location and break
+	// the loop.
+	for _, location := range locations {
+		f, _ := os.Stat(location)
+		if f != nil {
+			foundAt = location
+			isPluginInstalled = true
+			break
+		}
+	}
+
+	// If the plugin has not been found we need to download it. It will be saved
+	// in the working directory.
+	if isPluginInstalled == false {
+		foundAt = filepath.Join(wd, dst, filename)
+		err = downloadPlugin(wd, kind, from)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// Try to open the Go plugin.
-	adapter, err := plugin.Open(file)
+	// We can now try to open the Go plugin.
+	adapter, err := plugin.Open(foundAt)
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: "Failed to open Go plugin: check version compatibility",
@@ -89,16 +127,30 @@ func LoadPlugin(ctx context.Context, kind string, from string) (plugin.Symbol, e
 downloadPlugin downloads an adapter (a Go plugin) from the GitHub repository given
 a kind and an adapter ID.
 */
-func downloadPlugin(ctx context.Context, wd string, kind string, from string) error {
+func downloadPlugin(wd string, kind string, from string) error {
 
-	// Determine the platform.
-	platform := runtime.GOOS + "-" + runtime.GOARCH
+	// Start to create the file name.
+	filename := kind + "-" + from
 
-	// A Go plugin archive looks like this: "destination-postgres_darwin-amd64.zip".
-	zipname := kind + "-" + from + "_" + platform + ".zip"
+	// The defaults Go plugins can be downloaded for supported environments and
+	// architectures.
+	var suffix string = runtime.GOOS + "-" + runtime.GOARCH
+	var src = "https://github.com/nunchistudio/blacksmith/releases/download/" + version.Blacksmith() + "/"
+
+	// If an environment is specified, download from its own repository and use the
+	// appropriate suffix.
+	if os.Getenv("BLACKSMITH_ENV") != "" {
+		suffix = os.Getenv("BLACKSMITH_ENV")
+
+		platform := strings.Split(suffix, "-")
+		src = "https://github.com/nunchistudio/blacksmith-" + platform[0] + "/releases/download/" + version.Blacksmith() + "/"
+	}
+
+	// Add the suffix with the ".zip".
+	filename += "_" + suffix + ".zip"
 
 	// Determine the source URL to download.
-	link := src + zipname
+	link := src + filename
 
 	// Get the adapter's archive and extract it at the right destination.
 	client := &getter.Client{
@@ -114,7 +166,7 @@ func downloadPlugin(ctx context.Context, wd string, kind string, from string) er
 			Message: fmt.Sprintf("%s/%s: Failed to load Go plugin", kind, from),
 			Validations: []errors.Validation{
 				{
-					Message: "Failed to download Go plugin from repository",
+					Message: "Failed to download Go plugin from repository: is the environment supported?",
 					Path:    []string{kind, from, "Options", "From"},
 				},
 			},

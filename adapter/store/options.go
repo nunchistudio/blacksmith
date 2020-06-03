@@ -102,7 +102,7 @@ It returns the store interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Store, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "store", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceStore, opts.From)
 	if err != nil {
 		return nil, err
 	}

@@ -135,7 +135,7 @@ It returns the destination interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Destination, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "destination", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceDestination, opts.From)
 	if err != nil {
 		return nil, err
 	}

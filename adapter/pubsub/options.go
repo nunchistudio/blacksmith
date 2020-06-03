@@ -129,7 +129,7 @@ It returns the pubsub interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (PubSub, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "pubsub", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfacePubSub, opts.From)
 	if err != nil {
 		return nil, err
 	}

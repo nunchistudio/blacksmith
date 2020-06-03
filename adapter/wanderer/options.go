@@ -100,7 +100,7 @@ It returns the wanderer interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Wanderer, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "wanderer", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceWanderer, opts.From)
 	if err != nil {
 		return nil, err
 	}

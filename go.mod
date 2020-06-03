@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/hashicorp/go-getter v1.4.1
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/segmentio/ksuid v1.0.2
 	github.com/sirupsen/logrus v1.6.0
 )

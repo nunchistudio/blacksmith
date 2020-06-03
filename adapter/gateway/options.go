@@ -132,7 +132,7 @@ It returns the gateway interface loaded from the Go plugin.
 func (opts *Options) loadPlugin() (Gateway, error) {
 
 	// Load the Go plugin's symbol from the helper.
-	symbol, err := adapter.LoadPlugin(opts.Context, "gateway", opts.From)
+	symbol, err := adapter.LoadPlugin(InterfaceGateway, opts.From)
 	if err != nil {
 		return nil, err
 	}
