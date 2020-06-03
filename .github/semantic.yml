@@ -11,6 +11,7 @@ types:
   - "perf"
   - "test"
   - "revert"
+  - "version"
 
 scopes:
   - "destination"
