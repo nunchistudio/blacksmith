@@ -22,8 +22,11 @@ It comes with:
 - A `builder` package allowing the Blacksmith CLI (Enterprise version only) to
   compile the application as a Go plugin and therefore being able to manage
   migrations across adapters.
-- A `Docker-compose.yml` file for running a PostgreSQL store and a NATS pub / sub
-  in Docker.
+- A `Docker-compose.yml` setup for running the gateway and the scheduler using
+  the [Blacksmith Docker image](https://github.com/nunchistudio/blacksmith-docker).
+  It also runs a PostgreSQL store and a NATS pub / sub.
+- A `Vagrantfile` for running the stack in a virtual machine using the
+  [Blacksmith Vagrant box](https://github.com/nunchistudio/blacksmith-vagrant).
 - Sample adapters for `source` and `destination` interfaces showing how the data
   pipeline works.
 

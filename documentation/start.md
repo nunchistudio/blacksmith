@@ -12,7 +12,7 @@ directory at the top of your application, including the Go plugin for each adapt
 ## In development
 
 The best way to run the application is to run the `development` directory. It is
-a `main` package, that loads the data pipeline previously created, and start the
+a `main` package, that loads the data pipeline previously created, and starts the
 server.
 
 It starts both the gateway and scheduler.

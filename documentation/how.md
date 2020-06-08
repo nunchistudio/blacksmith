@@ -105,7 +105,8 @@ rollback.
 
 For example, a destination can have migrations and each of its events can also
 have specific migrations. Sources and destinations have a `Migrate` function
-which defines the logic to tun for each adapter.
+which defines the migration logic to run for the adapter and will be executed
+when running a migration against the adapter.
 
 Migrations have a *up* and *down* logic allowing rollbacks. The wanderer benefits
 a *remote mutual exclusion lock* (or *remote mutex*) so only one migration can

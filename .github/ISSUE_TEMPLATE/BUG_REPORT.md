@@ -17,7 +17,7 @@ about: You are experiencing an issue with Blacksmith that is different than the 
 
 ## Environment
 
-- **Blacksmith version:** v1.0.3
+- **Blacksmith version:** v0.10.2
 - **Involved packages:**
   - adapter/gateway
   - adapter/store

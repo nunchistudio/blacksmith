@@ -52,5 +52,5 @@ and ensure long-term sustainability, we need to have a strong focus on the compa
 behind this. This means having different kinds of revenue streams alongside services
 and support.
 
-In a near future, we will offer `enterprise` adpaters in addition to the `standard`
+In a near future, we will offer `enterprise` adapters in addition to the `standard`
 ones for the `gateway` and `scheduler` interfaces. More details coming soon.
