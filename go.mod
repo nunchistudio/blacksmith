@@ -9,10 +9,16 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 )
 
-replace cloud.google.com/go => cloud.google.com/go v0.56.0
+replace cloud.google.com/go => cloud.google.com/go v0.58.0
 
-replace google.golang.org/api => google.golang.org/api v0.23.0
+replace cloud.google.com/go/pubsub => cloud.google.com/go/pubsub v1.3.1
 
-replace github.com/aws/aws-sdk-go => github.com/aws/aws-sdk-go v1.30.7
+replace cloud.google.com/go/storage => cloud.google.com/go/storage v1.9.0
 
-replace github.com/mitchellh/go-homedir => github.com/mitchellh/go-homedir v1.1.0
+replace golang.org/x/net => golang.org/x/net v0.0.0-20200602114024-627f9648deb9
+
+replace golang.org/x/sys => golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd
+
+replace go.opencensus.io => go.opencensus.io v0.22.3
+
+replace github.com/aws/aws-sdk-go => github.com/aws/aws-sdk-go v1.31.13
