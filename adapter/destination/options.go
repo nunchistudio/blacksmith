@@ -34,21 +34,21 @@ type Options struct {
 
 	// From can be used to download, install, and use an existing adapter. This way
 	// the user does not need to develop a custom destination adapter.
-	From string
+	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom destination adapter developed
 	// in-house.
-	Load Destination
+	Load Destination `json:"-"`
 
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
-	Context context.Context
+	Context context.Context `json:"-"`
 
 	// DefaultSchedule represents a schedule at which a destination's event should
 	// run. This value can be overridden by the underlying adapter if necessary so
 	// the user does not make any scheduling mistake. This value can also be overridden
 	// by the destination events to benefit a per event basis schedule.
-	DefaultSchedule *Schedule
+	DefaultSchedule *Schedule `json:"schedule"`
 }
 
 /*
@@ -60,16 +60,16 @@ type Schedule struct {
 
 	// Realtime indicates if the pubsub adapter of the Blacksmith application shall
 	// be used to load events to the destination in realtime or not.
-	Realtime bool
+	Realtime bool `json:"realtime"`
 
 	// Interval represents an interval or a CRON string at which an event shall be
 	// loaded to the destination.
-	Interval string
+	Interval string `json:"interval"`
 
 	// MaxRetries indicates the maximum number of retries per job the scheduler will
 	// attempt to execute for each job. When the limit is reached, the job is marked
 	// as "discarded".
-	MaxRetries uint16
+	MaxRetries uint16 `json:"max_retries"`
 }
 
 /*

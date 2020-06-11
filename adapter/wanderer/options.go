@@ -27,17 +27,17 @@ type Options struct {
 
 	// From can be used to download, install, and use an existing adapter. This way
 	// the user does not need to develop a custom wanderer adapter.
-	From string
+	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom wanderer adapter developed in-house.
-	Load Wanderer
+	Load Wanderer `json:"-"`
 
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
-	Context context.Context
+	Context context.Context `json:"-"`
 
 	// Connection is the connection string to connect to the wanderer.
-	Connection string
+	Connection string `json:"-"`
 }
 
 /*

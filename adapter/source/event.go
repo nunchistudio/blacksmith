@@ -87,17 +87,17 @@ type Trigger struct {
 	// - When set to ModeForever, no trigger is registered since it is an ongoing
 	//   listener. It is up to the Marshal function to include the infinite loop
 	//   and return the payload using the channel included in the toolkit.
-	Mode string
+	Mode string `json:"mode"`
 
 	// OnHTTP defines the HTTP route the event will react to. This must be nil if
 	// the source is specifically designed for change-data-capture using an appropriate
 	// schedule.
-	OnHTTP *Route
+	OnHTTP *Route `json:"http,omitempty"`
 
 	// OnCRON represents a schedule at which an event should run. When returning
 	// nil, the source's schedule is applied. This is used for change-data-capture
 	// so you can listen for non-HTTP events, like scheduled tasks.
-	OnCRON *Schedule
+	OnCRON *Schedule `json:"cron,omitempty"`
 }
 
 /*

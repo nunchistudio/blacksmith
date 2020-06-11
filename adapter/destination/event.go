@@ -101,13 +101,13 @@ Example:
 type Then struct {
 
 	// List of destinations events to trigger in case the job has succeeded.
-	OnSucceeded map[string][]Event
+	OnSucceeded map[string][]Event `json:"on_succeeded,omitempty"`
 
 	// List of destinations events to trigger in case the job has failed.
-	OnFailed map[string][]Event
+	OnFailed map[string][]Event `json:"on_failed,omitempty"`
 
 	// List of destinations events to trigger in case the job has been discarded.
-	OnDiscarded map[string][]Event
+	OnDiscarded map[string][]Event `json:"on_discarded,omitempty"`
 }
 
 /*

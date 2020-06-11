@@ -32,26 +32,26 @@ type Options struct {
 
 	// From can be used to download, install, and use an existing adapter. This way
 	// the user does not need to develop a custom pubsub adapter.
-	From string
+	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom pubsub adapter developed in-house.
-	Load PubSub
+	Load PubSub `json:"-"`
 
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
-	Context context.Context
+	Context context.Context `json:"-"`
 
 	// Enabled allows the user to enable the PubSub interface and this way distribute
 	// jobs to destinations in realtime. If disabled, the scheduler will load jobs
 	// to destinations given the schedule of each destination and event.
-	Enabled bool
+	Enabled bool `json:"enabled"`
 
 	// Connection is the connection string to connect to the pubsub.
-	Connection string
+	Connection string `json:"-"`
 
 	// Topic is the topic name the pubsub adapter will use to publish and subscribe
 	// messages to.
-	Topic string
+	Topic string `json:"topic"`
 }
 
 /*

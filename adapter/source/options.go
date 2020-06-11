@@ -29,20 +29,20 @@ type Options struct {
 
 	// From can be used to download, install, and use an existing adapter. This way
 	// the user does not need to develop a custom source adapter.
-	From string
+	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom source adapter developed in-house.
-	Load Source
+	Load Source `json:"-"`
 
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
-	Context context.Context
+	Context context.Context `json:"-"`
 
 	// DefaultSchedule represents a schedule at which a source's event should run.
 	// This value can be overridden by the source events to benefit a per event basis
 	// schedule. This is used for change-data-capture so you can listen for non HTTP
 	// events such as database notifications.
-	DefaultSchedule *Schedule
+	DefaultSchedule *Schedule `json:"cron"`
 }
 
 /*
@@ -54,7 +54,7 @@ type Schedule struct {
 
 	// Interval represents an interval or a CRON string at which an event shall be
 	// loaded from the source.
-	Interval string
+	Interval string `json:"interval"`
 }
 
 /*

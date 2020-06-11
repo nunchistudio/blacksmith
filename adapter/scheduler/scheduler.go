@@ -48,10 +48,10 @@ WithTLS allows you to attach TLS certificate files when creating the HTTP server
 type WithTLS struct {
 
 	// CertFile is the relative path to the certificate file.
-	CertFile string
+	CertFile string `json:"-"`
 
 	// KeyFile is the relative path to the key file.
-	KeyFile string
+	KeyFile string `json:"-"`
 }
 
 /*

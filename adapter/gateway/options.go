@@ -13,7 +13,8 @@ import (
 AvailableAdapters is a list of available gateway adapters.
 */
 var AvailableAdapters = map[string]bool{
-	"standard": true,
+	"standard":   true,
+	"enterprise": true,
 }
 
 /*
@@ -32,39 +33,39 @@ type Options struct {
 
 	// From can be used to download, install, and use an existing adapter. This way
 	// the user does not need to develop a custom gateway adapter.
-	From string
+	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom gateway adapter developed in-house.
-	Load Gateway
+	Load Gateway `json:"-"`
 
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
-	Context context.Context
+	Context context.Context `json:"-"`
 
 	// Address is the HTTP address the gateway server is listening to.
 	//
 	// Defaults to ":8080".
-	Address string
+	Address string `json:"address"`
 
 	// TLS is the TLS settings used to run the TLS server.
-	TLS *tls.Config
+	TLS *tls.Config `json:"-"`
 
 	// CertFile is the relative path to the certificate file for the TLS server.
-	CertFile string
+	CertFile string `json:"-"`
 
 	// KeyFile is the relative path to the key file for the TLS server.
-	KeyFile string
+	KeyFile string `json:"-"`
 
 	// Middleware is the HTTP middleware chain that will be applied to the HTTP server
 	// of the gateway.
-	Middleware func(http.Handler) http.Handler
+	Middleware func(http.Handler) http.Handler `json:"-"`
 
 	// Attach allows you to attach an external HTTP handler to the Blacksmith gateway.
 	// It is useful for adding HTTP routes with custom routing and business logic.
 	//
 	// If a handler is attached, all routes within this handler will be prefixed with
 	// a prefix chosen by the gateway adapter.
-	Attach http.Handler
+	Attach http.Handler `json:"-"`
 }
 
 /*
