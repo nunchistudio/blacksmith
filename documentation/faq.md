@@ -46,11 +46,8 @@ The source code is not open and each adapter is licensed under the
 
 ## Why the adapters are not open-source?
 
-By keeping the source code closed, we also keep a better flexibility for Enterprise
-versions and features. To develop a large-scale, technically-complex product,
-and ensure long-term sustainability, we need to have a strong focus on the company
-behind this. This means having different kinds of revenue streams alongside services
-and support.
-
-In a near future, we will offer `enterprise` adapters in addition to the `standard`
-ones for the `gateway` and `scheduler` interfaces. More details coming soon.
+By keeping the source code of adapters closed and proprietary, we also keep a
+better flexibility for Enterprise versions and features. To develop a large-scale,
+technically-complex product, and ensure long-term sustainability, we need to have
+a strong focus on the company behind this. This means having different kinds of
+product offerings alongside services and support.

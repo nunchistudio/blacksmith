@@ -13,6 +13,6 @@ Note: Adapter generation using the Blacksmith CLI is a feature only available in
 Blacksmith Enterprise.
 
 Note: The wanderer is part of Blacksmith Enterprise and is not used by adapters
-when using the open-source version of Blacksmith.
+when using the Standard version of Blacksmith.
 */
 package wanderer

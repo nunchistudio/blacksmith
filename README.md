@@ -15,9 +15,18 @@ the tremendous amount of work needed to properly accomplish this mission. Think
 of Blacksmith as the central piece of your data engineering workflow, leading you
 to save months of customized and professional ETL work.
 
+## Product offerings
+
+Blacksmith is available in two versions:
+
+- **Blacksmith Standard** addresses the technical complexity of data engineering.
+  It is and will always be free.
+- **Blacksmith Enterprise** addresses the complexity of collaboration and governance
+  across multi-team and multi-scope data solutions.
+
 ## Links
 
-- [Learn more on Nunchi website](https://nunchi.studio/blacksmith/why)
+- [Learn more on Nunchi website](https://nunchi.studio/blacksmith)
 - [Sample application using Blacksmith on GitHub](https://github.com/nunchistudio/smithy)
 - [API reference on Go developer portal](https://pkg.go.dev/github.com/nunchistudio/blacksmith?tab=doc)
 

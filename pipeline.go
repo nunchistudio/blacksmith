@@ -72,8 +72,8 @@ in non-production environments or in application with low traffic. Otherwise,
 it is recommended to start the gateway and scheduler in their own process.
 
 TODO: Improve the behavior of this function when the gateway or scheduler exits.
-Currently, the standard adapters can throw an "error" when shutting their HTTP
-server. This should not happen.
+Currently, the adapters can throw an "error" when shutting their HTTP server.
+This should not happen.
 */
 func (p *Pipeline) Start() error {
 

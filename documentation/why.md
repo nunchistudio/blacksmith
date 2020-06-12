@@ -38,7 +38,7 @@ by custom ones. They are compiled as Go plugins and are not open-source.
 
 ## Features and benefits
 
-The **Blacksmith Open-Source** version addresses the technical complexity of data
+The **Blacksmith Standard** version addresses the technical complexity of data
 engineering.
 
 - **Synchrounous & asynchronous events:** Whether you are collecting data from HTTP
