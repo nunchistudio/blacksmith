@@ -49,8 +49,7 @@ To run correctly, an application needs an adapter for the `gateway`, `scheduler`
 and `store` interfaces.
 
 When not set, the `standard` adapters will be use for the gateway and scheduler.
-They are the default implementations and the ones we use at Nunchi. The store
-is required and we will use the `postgres` store adapter for the demo:
+The store is required and we will use the `postgres` store adapter for the demo:
 
 ```go
 p, _ := blacksmith.New(&blacksmith.Options{

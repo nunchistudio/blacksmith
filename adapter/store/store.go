@@ -47,27 +47,41 @@ type Store interface {
 	// Note: Feature only available in Blacksmith Enterprise.
 	Migrate(*wanderer.Toolkit, *wanderer.Migration) error
 
-	// InsertQueue inserts a queue of events into the datastore given the data passed
-	// in params. It returns an error if any occurred. This method shall be called
-	// by the gateway when a new event happens.
-	InsertQueue(*Toolkit, *Queue) error
+	// AddEvents inserts a queue of events into the datastore given the data passed
+	// in params. It returns an error if any occurred.
+	AddEvents(*Toolkit, []*Event) error
+
+	// FindEvent returns a event given the event ID passed in params.
+	FindEvent(*Toolkit, string) (*Event, error)
+
+	// FindEvents returns a list of events matching the constraints passed in params.
+	// It also returns meta information about the query, such as pagination and the
+	// constraints really applied to it.
+	FindEvents(*Toolkit, *WhereEvents) ([]*Event, *Meta, error)
 
 	// AddJobs inserts a list of jobs into the datastore.
 	AddJobs(*Toolkit, []*Job) error
 
+	// FindJob returns a job given the job ID passed in params.
+	FindJob(*Toolkit, string) (*Job, error)
+
+	// FindJobs returns a list of jobs matching the constraints passed in params.
+	// It also returns meta information about the query, such as pagination and the
+	// constraints really applied to it.
+	FindJobs(*Toolkit, *WhereEvents) ([]*Job, *Meta, error)
+
 	// AddTransitions inserts a list of transitions into the datastore to update
 	// their related job status. We insert new transitions instead of updating the
-	// job itself to keep track of job history. This method shall be called by the
-	// scheduler for registering jobs transitions.
+	// job itself to keep track of the job's history.
 	AddTransitions(*Toolkit, []*Transition) error
 
-	// Find returns a list of acknowledged jobs' events given some properties passed
-	// in params. Returned jobs are grouped by events.
-	Find(*Toolkit, *WhereJob) ([]*Event, error)
+	// FindTransition returns a transition given the transition ID passed in params.
+	FindTransition(*Toolkit, string) (*Transition, error)
 
-	// Delete deletes a list of given events from the store. It is useful to clear
-	// unused events so the store can be more performant.
-	Delete(*Toolkit, []*Event) error
+	// FindTransitions returns a list of transitions matching the constraints passed
+	// in params. It also returns meta information about the query, such as pagination
+	// and the constraints really applied to it.
+	FindTransitions(*Toolkit, *WhereEvents) ([]*Transition, *Meta, error)
 }
 
 /*

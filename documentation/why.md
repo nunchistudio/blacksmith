@@ -93,6 +93,9 @@ engineering.
 The **Blacksmith Enterprise** version addresses the complexity of collaboration
 and governance across multi-team and multi-scope data solutions.
 
+- **REST API:** The Enterprise version comes with a REST API so organizations can
+  bring data pipeline information as well as historical and real time events / jobs
+  into third-party applications.
 - **Database migrations:** Versioning and migrating database schema is difficult,
   especially if there is more than one engineer working on the code base. By using
   the Blacksmith Enterprise version, organizations can run and version database
@@ -102,3 +105,7 @@ and governance across multi-team and multi-scope data solutions.
 - **Server health-checks:** Instead of using the standard adapters, organizations
   can switch to the Enterprise version of the gateway and scheduler to add these
   services to their service mesh. More details about adapters in the next guide.
+- **Dashboard:** We created a dashboard serving as a reference implementation of
+  the REST API. It allows you to visualize everything that happened or is happening
+  in a Blacksmith application. It can be customized in any way needed to fit the
+  requirements of businesses.

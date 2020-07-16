@@ -38,41 +38,16 @@ StatusDiscarded is used to mark a job as discarded.
 var StatusDiscarded = "discarded"
 
 /*
-WhereJob is used to find events' jobs in the datastore.
-*/
-type WhereJob struct {
-
-	// DestinationsIn contains the destinations where the jobs destinations match
-	// at least one element in the list.
-	DestinationsIn []string `json:"destinations_in"`
-
-	// EventsIn contains the events where the jobs events match at least one element
-	// in the list.
-	EventsIn []string `json:"events_in"`
-
-	// StatusIn contains the status where the jobs status match at least one element
-	// in the list.
-	StatusIn []string `json:"status_in"`
-
-	// StatusNotIn contains the status where the jobs status must not match at least
-	// one element in the list.
-	StatusNotIn []string `json:"status_notin"`
-
-	// MaxAttempts defines the maximum number of attempts of the jobs looking for.
-	MaxAttempts uint16 `json:"max_attempts,omitempty"`
-}
-
-/*
 Queue keeps track of incoming events, their jobs, and their jobs' transitions.
 */
 type Queue struct {
 
 	// Events is the collection of incoming or awaiting events.
-	Events []*Event `json:"events,omitempty"`
+	Events []*Event `json:"events"`
 }
 
 /*
-Event define the fields stores in the datastore about an event.
+Event define the fields stored in the datastore about an event.
 */
 type Event struct {
 
@@ -89,15 +64,15 @@ type Event struct {
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload.
-	Context []byte `json:"context"`
+	Context []byte `json:"context,omitempty"`
 
 	// Data is the marshaled representation of the "data" key presents in the event's
 	// payload.
-	Data []byte `json:"data"`
+	Data []byte `json:"data,omitempty"`
 
 	// Jobs is a list of jobs to execute related to the event. A destination should
 	// have at most 2 jobs per event: a wildcard and the specific event.
-	Jobs []*Job `json:"jobs,omitempty"`
+	Jobs []*Job `json:"jobs"`
 
 	// SentAt is the timestamp of when the event is originally sent by the source.
 	// It can be nil if none was provided.
@@ -142,20 +117,19 @@ type Job struct {
 
 	// Transitions is an array of the job's transitions. It is used to keep track of
 	// successes, failures, and errors so the store is aware of the job's status.
-	// It is up to the adapter to only return the latest job's transition since this
-	// is the only one that really matters.
-	Transitions [1]*Transition `json:"transitions,omitempty"`
+	//
+	// Note: It is up to the adapter to only return the latest job's transition since
+	// this is the only one that really matters in this context.
+	Transitions [1]*Transition `json:"transitions"`
 
 	// CreatedAt is a timestamp of the job creation date into the store.
 	CreatedAt time.Time `json:"created_at"`
 
-	// EventID is the ID of the event related to this job. This is here for convenience
-	// and should not be included in results if used in an API.
-	EventID string `json:"-"`
+	// EventID is the ID of the event related to this job.
+	EventID string `json:"event_id,omitempty"`
 
-	// ParentJobID is the ID of the parent job ID. This is here for convenience and
-	// should not be included in results if used in an API.
-	ParentJobID *string `json:"-"`
+	// ParentJobID is the ID of the parent job ID.
+	ParentJobID *string `json:"parent_job_id,omitempty"`
 }
 
 /*
@@ -187,11 +161,9 @@ type Transition struct {
 	// CreatedAt is a timestamp of the transition creation date into the store.
 	CreatedAt time.Time `json:"created_at"`
 
-	// EventID is the ID of the event related to this job's transition. This is here
-	// for convenience and should not be included in results if used in an API.
-	EventID string `json:"-"`
+	// EventID is the ID of the event related to this job's transition.
+	EventID string `json:"event_id,omitempty"`
 
-	// JobID is the ID of the job related to this transition. This is here for
-	// convenience and should not be included in results if used in an API.
-	JobID string `json:"-"`
+	// JobID is the ID of the job related to this transition.
+	JobID string `json:"job_id,omitempty"`
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/nunchistudio/blacksmith/helper/errors"
+	"github.com/nunchistudio/blacksmith/helper/rest"
 	"github.com/nunchistudio/blacksmith/internal/adapter"
 )
 
@@ -22,8 +23,9 @@ Defaults are the defaults options set for the scheduler. When not set, these val
 will automatically be applied.
 */
 var Defaults = &Options{
-	From:    "standard",
-	Address: ":8081",
+	From:       "standard",
+	Address:    ":8081",
+	Middleware: rest.Middleware,
 }
 
 /*
@@ -114,6 +116,11 @@ func (opts *Options) ValidateAndLoad() (Scheduler, error) {
 	// If the user didn't put an address, use the default one.
 	if opts.Address == "" {
 		opts.Address = Defaults.Address
+	}
+
+	// If the user didn't pass a HTTP middleware, use the default one.
+	if opts.Middleware == nil {
+		opts.Middleware = Defaults.Middleware
 	}
 
 	// Validate the scheduler adapter.

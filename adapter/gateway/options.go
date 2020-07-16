@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/nunchistudio/blacksmith/helper/errors"
+	"github.com/nunchistudio/blacksmith/helper/rest"
 	"github.com/nunchistudio/blacksmith/internal/adapter"
 )
 
@@ -22,8 +23,9 @@ Defaults are the defaults options set for the gateway. When not set, these value
 will automatically be applied.
 */
 var Defaults = &Options{
-	From:    "standard",
-	Address: ":8080",
+	From:       "standard",
+	Address:    ":8080",
+	Middleware: rest.Middleware,
 }
 
 /*
@@ -114,6 +116,11 @@ func (opts *Options) ValidateAndLoad() (Gateway, error) {
 	// If the user didn't put an address, use the default one.
 	if opts.Address == "" {
 		opts.Address = Defaults.Address
+	}
+
+	// If the user didn't pass a HTTP middleware, use the default one.
+	if opts.Middleware == nil {
+		opts.Middleware = Defaults.Middleware
 	}
 
 	// Validate the gateway adapter.
