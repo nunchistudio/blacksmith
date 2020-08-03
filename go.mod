@@ -22,3 +22,5 @@ replace golang.org/x/sys => golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd
 replace go.opencensus.io => go.opencensus.io v0.22.3
 
 replace github.com/aws/aws-sdk-go => github.com/aws/aws-sdk-go v1.31.13
+
+replace github.com/hashicorp/go-cleanhttp => github.com/hashicorp/go-cleanhttp v0.5.0

@@ -108,16 +108,29 @@ have specific migrations. Sources and destinations have a `Migrate` function
 which defines the migration logic to run for the adapter and will be executed
 when running a migration against the adapter.
 
-Migrations have a *up* and *down* logic allowing rollbacks. The wanderer benefits
-a *remote mutual exclusion lock* (or *remote mutex*) so only one migration can
-run at a time on a given target. This allows concurrency controls and avoid race
-conditions.
+Migrations have a *up* and *down* logic allowing rollbacks. The wanderer leverages
+the supervisor as described below so only one migration can run at a time on a
+given target. This allows concurrency controls and avoid race conditions.
 
 Nunchi offers `wanderer` adapters for:
 - PostgreSQL (`postgres`)
 
-> Migration management is possible using the Blacksmith CLI, only available with
-  the Blacksmith Enterprise version.
+> The *wanderer* is only available using Blacksmith Enterprise Edition.
+
+## Distributed environments
+
+Most companies need to have zero downtime to maximize their service availability.
+
+Blacksmith applications can optionnaly leverage a *supervisor*, which is in charge
+of acquiring and releasing lock accesses in distributed environments. This ensures
+resources in a multi-nodes cluster are accessed by a single instance of the
+gateway and the scheduler to avoid collision when listening for events, executing
+jobs, or running migrations.
+
+Nunchi offers `supervisor` adapters for:
+- Consul (`consul`)
+
+> The *supervisor* is only available using Blacksmith Enterprise Edition.
 
 ## Conclusion
 

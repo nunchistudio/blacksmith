@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/nunchistudio/blacksmith/helper/errors"
-	"github.com/nunchistudio/blacksmith/helper/mutex"
 )
 
 /*
@@ -27,36 +26,15 @@ type Wanderer interface {
 	// can be used to validate and override user's options if necessary.
 	Options() *Options
 
-	// Migrations returns the list of all migrations for the wanderer, regardless
-	// their status.
-	//
-	// The adapter can use the sqlike package to easily read migrations files from
-	// a directory. See sqlike package for more details.
-	Migrations() ([]*Migration, error)
-
-	// Migrate is the function called for running a migration for the wanderer. This
-	// function is the migration logic for running every migrations of the wanderer.
-	// When being executed, the function has access to a toolkit and the desired
-	// migration.
-	//
-	// The adapter can use the sqlike package to easily run a SQL migration within
-	// a transaction. See sqlike package for more details.
-	Migrate(*Toolkit, *Migration) error
-
-	// Mutex returns a remote mutex so the wanderer can safely act across a team or
-	// several teams to lock migrations state.
-	Mutex() mutex.Mutex
-
 	// Ack acknowledges every migrations into the wanderer datastore regardless their
-	// status. It needs a mutex lock to ensure migrations state.
+	// status.
 	Ack(*Toolkit, []*Migration) error
 
 	// Find returns a list of acknowledged migrations given some properties passed
-	// in params. It needs a mutex lock to ensure migrations state.
+	// in params.
 	Find(*Toolkit, *WhereMigration) ([]*Migration, error)
 
-	// Update updates migrations status into the wanderer datastore. It needs a mutex
-	// lock to ensure migrations state.
+	// Update updates migrations status into the wanderer datastore.
 	Update(*Toolkit, []*Migration) error
 }
 

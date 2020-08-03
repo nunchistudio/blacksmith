@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/segmentio/ksuid"
-
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
+
+	"github.com/segmentio/ksuid"
 )
 
 /*

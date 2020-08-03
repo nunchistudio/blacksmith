@@ -1,12 +1,12 @@
-package destination
+package supervisor
 
 import (
 	"github.com/sirupsen/logrus"
 )
 
 /*
-Toolkit contains a suite of utilities and data to help the user successfully run
-the destination functions.
+Toolkit contains a suite of utilities and data to help the adapter successfully
+run the supervisor functions.
 */
 type Toolkit struct {
 

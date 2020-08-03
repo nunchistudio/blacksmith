@@ -59,8 +59,8 @@ type Event struct {
 	// Source is the string representation of the incoming event's source.
 	Source string `json:"source"`
 
-	// Name is the string representation of the incoming or awaiting event.
-	Name string `json:"name"`
+	// Trigger is the string representation of the incoming or awaiting event.
+	Trigger string `json:"trigger"`
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload.
@@ -71,7 +71,7 @@ type Event struct {
 	Data []byte `json:"data,omitempty"`
 
 	// Jobs is a list of jobs to execute related to the event. A destination should
-	// have at most 2 jobs per event: a wildcard and the specific event.
+	// have at most 1 job per event.
 	Jobs []*Job `json:"jobs"`
 
 	// SentAt is the timestamp of when the event is originally sent by the source.
@@ -102,10 +102,9 @@ type Job struct {
 	// run to.
 	Destination string `json:"destination"`
 
-	// Event is the string representation of the incoming or awaiting event. It is
-	// also present in the job so we can make a distinction between specific events
-	// and wildcard events.
-	Event string `json:"event"`
+	// Action is the string representation of the action to execute against the
+	// destination.
+	Action string `json:"action"`
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload when the destination's event has been marshaled.

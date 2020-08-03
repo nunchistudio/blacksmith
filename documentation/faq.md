@@ -43,11 +43,3 @@ from scratch. The adapters we provide are automatically downloaded, installed,
 and updated accordingly to the Blacksmith version your application depends on.
 The source code is not open and each adapter is licensed under the
 [Blacksmith Adapter License](/licenses/blacksmith-adapter).
-
-## Why the adapters are not open-source?
-
-By keeping the source code of adapters closed and proprietary, we also keep a
-better flexibility for Enterprise versions and features. To develop a large-scale,
-technically-complex product, and ensure long-term sustainability, we need to have
-a strong focus on the company behind this. This means having different kinds of
-product offerings alongside services and support.

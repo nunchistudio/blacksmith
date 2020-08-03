@@ -1,13 +1,13 @@
 /*
-Package gateway provides the development kit for working with CRON and HTTP events.
+Package gateway provides the development kit for working with incoming events.
 It receives events from sources such as websites, mobile applications, or databases
 notifications.
 
-The gateway takes care of HTTP requests, CRON tasks or forever listeners for
+The gateway can handle HTTP requests, CRON tasks, and CDC notifications for
 registering events in a synchronous way, whereas the scheduler takes care of jobs
 asynchronously to handle failures and retries against destinations. The gateway and
-scheduler must work in tandem to have a reliable data pipeline, both using the pubsub
-and store packages.
+scheduler must work in tandem to have a reliable data pipeline, both using the pubsub,
+store, and supervisor packages.
 
 The HTTP server of the gateway is designed to work over HTTP with REST specification.
 Even though we really like gRPC and GraphQL, we decided to only focus on REST for
@@ -24,12 +24,5 @@ Both gRPC and GraphQL have good designs that unfortunately don't fit our needs.
 Instead of trying to work with these designs, we implemented interfaces to mimic
 some of the features they provide and we love, such as resolvers, while still
 providing a smooth developer experience.
-
-A gateway adapter can be generated using the Blacksmith CLI:
-
-  $ blacksmith generate gateway
-
-Note: Adapter generation using the Blacksmith CLI is a feature only available in
-Blacksmith Enterprise.
 */
 package gateway

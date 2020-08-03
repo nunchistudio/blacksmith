@@ -25,8 +25,7 @@ Options is the options a user can pass to create a new wanderer.
 */
 type Options struct {
 
-	// From can be used to download, install, and use an existing adapter. This way
-	// the user does not need to develop a custom wanderer adapter.
+	// From can be used to download, install, and use an existing adapter.
 	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom wanderer adapter developed in-house.

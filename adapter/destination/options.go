@@ -32,8 +32,7 @@ Options is the options a user can pass to create a new destination.
 */
 type Options struct {
 
-	// From can be used to download, install, and use an existing adapter. This way
-	// the user does not need to develop a custom destination adapter.
+	// From can be used to download, install, and use an existing adapter.
 	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom destination adapter developed
@@ -44,26 +43,28 @@ type Options struct {
 	// adapter.
 	Context context.Context `json:"-"`
 
-	// DefaultSchedule represents a schedule at which a destination's event should
+	// DefaultSchedule represents a schedule at which a destination's action should
 	// run. This value can be overridden by the underlying adapter if necessary so
 	// the user does not make any scheduling mistake. This value can also be overridden
-	// by the destination events to benefit a per event basis schedule.
+	// by each destination action to benefit a per action basis schedule.
 	DefaultSchedule *Schedule `json:"schedule"`
 }
 
 /*
-Schedule represents a schedule at which a destination's event should run. SaaS APIs
-could be used in realtime whereas data warehouses shall be used only a few times
-per day.
+Schedule represents a schedule at which a destination's action should run. SaaS
+APIs could be used in realtime whereas data warehouses shall be used only a few
+times per day.
 */
 type Schedule struct {
 
 	// Realtime indicates if the pubsub adapter of the Blacksmith application shall
-	// be used to load events to the destination in realtime or not.
+	// be used to load events to the destination in realtime or not. When disabled,
+	// the Interval will be used.
 	Realtime bool `json:"realtime"`
 
 	// Interval represents an interval or a CRON string at which an event shall be
-	// loaded to the destination.
+	// loaded to the destination. It is used as the time-lapse between retires in
+	// case of a job failure.
 	Interval string `json:"interval"`
 
 	// MaxRetries indicates the maximum number of retries per job the scheduler will

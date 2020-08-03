@@ -27,8 +27,7 @@ Options is the options a user can pass to create a new source.
 */
 type Options struct {
 
-	// From can be used to download, install, and use an existing adapter. This way
-	// the user does not need to develop a custom source adapter.
+	// From can be used to download, install, and use an existing adapter.
 	From string `json:"from,omitempty"`
 
 	// Load can be used to load and use a custom source adapter developed in-house.
@@ -38,23 +37,11 @@ type Options struct {
 	// adapter.
 	Context context.Context `json:"-"`
 
-	// DefaultSchedule represents a schedule at which a source's event should run.
-	// This value can be overridden by the source events to benefit a per event basis
-	// schedule. This is used for change-data-capture so you can listen for non HTTP
-	// events such as database notifications.
+	// DefaultSchedule represents a schedule at which a source's trigger should run.
+	// This value can be overridden by the source triggers to benefit a per trigger
+	// basis schedule. This is used for CRON tasks so you can trigger jobs at a
+	// given time.
 	DefaultSchedule *Schedule `json:"cron"`
-}
-
-/*
-Schedule represents a schedule at which a source's event should run. This is used
-for change-data-capture so you can listen for non HTTP events such as database
-notifications.
-*/
-type Schedule struct {
-
-	// Interval represents an interval or a CRON string at which an event shall be
-	// loaded from the source.
-	Interval string `json:"interval"`
 }
 
 /*

@@ -20,7 +20,7 @@ type Gateway interface {
 
 	// String returns the string representation of the adapter.
 	//
-	// Example: "standard"
+	// Example: "enterprise"
 	String() string
 
 	// Options returns the options originally passed to the Options struct. This
@@ -38,7 +38,8 @@ type Gateway interface {
 	ListenAndServe(*Toolkit, *WithTLS) error
 
 	// Shutdown gracefully shuts down the server without interrupting any active
-	// connections. It is the equivalent of the net/http Shutdown function.
+	// connections such as CRON tasks. It is the equivalent of the net/http Shutdown
+	// function.
 	Shutdown(*Toolkit) error
 }
 

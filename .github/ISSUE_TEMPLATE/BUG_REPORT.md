@@ -19,8 +19,11 @@ about: You are experiencing an issue with Blacksmith that is different than the 
 
 - **Blacksmith version:** v0.10.2
 - **Involved packages:**
-  - adapter/gateway
   - adapter/store
+  - adapter/scheduler
+- **Involved adapters:**
+  - store/postgres
+  - scheduler/enterprise
 
 - **Go environment:**
   ```bash

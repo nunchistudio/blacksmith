@@ -10,6 +10,7 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/scheduler"
 	"github.com/nunchistudio/blacksmith/adapter/source"
 	"github.com/nunchistudio/blacksmith/adapter/store"
+	"github.com/nunchistudio/blacksmith/adapter/supervisor"
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
 	"github.com/nunchistudio/blacksmith/helper/logger"
@@ -25,6 +26,10 @@ type Options struct {
 	// Logger allows you to use a logrus Logger across all Blacksmith adapters and
 	// the application built on top of it.
 	Logger *logrus.Logger
+
+	// Supervisor is the options passed to create a new supervisor adapter.
+	// The supervisor is optional.
+	Supervisor *supervisor.Options
 
 	// Wanderer is the options passed to create a new wanderer adapter.
 	// The wanderer is optional.
@@ -88,6 +93,17 @@ func (opts *Options) ValidateAndLoad() (*Pipeline, error) {
 	// Make sure lock and unlock the mutex.
 	p.mutex.Lock()
 	defer p.mutex.Unlock()
+
+	// Validate and load the supervisor. Since the supervisor is optional, only
+	// validate it if provided.
+	if opts.Supervisor != nil {
+		p.Logger.Debug("supervisor: Validating and loading adapter...")
+		p.Supervisor, err = opts.Supervisor.ValidateAndLoad()
+		if p.Supervisor == nil || err != nil {
+			p.Logger.Error(err)
+			return nil, err
+		}
+	}
 
 	// Validate and load the wanderer. Since the wanderer is optional, only validate
 	// it if provided.

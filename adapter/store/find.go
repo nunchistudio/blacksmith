@@ -59,13 +59,13 @@ type WhereEvents struct {
 	// of the source name present in the slice.
 	SourcesNotIn []string `json:"sources_notin,omitempty"`
 
-	// EventsIn makes sure the entries returned by the query have any of the source's
+	// TriggersIn makes sure the entries returned by the query have any of the source's
 	// event name present in the slice.
-	EventsIn []string `json:"events_in,omitempty"`
+	TriggersIn []string `json:"triggers_in,omitempty"`
 
-	// EventsNotIn makes sure the entries returned by the query does not have any
+	// TriggersNotIn makes sure the entries returned by the query does not have any
 	// of the source's event name present in the slice.
-	EventsNotIn []string `json:"events_notin,omitempty"`
+	TriggersNotIn []string `json:"triggers_notin,omitempty"`
 
 	// CreatedBefore makes sure the entries returned by the query are related to an
 	// event created before this instant.
@@ -107,13 +107,13 @@ type WhereJobs struct {
 	// of the destination name present in the slice.
 	DestinationsNotIn []string `json:"destinations_notin,omitempty"`
 
-	// EventsIn makes sure the entries returned by the query have any of the destination's
+	// ActionsIn makes sure the entries returned by the query have any of the destination's
 	// event name present in the slice.
-	EventsIn []string `json:"events_in,omitempty"`
+	ActionsIn []string `json:"actions_in,omitempty"`
 
-	// EventsNotIn makes sure the entries returned by the query does not have any of
+	// ActionsNotIn makes sure the entries returned by the query does not have any of
 	// the destination's event name present in the slice.
-	EventsNotIn []string `json:"events_notin,omitempty"`
+	ActionsNotIn []string `json:"actions_notin,omitempty"`
 
 	// CreatedBefore makes sure the entries returned by the query are related to a
 	// job created before this instant.

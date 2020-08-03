@@ -1,5 +1,5 @@
-The PostgreSQL adapter is compatible with any PostgreSQL-like database and can
-work with any kind of extensions.
+The PostgreSQL adapter is compatible with any PostgreSQL wire compatible database
+and can work with any kind of extensions.
 
 #### Usage
 
@@ -28,7 +28,7 @@ CREATE SCHEMA IF NOT EXISTS blacksmith_store;
 CREATE TABLE IF NOT EXISTS blacksmith_store.events (
   id VARCHAR(27) PRIMARY KEY,
   source TEXT NOT NULL,
-  event TEXT NOT NULL,
+  trigger TEXT NOT NULL,
   context JSONB,
   data JSONB,
   sent_at TIMESTAMP WITHOUT TIME ZONE,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS blacksmith_store.events (
 CREATE TABLE IF NOT EXISTS blacksmith_store.jobs (
   id VARCHAR(27) PRIMARY KEY,
   destination TEXT NOT NULL,
-  event TEXT NOT NULL,
+  action TEXT NOT NULL,
   context JSONB,
   data JSONB,
   parent_job_id VARCHAR(27) REFERENCES blacksmith_store.jobs (id)

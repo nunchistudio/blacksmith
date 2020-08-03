@@ -40,9 +40,9 @@ StatusRollbacked is used to mark a migration as rollbacked.
 var StatusRollbacked = "rollbacked"
 
 /*
-ValidDirections is used to make sure the direction passed is valid.
+validDirections is used to make sure the direction passed is valid.
 */
-var ValidDirections = map[string]bool{
+var validDirections = map[string]bool{
 	"up":   true,
 	"down": true,
 }
@@ -147,10 +147,6 @@ type Transition struct {
 	// datastore.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 
-	// LockID is the ID of the lock used to run the migration. This is here for
-	// convenience and should not be included in results if used in an API.
-	LockID string `json:"-"`
-
 	// MigrationID is the ID of the migration that is being run by the transition.
 	// This is here for convenience and should not be included in results if used
 	// in an API.
@@ -209,7 +205,7 @@ func (where *WhereMigration) Validate() error {
 		})
 	}
 
-	if _, exists := ValidDirections[where.Direction]; !exists {
+	if _, exists := validDirections[where.Direction]; !exists {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: "Direction must be one of 'up', 'down'",
 			Path:    []string{"where", "Direction"},

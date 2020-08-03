@@ -18,8 +18,11 @@ about: You though about a new feature or use case that Blacksmith can cover
 ## Environment
 
 - **Involved packages:**
-  - adapter/gateway
   - adapter/store
+  - adapter/scheduler
+- **Involved adapters:**
+  - store/postgres
+  - scheduler/enterprise
 
 ## Additional context
 

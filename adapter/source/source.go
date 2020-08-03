@@ -3,7 +3,6 @@ package source
 import (
 	"fmt"
 
-	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
 )
 
@@ -27,30 +26,9 @@ type Source interface {
 	// can be used to validate and override user's options if necessary.
 	Options() *Options
 
-	// Migrations returns the list of all migrations for the source, regardless their
-	// status. This does not contain event-specific migrations but only the ones
-	// needed for the source itself.
-	//
-	// The adapter can use the package helper/sqlike to easily read migrations files
-	// from a directory. See package helper/sqlike for more details.
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrations() ([]*wanderer.Migration, error)
-
-	// Migrate is the function called for running a migration for this source and
-	// all of its events. This function is the migration logic for running every
-	// migrations of this source. When being executed, the function has access to
-	// a toolkit and the desired migration.
-	//
-	// Note: It is up to the adapter to run the migration within a transaction
-	// (when applicable).
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrate(*wanderer.Toolkit, *wanderer.Migration) error
-
-	// Events returns a list of events the source is able to take care of.
-	// Events will then be forwared to related destinations' events.
-	Events() map[string]Event
+	// Triggers returns a list of triggers the source is able to take care of.
+	// Events will then be forwared to related destinations' actions.
+	Triggers() map[string]Trigger
 }
 
 /*
@@ -99,18 +77,18 @@ func validateSource(s Source) error {
 
 	// Make sure the source returns a collection of events. Otherwise we can not
 	// continue.
-	if s.Events() == nil {
+	if s.Triggers() == nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: "Source events must not be nil",
-			Path:    []string{"Source", s.String(), "Events()"},
+			Path:    []string{"Source", s.String(), "Triggers()"},
 		})
 
 		return fail
 	}
 
 	// Validate every events of the source and add the validation errors.
-	for _, e := range s.Events() {
-		errs := validateEvent(e)
+	for _, t := range s.Triggers() {
+		errs := validateTrigger(s.String(), t)
 		if errs != nil {
 			fail.Validations = append(fail.Validations, errs...)
 		}

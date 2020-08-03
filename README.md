@@ -6,9 +6,9 @@ data solutions.
 
 Blacksmith is a Software Development Kit specifically designed for data engineering
 teams. It allows you to build reliable data pipelines in a consistent way. Whether
-you are collecting data from HTTP APIs, CRON tasks or ongoing event listeners and
-whether you are loading this data in realtime to third-party services or using a
-specific schedule to data warehouses.
+you are collecting data from HTTP APIs, CRON tasks, or CDC notifications and whether
+you are loading this data in realtime to third-party services or using a specific
+schedule to data warehouses.
 
 Any team that is building — or think about building — a complete data pipeline knows
 the tremendous amount of work needed to properly accomplish this mission. Think
@@ -17,12 +17,12 @@ to save months of customized and professional ETL work.
 
 ## Product offerings
 
-Blacksmith is available in two versions:
+Blacksmith is available in two editions:
 
-- **Blacksmith Standard** addresses the technical complexity of data engineering.
+- **Blacksmith Standard Edition** addresses the technical complexity of data engineering.
   It is and will always be free.
-- **Blacksmith Enterprise** addresses the complexity of collaboration and governance
-  across multi-team and multi-scope data solutions.
+- **Blacksmith Enterprise Edition** addresses the complexity of collaboration and
+  governance across multi-team and multi-scope data solutions.
 
 ## Links
 

@@ -12,8 +12,11 @@ about: For approved feature requests only
 *Please describe the impacts on the SDK and its ecosystem.*
 
 - **Involved packages:**
-  - adapter/gateway
   - adapter/store
+  - adapter/scheduler
+- **Involved adapters:**
+  - store/postgres
+  - scheduler/enterprise
 
 ## Changelog
 

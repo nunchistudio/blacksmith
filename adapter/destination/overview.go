@@ -8,6 +8,6 @@ A destination adapter can be generated using the Blacksmith CLI:
   $ blacksmith generate destination --name <name>
 
 Note: Adapter generation using the Blacksmith CLI is a feature only available in
-Blacksmith Enterprise.
+Blacksmith Enterprise Edition.
 */
 package destination

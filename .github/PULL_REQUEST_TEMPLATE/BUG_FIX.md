@@ -16,8 +16,11 @@ about: You fixed an unexpected behavior and want to share the fix to the communi
 *Please describe the behavior you were expected.*
 
 - **Involved packages:**
-  - adapter/gateway
   - adapter/store
+  - adapter/scheduler
+- **Involved adapters:**
+  - store/postgres
+  - scheduler/enterprise
 
 ## Additional context
 

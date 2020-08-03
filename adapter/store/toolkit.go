@@ -5,8 +5,8 @@ import (
 )
 
 /*
-Toolkit contains a suite of utilities and data to help the user successfully run
-the functions against the store.
+Toolkit contains a suite of utilities and data to help the adapter successfully
+run the store functions.
 */
 type Toolkit struct {
 

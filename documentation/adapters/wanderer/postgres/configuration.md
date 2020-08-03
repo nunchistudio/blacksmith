@@ -1,5 +1,5 @@
-The PostgreSQL adapter is compatible with any PostgreSQL-like database and can
-work with any kind of extensions.
+The PostgreSQL adapter is compatible with any PostgreSQL wire compatible database
+and can work with any kind of extensions.
 
 #### Usage
 
@@ -25,13 +25,6 @@ work with any kind of extensions.
 ```sql
 CREATE SCHEMA IF NOT EXISTS blacksmith_wanderer;
 
-CREATE TABLE IF NOT EXISTS blacksmith_wanderer.locks (
-  id VARCHAR(27) PRIMARY KEY,
-  acquired_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
-  released_at TIMESTAMP WITHOUT TIME ZONE,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
-);
-
 CREATE TABLE IF NOT EXISTS blacksmith_wanderer.migrations (
   id VARCHAR(27) PRIMARY KEY,
   version VARCHAR(14) NOT NULL,
@@ -45,7 +38,7 @@ CREATE TABLE IF NOT EXISTS blacksmith_wanderer.jobs (
   filename TEXT NOT NULL,
   direction TEXT NOT NULL,
   sha256 BYTEA NOT NULL,
-  migration_ID VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.migrations (id)
+  migration_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.migrations (id)
     ON UPDATE CASCADE ON DELETE CASCADE
     DEFERRABLE INITIALLY DEFERRED,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
@@ -57,9 +50,6 @@ CREATE TABLE IF NOT EXISTS blacksmith_wanderer.transitions (
   state_before TEXT,
   state_after TEXT NOT NULL,
   error JSONB,
-  lock_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.locks (id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-    DEFERRABLE INITIALLY DEFERRED,
   migration_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.migrations (id)
     ON UPDATE CASCADE ON DELETE CASCADE
     DEFERRABLE INITIALLY DEFERRED,

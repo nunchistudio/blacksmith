@@ -3,7 +3,6 @@ package destination
 import (
 	"fmt"
 
-	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
 )
 
@@ -27,35 +26,11 @@ type Destination interface {
 	// can be used to validate and override user's options if necessary.
 	Options() *Options
 
-	// Migrations returns the list of all migrations for the destination, regardless
-	// their status. This does not contain event-specific migrations but only the
-	// ones needed for the destination itself.
-	//
-	// The adapter can use the package helper/sqlike to easily read migrations files
-	// from a directory. See package helper/sqlike for more details.
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrations() ([]*wanderer.Migration, error)
-
-	// Migrate is the function called for running a migration for this destination
-	// and all of its events. This function is the migration logic for running every
-	// migrations of this destination. When being executed, the function has access
-	// to a toolkit and the desired migration.
-	//
-	// It is important to understand that it is up to the adapter to run the migration
-	// within a transaction (when applicable).
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrate(*wanderer.Toolkit, *wanderer.Migration) error
-
-	// Events returns a list of events the destination can handle. Destinations'
-	// events are triggered from sources' events and can also be triggered by
-	// destinations' events. When a destination's event is triggered, it is
-	// represented as a 'job' across the ecosystem.
-	//
-	// An event with "*" as its key represents a wildcard event. Such event will
-	// be triggered on every other events.
-	Events() map[string]Event
+	// Actions returns a list of actions the destination can handle. Destinations'
+	// actions are run from sources' triggers and can also be triggered by other
+	// destinations' actions. When a destination's action is called, it is
+	// represented as a "job" across the ecosystem.
+	Actions() map[string]Action
 }
 
 /*
@@ -106,20 +81,20 @@ func validateDestination(d Destination) error {
 		d.Options().DefaultSchedule = Defaults.DefaultSchedule
 	}
 
-	// Make sure the destination returns a collection of events. Otherwise we can
+	// Make sure the destination returns a collection of actions. Otherwise we can
 	// not continue.
-	if d.Events() == nil {
+	if d.Actions() == nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "Destination events must not be nil",
-			Path:    []string{"Destination", d.String(), "Events()"},
+			Message: "Destination actions must not be nil",
+			Path:    []string{"Destination", d.String(), "Actions()"},
 		})
 
 		return fail
 	}
 
-	// Validate every events of the destination and add the validation errors.
-	for _, e := range d.Events() {
-		errs := validateEvent(e)
+	// Validate every actions of the destination and add the validation errors.
+	for _, a := range d.Actions() {
+		errs := validateAction(d.String(), a)
 		if errs != nil {
 			fail.Validations = append(fail.Validations, errs...)
 		}

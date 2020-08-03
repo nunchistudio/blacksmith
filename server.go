@@ -9,6 +9,7 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/scheduler"
 	"github.com/nunchistudio/blacksmith/adapter/source"
 	"github.com/nunchistudio/blacksmith/adapter/store"
+	"github.com/nunchistudio/blacksmith/adapter/supervisor"
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 
 	"github.com/sirupsen/logrus"
@@ -28,6 +29,10 @@ type Pipeline struct {
 
 	// Logger is the logrus Logger for the entire application.
 	Logger *logrus.Logger
+
+	// Supervisor is the supervisor adapter used for the entire application.
+	// See the adapter/supervisor package for more details.
+	Supervisor supervisor.Supervisor
 
 	// Wanderer is the wanderer adapter used for the entire application.
 	// See the adapter/wanderer package for more details.
@@ -70,86 +75,59 @@ func New(opts *Options) (*Pipeline, error) {
 Start starts both the Blacksmith gateway and scheduler. It is useful for working
 in non-production environments or in application with low traffic. Otherwise,
 it is recommended to start the gateway and scheduler in their own process.
-
-TODO: Improve the behavior of this function when the gateway or scheduler exits.
-Currently, the adapters can throw an "error" when shutting their HTTP server.
-This should not happen.
 */
 func (p *Pipeline) Start() error {
+	var err error
 
 	// Create channels to keep track of errors and stops.
 	failed := make(chan error)
-	stopped := make(chan bool)
+
+	// Create a waiting group that will wait for both the gateway and scheduler to
+	// gracefully shutdown.
+	wg := sync.WaitGroup{}
+	wg.Add(2)
 
 	// Start the gateway in its own goroutine. If an error occured, write in the
 	// error channel.
 	go func() {
-		err := p.StartGateway()
+		err = p.StartGateway()
 		if err != nil {
 			failed <- err
 		}
 
-		stopped <- true
+		wg.Done()
 	}()
 
 	// Start the scheduler in its own goroutine. If an error occured, write in the
 	// error channel.
 	go func() {
-		err := p.StartScheduler()
+		err = p.StartScheduler()
 		if err != nil {
 			failed <- err
 		}
 
-		stopped <- true
+		wg.Done()
 	}()
 
 	// Keep the servers running as long as there is no error or interruption.
-	for {
-		select {
-		case err := <-failed:
-			return err
-		case <-stopped:
-			return nil
+	go func() {
+		for {
+			select {
+			case <-failed:
+				err = <-failed
+			}
 		}
-	}
+	}()
+
+	// Wait for the server to shutdown properly and return an error if any occured.
+	wg.Wait()
+	return err
 }
 
 /*
-StartGateway starts the Blacksmith gateway. This also make sure other adapters are
-properly initialized and shutdown when necessary.
+StartGateway starts the Blacksmith gateway.
 */
 func (p *Pipeline) StartGateway() error {
-	p.Logger.Debugf("gateway/%s: Starting HTTP server...", p.Gateway.String())
-
-	// Create the appropriate pubsub toolkit.
-	pstk := &pubsub.Toolkit{
-		Logger: p.Logger,
-	}
-
-	// If the pubsub exists, add the context to the toolkit.
-	if p.PubSub != nil {
-		pstk.Context = p.PubSub.Options().Context
-	}
-
-	// Initialize the pubsub Publisher if needed.
-	if p.PubSub != nil {
-		if p.PubSub.Publisher() != nil {
-			p.Logger.Debugf("pubsub/%s: Initializing publisher...", p.PubSub.String())
-			err := p.PubSub.Publisher().Init(pstk)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	// Create the appropriate watcher toolkit for the gateway.
-	ltk := &gateway.Toolkit{
-		Logger:       p.Logger,
-		Sources:      p.Sources,
-		Destinations: p.Destinations,
-		Store:        p.Store,
-		PubSub:       p.PubSub,
-	}
 
 	// Create the TLS certificate details.
 	cert := &gateway.WithTLS{
@@ -157,60 +135,30 @@ func (p *Pipeline) StartGateway() error {
 		KeyFile:  p.Gateway.Options().KeyFile,
 	}
 
-	// Start the gateway server.
-	p.Logger.Debugf("gateway/%s: HTTP server starting up...", p.Gateway.String())
-	if err := p.Gateway.ListenAndServe(ltk, cert); err != nil {
-		return err
-	}
-
-	// Make sure to shutdown the pubsub Publisher properly.
-	if p.PubSub != nil {
-		if p.PubSub.Publisher() != nil {
-			p.Logger.Debugf("pubsub/%s: Shutting down publisher...", p.PubSub.String())
-			p.PubSub.Publisher().Shutdown(pstk)
-		}
-	}
-
-	p.Logger.Infof("gateway/%s: HTTP server shut down", p.Gateway.String())
-	return nil
-}
-
-/*
-StartScheduler starts the Blacksmith scheduler. This also make sure other adapters
-are properly initialized and shutdown when necessary.
-*/
-func (p *Pipeline) StartScheduler() error {
-	p.Logger.Debugf("scheduler/%s: Starting HTTP server...", p.Scheduler.String())
-
-	// Create the appropriate pubsub toolkit.
-	pstk := &pubsub.Toolkit{
-		Logger: p.Logger,
-	}
-
-	// If the pubsub exists, add the context to the toolkit.
-	if p.PubSub != nil {
-		pstk.Context = p.PubSub.Options().Context
-	}
-
-	// Initialize the pubsub Subscriber if needed.
-	if p.PubSub != nil {
-		if p.PubSub.Subscriber() != nil {
-			p.Logger.Debugf("pubsub/%s: Initializing subscriber...", p.PubSub.String())
-			err := p.PubSub.Subscriber().Init(pstk)
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	// Create the appropriate watcher toolkit for the scheduler.
-	ltk := &scheduler.Toolkit{
+	// Create the appropriate watcher toolkit for the gateway.
+	gtk := &gateway.Toolkit{
 		Logger:       p.Logger,
 		Sources:      p.Sources,
 		Destinations: p.Destinations,
 		Store:        p.Store,
 		PubSub:       p.PubSub,
+		Supervisor:   p.Supervisor,
 	}
+
+	// Start the gateway server.
+	p.Logger.Debugf("%s/%s: Server starting up...", gateway.InterfaceGateway, p.Gateway.String())
+	err := p.Gateway.ListenAndServe(gtk, cert)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+/*
+StartScheduler starts the Blacksmith scheduler.
+*/
+func (p *Pipeline) StartScheduler() error {
 
 	// Create the TLS certificate details.
 	cert := &scheduler.WithTLS{
@@ -218,20 +166,22 @@ func (p *Pipeline) StartScheduler() error {
 		KeyFile:  p.Scheduler.Options().KeyFile,
 	}
 
+	// Create the appropriate watcher toolkit for the scheduler.
+	stk := &scheduler.Toolkit{
+		Logger:       p.Logger,
+		Sources:      p.Sources,
+		Destinations: p.Destinations,
+		Store:        p.Store,
+		PubSub:       p.PubSub,
+		Supervisor:   p.Supervisor,
+	}
+
 	// Start the scheduler server.
-	p.Logger.Debugf("scheduler/%s: HTTP server starting up...", p.Scheduler.String())
-	if err := p.Scheduler.ListenAndServe(ltk, cert); err != nil {
+	p.Logger.Debugf("%s/%s: Server starting up...", scheduler.InterfaceScheduler, p.Scheduler.String())
+	err := p.Scheduler.ListenAndServe(stk, cert)
+	if err != nil {
 		return err
 	}
 
-	// Make sure to shutdown the pubsub Subscriber properly.
-	if p.PubSub != nil {
-		if p.PubSub.Subscriber() != nil {
-			p.Logger.Debugf("pubsub/%s: Shutting down subscriber...", p.PubSub.String())
-			p.PubSub.Subscriber().Shutdown(pstk)
-		}
-	}
-
-	p.Logger.Infof("scheduler/%s: HTTP server shut down", p.Scheduler.String())
 	return nil
 }

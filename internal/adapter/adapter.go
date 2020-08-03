@@ -19,7 +19,7 @@ import (
 dst is the relative path on the local machine where adapters (Go plugins) will
 be installed to.
 */
-var dst = filepath.Join(".blacksmith", "plugins", version.Blacksmith())
+var dst = filepath.Join(".blacksmith", "plugins", "v"+version.Blacksmith())
 
 /*
 LoadPlugin tries to load a Go plugin given an adapter kind and ID. If the adapter
@@ -135,7 +135,7 @@ func downloadPlugin(wd string, kind string, from string) error {
 	// The defaults Go plugins can be downloaded for supported environments and
 	// architectures.
 	var suffix string = runtime.GOOS + "-" + runtime.GOARCH
-	var src = "https://github.com/nunchistudio/blacksmith/releases/download/" + version.Blacksmith() + "/"
+	var src = "https://github.com/nunchistudio/blacksmith/releases/download/v" + version.Blacksmith() + "/"
 
 	// If an environment is specified, download from its own repository and use the
 	// appropriate suffix.
@@ -143,7 +143,7 @@ func downloadPlugin(wd string, kind string, from string) error {
 		suffix = os.Getenv("BLACKSMITH_ENV")
 
 		platform := strings.Split(suffix, "-")
-		src = "https://github.com/nunchistudio/blacksmith-" + platform[0] + "/releases/download/" + version.Blacksmith() + "/"
+		src = "https://github.com/nunchistudio/blacksmith-" + platform[0] + "/releases/download/v" + version.Blacksmith() + "/"
 	}
 
 	// Add the suffix with the ".zip".

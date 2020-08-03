@@ -7,9 +7,9 @@ enterprise: false
 
 Blacksmith is a Software Development Kit specifically designed for data engineering
 teams. It allows you to build reliable data pipelines in a consistent way. Whether
-you are collecting data from HTTP APIs, CRON tasks or ongoing event listeners and
-whether you are loading this data in realtime to third-party services or using a
-specific schedule to data warehouses.
+you are collecting data from HTTP APIs, CRON tasks or CDC notifications and whether
+you are loading this data in realtime to third-party services or using a specific
+schedule to data warehouses.
 
 Any team that is building — or think about building — a complete data pipeline knows
 the tremendous amount of work needed to properly accomplish this mission. Think
@@ -38,15 +38,16 @@ by custom ones. They are compiled as Go plugins and are not open-source.
 
 ## Features and benefits
 
-The **Blacksmith Standard** version addresses the technical complexity of data
+The **Blacksmith Standard Edition** addresses the technical complexity of data
 engineering.
 
 - **Synchrounous & asynchronous events:** Whether you are collecting data from HTTP
-  APIs, CRON tasks or ongoing event listeners, Blacksmith handles them in a consistent
+  APIs, CRON tasks or CDC notifications, Blacksmith handles them in a consistent
   way with a unique event handling interface.
 - **Architecture reliability:** With a state-of-the-art queue and retry management
   system, Blacksmith makes it very difficult to lose data between an event and the
-  finale data destination.
+  finale data destination. The services gracefully shutdown without interrupting
+  any active connctions and tasks.
 - **Flow automation:** Whenever an event happens or whenever data is received by a
   destination, other events can automatically be triggered using original or transformed
   data. Each event can have its own scheduling options. This let you have a central
@@ -60,7 +61,7 @@ engineering.
     threats. This can also maintain customer trust and automate compliance with
     GDPR, CCPA, and whatever comes next.
   - **Data collection:** Blacksmith allows to extract any kind of data whether you
-    are collecting it from HTTP APIs, CRON tasks or ongoing event listeners with a
+    are collecting it from HTTP APIs, CRON tasks or CDC notifications with a
     consistent interface.
   - **Data transformation:** Because each and every system has a specific design,
     you often need to validate and transform the data before sending it to destinations.
@@ -90,22 +91,25 @@ engineering.
 - **Cloud-native & multi-cloud:** Data pipelines built on top of Blacksmith can
   be deployed on any infrastructure or cloud-provider. There is no lock-in.
 
-The **Blacksmith Enterprise** version addresses the complexity of collaboration
+The **Blacksmith Enterprise Edition** addresses the complexity of collaboration
 and governance across multi-team and multi-scope data solutions.
 
-- **REST API:** The Enterprise version comes with a REST API so organizations can
+- **REST API:** The Enterprise Edition comes with a REST API so organizations can
   bring data pipeline information as well as historical and real time events / jobs
   into third-party applications.
-- **Database migrations:** Versioning and migrating database schema is difficult,
-  especially if there is more than one engineer working on the code base. By using
-  the Blacksmith Enterprise version, organizations can run and version database
-  migrations smoothly with no conflicts across teams.
-- **Command-Line Interface:** The Blacksmith CLI lets you generate any kind of
-  adapter in a simple command-line as well as manage database migrations.
-- **Server health-checks:** Instead of using the standard adapters, organizations
-  can switch to the Enterprise version of the gateway and scheduler to add these
-  services to their service mesh. More details about adapters in the next guide.
 - **Dashboard:** We created a dashboard serving as a reference implementation of
   the REST API. It allows you to visualize everything that happened or is happening
   in a Blacksmith application. It can be customized in any way needed to fit the
   requirements of businesses.
+- **Server health-checks:** Instead of using the Standard adapters, organizations
+  can switch to the Enterprise Edition of the gateway and scheduler to add these
+  services to their service mesh. More details about adapters in the next guide.
+- **Distributed environments:** Blacksmith applications can be deployed in distributed
+  and high-available environments. By using a distributed lock mechanism, we ensure
+  strong data consistency and stronger fault-tolerance across nodes.
+- **Database migrations:** Versioning and migrating database schema is difficult,
+  especially if there is more than one engineer working on the code base. By using
+  the Blacksmith Enterprise Edition, organizations can run and version database
+  migrations smoothly with no conflicts across teams.
+- **Command-Line Interface:** The Blacksmith CLI lets you generate sources and
+  destinations in a simple command-line, as well as manage database migrations.

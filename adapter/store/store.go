@@ -3,7 +3,6 @@ package store
 import (
 	"fmt"
 
-	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
 )
 
@@ -26,26 +25,6 @@ type Store interface {
 	// Options returns the options originally passed to the Options struct. This
 	// can be used to validate and override user's options if necessary.
 	Options() *Options
-
-	// Migrations returns the list of all migrations for the store, regardless
-	// their status.
-	//
-	// The adapter can use the package helper/sqlike to easily read migrations files
-	// from a directory. See package helper/sqlike for more details.
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrations() ([]*wanderer.Migration, error)
-
-	// Migrate is the function called for running a migration for the store. This
-	// function is the migration logic for running every migrations of the store.
-	// When being executed, the function has access to a toolkit and the desired
-	// migration.
-	//
-	// It is important to understand that it is up to the adapter to run the migration
-	// within a transaction (when applicable).
-	//
-	// Note: Feature only available in Blacksmith Enterprise.
-	Migrate(*wanderer.Toolkit, *wanderer.Migration) error
 
 	// AddEvents inserts a queue of events into the datastore given the data passed
 	// in params. It returns an error if any occurred.

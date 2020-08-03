@@ -5,12 +5,5 @@ systems.
 This feature shall be used by the gateway as a publisher and by the scheduler as
 a subscriber. This way, the gateway can publish events in realtime to the scheduler
 that then will take care of forwarding the events' jobs to the desired destinations.
-
-A pubsub adapter can be generated using the Blacksmith CLI:
-
-  $ blacksmith generate pubsub
-
-Note: Adapter generation using the Blacksmith CLI is a feature only available in
-Blacksmith Enterprise.
 */
 package pubsub

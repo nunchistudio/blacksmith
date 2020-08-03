@@ -20,7 +20,7 @@ type Scheduler interface {
 
 	// String returns the string representation of the adapter.
 	//
-	// Example: "standard"
+	// Example: "enterprise"
 	String() string
 
 	// Options returns the options originally passed to the Options struct. This
