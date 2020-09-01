@@ -1,19 +1,13 @@
 package wanderer
 
-import (
-	"fmt"
-
-	"github.com/nunchistudio/blacksmith/helper/errors"
-)
-
 /*
 InterfaceWanderer is the string representation for the wanderer interface.
 */
 var InterfaceWanderer = "wanderer"
 
 /*
-Wanderer is the interface used to create a new migration wanderer. This acts with
-a remote mutex allowing teams to safely run migrations with no conflicts.
+Wanderer is the interface used to persist the migrations in a datastore to keep
+track of migrations states.
 */
 type Wanderer interface {
 
@@ -26,60 +20,70 @@ type Wanderer interface {
 	// can be used to validate and override user's options if necessary.
 	Options() *Options
 
-	// Ack acknowledges every migrations into the wanderer datastore regardless their
-	// status.
-	Ack(*Toolkit, []*Migration) error
+	// AddMigrations inserts a list of migrations into the wanderer given the data
+	// passed in params. It returns an error if any occurred.
+	AddMigrations(*Toolkit, []*Migration) error
 
-	// Find returns a list of acknowledged migrations given some properties passed
-	// in params.
-	Find(*Toolkit, *WhereMigration) ([]*Migration, error)
+	// FindMigration returns a migration given the migration ID passed in params.
+	FindMigration(*Toolkit, string) (*Migration, error)
 
-	// Update updates migrations status into the wanderer datastore.
-	Update(*Toolkit, []*Migration) error
+	// FindMigrations returns a list of migrations matching the constraints passed
+	// in params. It also returns meta information about the query, such as pagination
+	// and the constraints really applied to it.
+	FindMigrations(*Toolkit, *WhereMigrations) ([]*Migration, *Meta, error)
+
+	// AddDirections inserts a list of directions into the datastore.
+	AddDirections(*Toolkit, []*Direction) error
+
+	// FindDirection returns a direction given the direction ID passed in params.
+	FindDirection(*Toolkit, string) (*Direction, error)
+
+	// FindDirections returns a list of directions matching the constraints passed
+	// in params. It also returns meta information about the query, such as pagination
+	// and the constraints really applied to it.
+	FindDirections(*Toolkit, *WhereMigrations) ([]*Direction, *Meta, error)
+
+	// AddTransitions inserts a list of transitions into the datastore to update
+	// their related direction status. We insert new transitions instead of updating
+	// the direction itself to keep track of the migration direction's history.
+	AddTransitions(*Toolkit, []*Transition) error
+
+	// FindTransition returns a transition given the transition ID passed in params.
+	FindTransition(*Toolkit, string) (*Transition, error)
+
+	// FindTransitions returns a list of transitions matching the constraints passed
+	// in params. It also returns meta information about the query, such as pagination
+	// and the constraints really applied to it.
+	FindTransitions(*Toolkit, *WhereMigrations) ([]*Transition, *Meta, error)
 }
 
 /*
-validateWanderer makes sure the wanderer adapter is ready to be used properly by
-a Blacksmith application.
+WithMigrate can be implemented by sources and destinations to benefit custom data
+and database schema migrations.
+
+Note: Feature only available in Blacksmith Enterprise Edition.
 */
-func validateWanderer(w Wanderer) error {
+type WithMigrate interface {
 
-	// Create the common error for the validation.
-	fail := &errors.Error{
-		Message:     "wanderer: Failed to load adapter",
-		Validations: []errors.Validation{},
-	}
+	// Migrate is the migration logic for running every migrations for a source or
+	// a destination. The function gives access only to the migrations that need to
+	// run with the appropriate direction "up" or "down".
+	Migrate(*Toolkit, []*Migration) error
+}
 
-	// Verify the wanderer ID is not empty.
-	if w.String() == "" {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "Wanderer ID must not be empty",
-			Path:    []string{"Wanderer", "unknown", "String()"},
-		})
+/*
+WithMigrations must be implemented by sources (and / or by their triggers) and
+destinations (and / or by their actions) already implementing the WithMigrate
+interface.
 
-		return fail
-	}
+Note: Feature only available in Blacksmith Enterprise Edition.
+*/
+type WithMigrations interface {
 
-	// We now can add the adapter name to the error message.
-	fail.Message = fmt.Sprintf("wanderer/%s: Failed to load adapter", w.String())
-
-	// It is impossible to deal with nil options.
-	if w.Options() == nil {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "Wanderer options must not be nil",
-			Path:    []string{"Wanderer", w.String(), "Options()"},
-		})
-
-		return fail
-	}
-
-	// Avoid cycles.
-	w.Options().Load = nil
-
-	// Return the error if any occurred.
-	if len(fail.Validations) > 0 {
-		return fail
-	}
-
-	return nil
+	// Migrations returns a slice of migrations regardless their status. The wanderer
+	// will then be able to process and keep track of each and every one of them.
+	//
+	// Note: The adapter can use the package helper/sqlike to easily read migrations
+	// files from a directory. See package helper/sqlike for more details.
+	Migrations() ([]*Migration, error)
 }

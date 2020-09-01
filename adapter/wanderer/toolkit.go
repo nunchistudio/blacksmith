@@ -1,8 +1,6 @@
 package wanderer
 
 import (
-	"github.com/nunchistudio/blacksmith/adapter/supervisor"
-
 	"github.com/sirupsen/logrus"
 )
 
@@ -19,7 +17,4 @@ type Toolkit struct {
 	// WD is the rooted path name corresponding to the current directory. It can be
 	// used to read a migration file in a directory.
 	WD string
-
-	// Supervisor is the supervisor adapter registered in the Blacksmith application.
-	Supervisor supervisor.Supervisor
 }

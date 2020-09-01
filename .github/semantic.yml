@@ -25,3 +25,4 @@ scopes:
   - "errors"
   - "logger"
   - "sqlike"
+  - "cli"

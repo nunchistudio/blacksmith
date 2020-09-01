@@ -1,10 +1,7 @@
 package pubsub
 
 import (
-	"fmt"
-
 	"github.com/nunchistudio/blacksmith/adapter/store"
-	"github.com/nunchistudio/blacksmith/helper/errors"
 )
 
 /*
@@ -68,55 +65,4 @@ type Subscriber interface {
 
 	// Shutdown flushes pending ack sends and disconnects the Subscriber.
 	Shutdown(*Toolkit) error
-}
-
-/*
-validatePubSub makes sure the pubsub adapter is ready to be used properly by a
-Blacksmith application.
-*/
-func validatePubSub(ps PubSub) error {
-
-	// Create the common error for the validation.
-	fail := &errors.Error{
-		Message:     "pubsub: Failed to load adapter",
-		Validations: []errors.Validation{},
-	}
-
-	// Verify the pubsub ID is not empty.
-	if ps.String() == "" {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "PubSub ID must not be empty",
-			Path:    []string{"PubSub", "unknown", "String()"},
-		})
-
-		return fail
-	}
-
-	// We now can add the adapter name to the error message.
-	fail.Message = fmt.Sprintf("pubsub/%s: Failed to load adapter", ps.String())
-
-	// It is impossible to deal with nil options.
-	if ps.Options() == nil {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "PubSub options must not be nil",
-			Path:    []string{"PubSub", ps.String(), "Options()"},
-		})
-
-		return fail
-	}
-
-	// If the adapter didn't set a topic, use the default one.
-	if ps.Options().Topic == "" {
-		ps.Options().Topic = Defaults.Topic
-	}
-
-	// Avoid cycles.
-	ps.Options().Load = nil
-
-	// Return the error if any occurred.
-	if len(fail.Validations) > 0 {
-		return fail
-	}
-
-	return nil
 }

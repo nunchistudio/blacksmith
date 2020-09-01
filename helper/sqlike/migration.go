@@ -16,9 +16,9 @@ import (
 )
 
 /*
-LoadMigrationFiles loads migrations files from a directory.
+LoadMigrations loads migrations files from a directory.
 */
-func LoadMigrationFiles(directory string) ([]*wanderer.Migration, error) {
+func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 	fail := &errors.Error{
 		Message:     "sqlike: Failed to load migration files",
 		Validations: []errors.Validation{},
@@ -82,7 +82,7 @@ func LoadMigrationFiles(directory string) ([]*wanderer.Migration, error) {
 			direction = "down"
 		} else {
 			fail.Validations = append(fail.Validations, errors.Validation{
-				Message: "Not a proper migration file name",
+				Message: "Not a valid migration file name",
 				Path:    []string{"File", directory, file.Name()},
 			})
 
@@ -123,16 +123,17 @@ func LoadMigrationFiles(directory string) ([]*wanderer.Migration, error) {
 		// up and down files.
 		if _, exists := registered[version]; !exists {
 			registered[version] = &wanderer.Migration{
-				ID:      ksuid.New().String(),
-				Version: version,
-				Run:     map[string]*wanderer.Direction{},
+				ID:         ksuid.New().String(),
+				Version:    version,
+				Directions: map[string]*wanderer.Direction{},
 			}
 		}
 
 		// Add the direction to the migration.
-		registered[version].Run[direction] = &wanderer.Direction{
-			Filename: file.Name(),
-			SHA256:   h.Sum(nil),
+		registered[version].Directions[direction] = &wanderer.Direction{
+			Direction: direction,
+			Filename:  file.Name(),
+			SHA256:    h.Sum(nil),
 		}
 	}
 

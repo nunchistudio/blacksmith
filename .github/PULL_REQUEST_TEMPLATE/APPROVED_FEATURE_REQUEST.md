@@ -9,14 +9,15 @@ about: For approved feature requests only
 
 ## Impacts
 
-*Please describe the impacts on the SDK and its ecosystem.*
+*Please describe the impacts on the ecosystem.*
 
 - **Involved packages:**
   - adapter/store
-  - adapter/scheduler
+  - service/scheduler
 - **Involved adapters:**
   - store/postgres
-  - scheduler/enterprise
+- **Involved services:**
+  - scheduler
 
 ## Changelog
 

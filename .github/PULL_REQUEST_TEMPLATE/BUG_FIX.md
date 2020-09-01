@@ -17,10 +17,11 @@ about: You fixed an unexpected behavior and want to share the fix to the communi
 
 - **Involved packages:**
   - adapter/store
-  - adapter/scheduler
+  - service/scheduler
 - **Involved adapters:**
   - store/postgres
-  - scheduler/enterprise
+- **Involved services:**
+  - scheduler
 
 ## Additional context
 

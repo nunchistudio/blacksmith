@@ -1,36 +1,26 @@
 ---
-title: Starting the server
+title: Starting an instance
 enterprise: false
 ---
 
-# Starting the server
+# Starting an instance
 
-When starting the application, Blacksmith will automatically download, install,
-and update the adapters you passed in the options. This will create a `.blacksmith`
-directory at the top of your application, including the Go plugin for each adapter.
+## Validation
 
-## In development
-
-The best way to run the application is to run the `development` directory. It is
-a `main` package, that loads the data pipeline previously created, and starts the
-server.
-
-It starts both the gateway and scheduler.
+You can compile and validate an application without starting any service by running:
 ```bash
-GO111MODULE=on go run ./development/main.go
+$ blacksmith validate
 ```
 
-## In production
+This will create a `.blacksmith` directory at the top of your application, including
+your application compiled as a Go plugin.
 
-In production, it is higlhy recommended to run the gateway and scheduler on separate
-machines for better security and scalability.
+## Running an instance
 
-Running the gateway:
+Based on what we learned in the previous guide, we can start the desired stack with:
 ```bash
-GO111MODULE=on go run ./gateway/main.go
+$ docker-compose up
 ```
 
-Running the scheduler:
-```bash
-GO111MODULE=on go run ./scheduler/main.go
-```
+Before starting an instance, Blacksmith will automatically compile and validate
+your application.

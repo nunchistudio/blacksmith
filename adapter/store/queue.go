@@ -5,37 +5,47 @@ import (
 )
 
 /*
-StatusAcknowledged is used to mark a job as acknowledged. This is used when
-registering new jobs into the store.
+StatusAcknowledged is used to mark a job status as acknowledged. This is used when
+receiveing new jobs from the gateway into the store.
 */
 var StatusAcknowledged = "acknowledged"
 
 /*
-StatusAwaiting is used to mark a job as awaiting. This is used when a job is
-awaiting to be run.
+StatusAwaiting is used to mark a job status as awaiting. This is used when a job
+is awaiting to be run.
 */
 var StatusAwaiting = "awaiting"
 
 /*
-StatusExecuting is used to mark a job as executing. This is used when a job is
-being executed.
+StatusExecuting is used to mark a job status as executing. This is used when a job
+is being executed.
 */
 var StatusExecuting = "executing"
 
 /*
-StatusSucceeded is used to mark a job as succeeded.
+StatusSucceeded is used to mark a job status as succeeded.
 */
 var StatusSucceeded = "succeeded"
 
 /*
-StatusFailed is used to mark a job as failed.
+StatusFailed is used to mark a job status as failed.
 */
 var StatusFailed = "failed"
 
 /*
-StatusDiscarded is used to mark a job as discarded.
+StatusDiscarded is used to mark a job status as discarded. This is used when a job
+reached the maximum retries possible so it will not try to run again.
 */
 var StatusDiscarded = "discarded"
+
+/*
+StatusUnknown is used to mark a job status as unknown. This is used when the
+scheduler is not aware of a job's status. This only happen when an action does not
+return the job ID(s) in the "Then" channel. There is no way for the scheduler to
+associate the job ID(s) to the error or the actions to execute so it can only marks
+the status as unknown.
+*/
+var StatusUnknown = "unknown"
 
 /*
 Queue keeps track of incoming events, their jobs, and their jobs' transitions.
@@ -88,7 +98,7 @@ type Event struct {
 }
 
 /*
-Job is the definition of a job that needs to run for a given event and a specific
+Job is the definition of a job that needs to run for a given action against a specific
 destination.
 */
 type Job struct {
@@ -145,13 +155,11 @@ type Transition struct {
 	// succeeded.
 	Attempt uint16 `json:"attempt"`
 
-	// StateBefore is the state of the job before running the new transition. See
-	// status details for more info. This shall be nil when receiving the job from
-	// the gateway.
+	// StateBefore is the state of the job before running the new transition. This
+	// shall be nil when receiving the job from the gateway.
 	StateBefore *string `json:"state_before"`
 
-	// StateAfter is the state of the job after running the new transition. See
-	// status details for more info.
+	// StateAfter is the state of the job after running the new transition.
 	StateAfter string `json:"state_after"`
 
 	// Error keeps track of encountered error if any.

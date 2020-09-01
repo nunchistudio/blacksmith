@@ -55,7 +55,7 @@ type WhereEvents struct {
 	// name present in the slice.
 	SourcesIn []string `json:"sources_in,omitempty"`
 
-	// SourcesNotIn makes sure the entries returned by the query does not have any
+	// SourcesNotIn makes sure the entries returned by the query do not have any
 	// of the source name present in the slice.
 	SourcesNotIn []string `json:"sources_notin,omitempty"`
 
@@ -63,7 +63,7 @@ type WhereEvents struct {
 	// event name present in the slice.
 	TriggersIn []string `json:"triggers_in,omitempty"`
 
-	// TriggersNotIn makes sure the entries returned by the query does not have any
+	// TriggersNotIn makes sure the entries returned by the query do not have any
 	// of the source's event name present in the slice.
 	TriggersNotIn []string `json:"triggers_notin,omitempty"`
 
@@ -103,7 +103,7 @@ type WhereJobs struct {
 	// destination name present in the slice.
 	DestinationsIn []string `json:"destinations_in,omitempty"`
 
-	// DestinationsNotIn makes sure the entries returned by the query does not have any
+	// DestinationsNotIn makes sure the entries returned by the query do not have any
 	// of the destination name present in the slice.
 	DestinationsNotIn []string `json:"destinations_notin,omitempty"`
 
@@ -111,7 +111,7 @@ type WhereJobs struct {
 	// event name present in the slice.
 	ActionsIn []string `json:"actions_in,omitempty"`
 
-	// ActionsNotIn makes sure the entries returned by the query does not have any of
+	// ActionsNotIn makes sure the entries returned by the query do not have any of
 	// the destination's event name present in the slice.
 	ActionsNotIn []string `json:"actions_notin,omitempty"`
 
@@ -144,7 +144,7 @@ type WhereTransitions struct {
 	// present in the slice.
 	StatusIn []string `json:"status_in,omitempty"`
 
-	// StatusNotIn makes sure the entries returned by the query does not have any of
+	// StatusNotIn makes sure the entries returned by the query do not have any of
 	// the status present in the slice.
 	StatusNotIn []string `json:"status_notin,omitempty"`
 

@@ -17,18 +17,14 @@ about: You are experiencing an issue with Blacksmith that is different than the 
 
 ## Environment
 
-- **Blacksmith version:** v0.10.2
+- **Blacksmith version:** Blacksmith Enterprise Edition v0.10.2
 - **Involved packages:**
   - adapter/store
-  - adapter/scheduler
+  - service/scheduler
 - **Involved adapters:**
   - store/postgres
-  - scheduler/enterprise
-
-- **Go environment:**
-  ```bash
-
-  ```
+- **Involved services:**
+  - scheduler
 
 ## Additional context
 

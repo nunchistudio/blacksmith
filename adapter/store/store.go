@@ -1,11 +1,5 @@
 package store
 
-import (
-	"fmt"
-
-	"github.com/nunchistudio/blacksmith/helper/errors"
-)
-
 /*
 InterfaceStore is the string representation for the store interface.
 */
@@ -61,50 +55,4 @@ type Store interface {
 	// in params. It also returns meta information about the query, such as pagination
 	// and the constraints really applied to it.
 	FindTransitions(*Toolkit, *WhereEvents) ([]*Transition, *Meta, error)
-}
-
-/*
-validateStore makes sure the store adapter is ready to be used properly by a
-Blacksmith application.
-*/
-func validateStore(s Store) error {
-
-	// Create the common error for the validation.
-	fail := &errors.Error{
-		Message:     "store: Failed to load adapter",
-		Validations: []errors.Validation{},
-	}
-
-	// Verify the store ID is not empty.
-	if s.String() == "" {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "Store ID must not be empty",
-			Path:    []string{"Store", "unknown", "String()"},
-		})
-
-		return fail
-	}
-
-	// We now can add the adapter name to the error message.
-	fail.Message = fmt.Sprintf("store/%s: Failed to load adapter", s.String())
-
-	// It is impossible to deal with nil options.
-	if s.Options() == nil {
-		fail.Validations = append(fail.Validations, errors.Validation{
-			Message: "Store options must not be nil",
-			Path:    []string{"Store", s.String(), "Options()"},
-		})
-
-		return fail
-	}
-
-	// Avoid cycles.
-	s.Options().Load = nil
-
-	// Return the error if any occurred.
-	if len(fail.Validations) > 0 {
-		return fail
-	}
-
-	return nil
 }
