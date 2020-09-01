@@ -17,7 +17,7 @@ containing the `Init()` function required.
 
 Example:
 ```dockerfile
-FROM nunchistudio/blacksmith-enterprise:0.10.2-alpine
+FROM nunchistudio/blacksmith-enterprise:0.11.0-alpine
 
 ADD ./ /app
 
