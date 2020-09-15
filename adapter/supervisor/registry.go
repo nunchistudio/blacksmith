@@ -25,7 +25,7 @@ type Service struct {
 
 	// Name is the version of the service being run at the moment.
 	//
-	// Example: "0.11.0"
+	// Example: "0.12.0"
 	Version string `json:"version"`
 
 	// Address is the address of the service.

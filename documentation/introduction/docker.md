@@ -20,7 +20,7 @@ directory containing the `Init` function required.
 
 One should looks like this:
 ```dockerfile
-FROM nunchistudio/blacksmith-enterprise:0.11.0-alpine
+FROM nunchistudio/blacksmith-enterprise:0.12.0-alpine
 
 ADD ./ /app
 
