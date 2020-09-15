@@ -33,4 +33,12 @@ type Route struct {
 	//
 	// Example: "/webhooks/crm/user"
 	Path string `json:"path"`
+
+	// ShowMeta is used to display (or not) the metadata in the HTTP response,
+	// such as the event's context and jobs details.
+	ShowMeta bool `json:"show_meta"`
+
+	// ShowData is used to display (or not) the data in the HTTP response. It should
+	// be disabled if any sensitive data can be returned, such as private tokens.
+	ShowData bool `json:"show_data"`
 }
