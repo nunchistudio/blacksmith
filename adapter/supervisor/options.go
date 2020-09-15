@@ -19,7 +19,6 @@ will automatically be applied.
 */
 var Defaults = &Options{
 	Context: context.Background(),
-	Enabled: false,
 	Join: &Node{
 		Tags: []string{"blacksmith"},
 		Meta: map[string]string{
@@ -41,13 +40,6 @@ type Options struct {
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
 	Context context.Context `json:"-"`
-
-	// Enabled allows the user to enable the Supervisor interface and this way
-	// leverage the features of distributed system for high-availability and
-	// better fault-tolerance.
-	//
-	// Note: This option will only apply when using Blacksmith Enterprise Edition.
-	Enabled bool `json:"enabled"`
 
 	// Join allows to attach the current instance to a node of the supervisor used.
 	// Each instance shall be attached to a different node for distributed lock

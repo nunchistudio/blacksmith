@@ -21,7 +21,7 @@ type Source interface {
 	Options() *Options
 
 	// Triggers returns a list of triggers the source is able to take care of.
-	// Their respective Marshal function will be automatically be triggered by the
+	// Their respective Extract function will automatically be triggered by the
 	// gateway given their Mode.
 	Triggers() map[string]Trigger
 }

@@ -17,7 +17,6 @@ will automatically be applied.
 */
 var Defaults = &Options{
 	Context: context.Background(),
-	Enabled: false,
 }
 
 /*
@@ -32,10 +31,6 @@ type Options struct {
 	// Context is a free key-value dictionary that will be passed to the underlying
 	// adapter.
 	Context context.Context `json:"-"`
-
-	// Enabled enables the Wanderer interface to manage migrations across sources,
-	// destination, and their triggers and actions.
-	Enabled bool `json:"enabled"`
 
 	// Connection is the connection string to connect to the wanderer.
 	Connection string `json:"-"`

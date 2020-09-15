@@ -12,9 +12,9 @@ This can be used for listening to databases notifications.
 */
 type TriggerCDC interface {
 
-	// Marshal in charge of the "E" in the ETL process: it Extracts the data from
+	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Marshal(*Toolkit, *Notifier)
+	Extract(*Toolkit, *Notifier)
 }
 
 /*
@@ -28,7 +28,7 @@ is ready to exit. Otherwise, the gateway will block until `true` is received on
 
 Example:
 
-  func (t MyTrigger) Marshal(tk *source.Toolkit, notifier *source.Notifier) {
+  func (t MyTrigger) Extract(tk *source.Toolkit, notifier *source.Notifier) {
     for {
       select {
       case <- notification:

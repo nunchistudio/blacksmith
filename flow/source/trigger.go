@@ -23,7 +23,7 @@ type Trigger interface {
 	String() string
 
 	// Mode indicates the trigger mode to use along some options to execute the
-	// source's trigger. The gateway will trigger the Marshal function based on
+	// source's trigger. The gateway will trigger the Extract function based on
 	// these options.
 	Mode() *Mode
 }
@@ -38,8 +38,10 @@ type Mode struct {
 	// - When set to ModeHTTP, the UsingHTTP route is used as the trigger.
 	// - When set to ModeCRON, the UsingCRON schedule is used as the trigger.
 	// - When set to ModeCDC, no trigger is registered since it is an ongoing
-	//   listener. It is up to the Marshal function to include the infinite loop
-	//   and return the payload using the channel passed in params.
+	//   listener. It is up to the Extract function to include the infinite loop
+	//   and send the payload using the channel passed in params.
+	// - When set to ModeSubscriber, the UsingPubSub options is used as the trigger.
+	//   It uses the Pub / Sub adapter configured for the application.
 	Mode string `json:"mode"`
 
 	// UsingHTTP defines the HTTP route the event will react to.
@@ -48,6 +50,9 @@ type Mode struct {
 	// UsingCRON represents a schedule at which an event should run. When returning
 	// nil, the source's schedule is applied.
 	UsingCRON *Schedule `json:"cron,omitempty"`
+
+	// UsingSubscriber defines the Pub / Sub subscription to use.
+	UsingSubscriber *Subscription `json:"subscriber,omitempty"`
 }
 
 /*

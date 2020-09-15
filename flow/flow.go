@@ -12,6 +12,8 @@ type Flow interface {
 	// Options returns the options originally passed to the Options struct.
 	Options() *Options
 
-	// Run returns a slice of actions to run, grouped by their destination name.
-	Run(*Toolkit) destination.Actions
+	// Transform returns a slice of actions to run, grouped by their destination
+	// name. It is in charge of the "T" in the ETL process: it is used to Transform
+	// data from triggers to actions.
+	Transform(*Toolkit) destination.Actions
 }

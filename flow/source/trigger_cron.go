@@ -1,7 +1,7 @@
 package source
 
 /*
-ModeCRON is used to indicate the event is trigeered from a CRON task.
+ModeCRON is used to indicate the event is triggered from a CRON task.
 */
 var ModeCRON = "cron"
 
@@ -10,9 +10,9 @@ TriggerCRON is the interface used for triggers using a CRON logic.
 */
 type TriggerCRON interface {
 
-	// Marshal in charge of the "E" in the ETL process: it Extracts the data from
+	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Marshal(*Toolkit) (*Payload, error)
+	Extract(*Toolkit) (*Payload, error)
 }
 
 /*

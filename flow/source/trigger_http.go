@@ -5,7 +5,7 @@ import (
 )
 
 /*
-ModeHTTP is used to indicate the event is trigeered from a HTTP request.
+ModeHTTP is used to indicate the event is triggered from a HTTP request.
 */
 var ModeHTTP = "http"
 
@@ -14,9 +14,9 @@ TriggerHTTP is the interface used for triggers using a HTTP route.
 */
 type TriggerHTTP interface {
 
-	// Marshal in charge of the "E" in the ETL process: it Extracts the data from
+	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Marshal(*Toolkit, *http.Request) (*Payload, error)
+	Extract(*Toolkit, *http.Request) (*Payload, error)
 }
 
 /*

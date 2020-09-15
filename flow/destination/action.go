@@ -32,8 +32,9 @@ type Action interface {
 	// nil, the parent destination's schedule is applied.
 	Schedule() *Schedule
 
-	// Marshal is in charge of the "T" in the ETL process: it needs to Transform the
-	// data of the pointer receiver originally passed by sources' triggers or
+	// Marshal is in charge of marshalling the received data for the action. It
+	// can be in charge of the "T" in the ETL process if needed: it can Transform
+	// the data of the pointer receiver originally passed by sources' triggers or
 	// destinations' actions. It must return a payload including the context and
 	// data as JSON marshaled values.
 	//
@@ -44,7 +45,7 @@ type Action interface {
 	// Therefore, no jobs will be created and the action will never run.
 	Marshal(*Toolkit) (*Payload, error)
 
-	// Run is in charge of the "L" in the ETL process: it Loads the data to the
+	// Load is in charge of the "L" in the ETL process: it Loads the data to the
 	// destination's endpoint. It is executed either on a schedule basis or in realtime
 	// when applicable.
 	//
@@ -55,7 +56,7 @@ type Action interface {
 	// Then) to run depending on on the status of the current job. Every jobs will
 	// then be processed by the scheduler, respecting the scheduling options of
 	// each one.
-	Run(*Toolkit, *store.Queue, chan<- Then)
+	Load(*Toolkit, *store.Queue, chan<- Then)
 }
 
 /*
