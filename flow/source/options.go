@@ -2,6 +2,7 @@ package source
 
 import (
 	"context"
+	"time"
 )
 
 /*
@@ -24,6 +25,22 @@ type Options struct {
 
 	// Context is a free key-value dictionary that will be passed to the source.
 	Context context.Context `json:"-"`
+
+	// Versions is a collection of supported versions for a source. The value of
+	// each version is its deprecation date. It must be set to an empty time.Time
+	// when the version is still maintained.
+	//
+	// When nil or empty, versioning is disabled for the source.
+	//
+	// Note: Feature only available in Blacksmith Enterprise Edition.
+	Versions map[string]time.Time `json:"versions,omitempty"`
+
+	// DefaultVersion is the default version to apply if the version is not set by
+	// a consumer when executing a trigger. It must be one of the versions supported
+	// in Versions.
+	//
+	// Note: Feature only available in Blacksmith Enterprise Edition.
+	DefaultVersion string `json:"default_version,omitempty"`
 
 	// DefaultSchedule represents a schedule at which a source's trigger should run.
 	// This value can be overridden by the source triggers to benefit a per trigger

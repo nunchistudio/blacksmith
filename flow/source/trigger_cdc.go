@@ -35,7 +35,7 @@ Example:
         tk.Logger.Info("A notification arrived")
         notifier.Payload <- &source.Payload{}
       case <-notifier.IsShuttingDown:
-        tk.Logger.Warn("Gateway instance is shutting down, what to do?")
+        tk.Logger.Warn("gateway/enterprise: Instance is shutting down, what to do?")
         time.Sleep(5 * time.Second)
         notifier.Done <- true
       }

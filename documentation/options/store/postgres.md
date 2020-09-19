@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS blacksmith_store.events (
   id VARCHAR(27) PRIMARY KEY,
   source TEXT NOT NULL,
   trigger TEXT NOT NULL,
+  version TEXT,
   context JSONB,
   data JSONB,
   sent_at TIMESTAMP WITHOUT TIME ZONE,
@@ -74,6 +75,7 @@ CREATE TABLE IF NOT EXISTS blacksmith_store.jobs (
   id VARCHAR(27) PRIMARY KEY,
   destination TEXT NOT NULL,
   action TEXT NOT NULL,
+  version TEXT,
   context JSONB,
   data JSONB,
   parent_job_id VARCHAR(27) REFERENCES blacksmith_store.jobs (id)

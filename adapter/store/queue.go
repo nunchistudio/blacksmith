@@ -72,6 +72,12 @@ type Event struct {
 	// Trigger is the string representation of the incoming or awaiting event.
 	Trigger string `json:"trigger"`
 
+	// Version is the version number of the source used by the event's payload
+	// when triggered.
+	//
+	// Examples: "v1.0", "2020-10-01"
+	Version string `json:"version,omitempty"`
+
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload.
 	Context []byte `json:"context,omitempty"`
@@ -115,6 +121,11 @@ type Job struct {
 	// Action is the string representation of the action to execute against the
 	// destination.
 	Action string `json:"action"`
+
+	// Version is the version number of the destination used by a flow when executed.
+	//
+	// Examples: "v1.0", "2020-10-01"
+	Version string `json:"version,omitempty"`
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload when the destination's event has been marshaled.

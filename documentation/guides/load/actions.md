@@ -38,8 +38,13 @@ MyAction is the payload structure received by an
 action and that will be sent by the scheduler. Blacksmith
 needs 'Context', 'Data', and 'SentAt' keys to ensure
 consistency across events.
+
+The 'Version' key allows schema versioning, following
+best practices for production. More details in the
+next guide.
 */
 type MyAction struct {
+  Version string     `json:"version,omitempty"`
   Context *MyContext `json:"context"`
   Data    *User      `json:"data"`
   SentAt  *time.Time `json:"sent_at"`
@@ -164,6 +169,7 @@ func (mf *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
   return map[string][]destination.Action{
     "my-destination": []destination.Action{
       &mydestination.MyAction{
+        Version: "2020-10-01",
         Data: &mydestination.User{
           FullName: mf.FullName,
           Email:    mf.Email,
@@ -175,3 +181,6 @@ func (mf *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
 ```
 
 Every time the flow is executed, a *job* will be created for the action.
+
+The `Version` key introduced in this last example is optional. It leverages schema
+versioning, following production best practices as explained in the next guide.

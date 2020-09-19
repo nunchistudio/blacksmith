@@ -2,6 +2,7 @@ package destination
 
 import (
 	"context"
+	"time"
 )
 
 /*
@@ -29,6 +30,22 @@ type Options struct {
 
 	// Context is a free key-value dictionary that will be passed to the destination.
 	Context context.Context `json:"-"`
+
+	// Versions is a collection of supported versions for a destination. The value
+	// of each version is its deprecation date. It must be set to an empty time.Time
+	// when the version is still maintained.
+	//
+	// When nil or empty, versioning is disabled for the destination.
+	//
+	// Note: Feature only available in Blacksmith Enterprise Edition.
+	Versions map[string]time.Time `json:"versions,omitempty"`
+
+	// DefaultVersion is the default version to apply if the version is not set by
+	// a flow when executing an action. It must be one of the versions supported in
+	// Versions.
+	//
+	// Note: Feature only available in Blacksmith Enterprise Edition.
+	DefaultVersion string `json:"default_version,omitempty"`
 
 	// DefaultSchedule represents a schedule at which a destination's action should
 	// run. This value can be overridden by the underlying destination if necessary

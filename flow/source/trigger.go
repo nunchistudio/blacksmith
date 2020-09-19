@@ -61,6 +61,12 @@ application to match the fields between sources and destinations.
 */
 type Payload struct {
 
+	// Version is the version number of the source used by the event's payload
+	// when triggered.
+	//
+	// Examples: "v1.0", "2020-10-01"
+	Version string `json:"version,omitempty"`
+
 	// Context is a dictionary of information that provides useful context about an
 	// event. The context should be used inside every events for consistency.
 	//
