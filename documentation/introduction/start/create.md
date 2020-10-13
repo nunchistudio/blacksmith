@@ -76,7 +76,7 @@ module github.com/<org>/<app>
 
 go 1.15
 
-require github.com/nunchistudio/blacksmith v0.12.0
+require github.com/nunchistudio/blacksmith v0.13.0
 
 replace golang.org/x/sys => golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed
 ```

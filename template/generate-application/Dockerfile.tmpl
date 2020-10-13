@@ -1,4 +1,4 @@
-FROM nunchistudio/blacksmith-standard:0.12.0-alpine
+FROM nunchistudio/blacksmith-standard:0.13.0-alpine
 
 ENV NATS_SERVER_URL=nats://host.docker.internal:4222
 ENV POSTGRES_STORE_URL=postgres://{{ .Name }}:{{ .Name }}@host.docker.internal:5432/{{ .Name }}?sslmode=disable

@@ -17,7 +17,7 @@ about: You are experiencing an issue with Blacksmith that is different than the 
 
 ## Environment
 
-- **Blacksmith version:** Blacksmith Enterprise Edition v0.12.0
+- **Blacksmith version:** Blacksmith Enterprise Edition v0.13.0
 - **Involved packages:**
   - adapter/store
   - service/scheduler
