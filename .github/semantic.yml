@@ -15,6 +15,7 @@ types:
 
 scopes:
   - "destination"
+  - "flow"
   - "gateway"
   - "pubsub"
   - "scheduler"

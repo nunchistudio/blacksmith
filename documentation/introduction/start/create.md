@@ -1,12 +1,32 @@
 ---
-title: Creating a project
+title: Creating an application
 enterprise: false
 ---
 
-# Creating a project
+# Creating an application
 
 > As of now, we assume you are familiar with Go and Docker, and already have
-  installed these technologies on your machine.
+  installed these technologies on your machine along the Blacksmith CLI.
+
+## Generate a new application
+
+The best way to create a new Blacksmith application is by using the `generate`
+command of the CLI. The following command generates all the required files in the
+current directory:
+```go
+$ blacksmith generate application --name myapp
+```
+
+If you prefer, you can generate a new application inside a directory with the
+`--path` flag:
+```go
+$ blacksmith generate application --name myapp --path ./myapp
+```
+
+The directory will be created if it does not exist yet.
+
+Now that the application has been created, let's dive into the details to help
+you understand some mechanisms.
 
 ## The `Init` function
 
@@ -58,16 +78,10 @@ go 1.15
 
 require github.com/nunchistudio/blacksmith v0.12.0
 
-replace golang.org/x/sys => golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd
+replace golang.org/x/sys => golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed
 ```
 
 Validate and lock the dependencies by executing the command:
 ```bash
 $ go mod tidy
 ```
-
-## File tree
-
-Inside a dedicated directory, you should now have:
-- `application.go` for initializing the application (the name does not matter);
-- `go.mod` and `go.sum` for managing Go dependencies.

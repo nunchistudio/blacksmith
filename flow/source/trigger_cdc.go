@@ -9,6 +9,10 @@ var ModeCDC = "cdc"
 /*
 TriggerCDC is the interface used for triggers using a Change-Data-Capture logic.
 This can be used for listening to databases notifications.
+
+A new CDC trigger can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate trigger --name <name> --mode cdc [--path <path>] [--migrations]
 */
 type TriggerCDC interface {
 

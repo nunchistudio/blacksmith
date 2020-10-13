@@ -7,10 +7,9 @@ import (
 )
 
 /*
-DefaultLogger is the default logger used in non-production environments when none
-where passed when creating the application.
+Default is the default logger used by Blacksmith applications.
 */
-var DefaultLogger = &logrus.Logger{
+var Default = &logrus.Logger{
 	Out:   os.Stdout,
 	Level: logrus.DebugLevel,
 	Hooks: logrus.LevelHooks{},
@@ -21,13 +20,26 @@ var DefaultLogger = &logrus.Logger{
 }
 
 /*
-DefaultLoggerInProduction is the default logger used in production environments
-when none where passed when creating the application.
+Production is the recommended logger for production environments.
 */
-var DefaultLoggerInProduction = &logrus.Logger{
-	Out:       os.Stderr,
+var Production = &logrus.Logger{
+	Out:       os.Stdout,
 	Level:     logrus.WarnLevel,
 	Hooks:     logrus.LevelHooks{},
 	Formatter: &logrus.JSONFormatter{},
 	ExitFunc:  os.Exit,
+}
+
+/*
+CLI is the logger used by the Blacksmith CLI for managing logs in a non-running
+application.
+*/
+var CLI = &logrus.Logger{
+	Out:   os.Stdout,
+	Level: logrus.InfoLevel,
+	Hooks: logrus.LevelHooks{},
+	Formatter: &logrus.TextFormatter{
+		DisableTimestamp: true,
+	},
+	ExitFunc: os.Exit,
 }

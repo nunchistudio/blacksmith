@@ -7,4 +7,4 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 )
 
-replace golang.org/x/sys => golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd
+replace golang.org/x/sys => golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed

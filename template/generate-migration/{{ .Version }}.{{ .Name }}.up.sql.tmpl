@@ -1,0 +1,8 @@
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .Version }}.{{ .Name }}.up.sql
+
+The following code is the "up" migration for the version "{{ .Version }}".
+Once this migration acknowledged, its filename must never be modified.
+*/
+{{ end -}}

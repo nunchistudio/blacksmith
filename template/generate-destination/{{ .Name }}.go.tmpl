@@ -1,0 +1,119 @@
+package {{ .Package }}
+
+import (
+	{{ if .WithMigrations -}} "database/sql" {{ end }}
+	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	"time"
+
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	"github.com/nunchistudio/blacksmith/flow/destination"
+	{{ if .WithMigrations -}}"github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+)
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }} implements the Blacksmith destination.Destination interface
+for the destination "{{ .Name }}".
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }} struct {
+	options *destination.Options
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+New returns a valid Blacksmith destination.Destination for {{ .CapitalizedName }}.
+*/
+{{ end -}}
+
+func New() destination.Destination {
+	return &{{ .CapitalizedName }}{
+		options: &destination.Options{
+			Versions: map[string]time.Time{
+				"{{ .Version }}": time.Time{},
+			},
+			DefaultVersion: "{{ .Version }}",
+			DefaultSchedule: &destination.Schedule{
+				Realtime:   true,
+				Interval:   "@every 1h",
+				MaxRetries: 50,
+			},
+		},
+	}
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+String returns the string representation of the destination {{ .CapitalizedName }}.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) String() string {
+	return "{{ .Name }}"
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Options returns common destination options for {{ .CapitalizedName }}. They will
+be shared across every actions of this destination, except when overridden.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Options() *destination.Options {
+	return d.options
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Actions return a list of actions the destination {{ .CapitalizedName }} is able
+to handle.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Actions() map[string]destination.Action {
+	return map[string]destination.Action{
+
+		// ...
+
+	}
+}
+
+{{ if .WithMigrations -}}
+{{ if .NoComments -}} {{ else -}}
+/*
+Migrate is the implementation of the wanderer.WithMigrate interface
+for the destination {{ .CapitalizedName }}. It allows the destination, and all
+of its actions, to have a migration logic. This is the function called
+whenever a migration needs to run or to rollback.
+
+It can leverage the sqlike package for running the migration within
+a SQL transaction, using the standard database/sql package.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Migrate(tk *wanderer.Toolkit, migration *wanderer.Migration) error {
+	db, err := sql.Open("<driver>", "<connection>")
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+	return sqlike.RunMigration(db, filepath.Join("relative", "path", "{{ .Name }}", "migrations"), migration)
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Migrations is the implementation of the wanderer.WithMigrations interface
+for the destination {{ .CapitalizedName }}. It allows the destination to have
+migrations registered within this destination.
+
+It can leverage the sqlike package for finding compatible SQL files
+within a directory.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Migrations(tk *wanderer.Toolkit) ([]*wanderer.Migration, error) {
+	return sqlike.LoadMigrations(filepath.Join("relative", "path", "{{ .Name }}", "migrations"))
+}
+{{ end -}}

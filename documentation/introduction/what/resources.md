@@ -18,7 +18,3 @@ cover here.
 
 - [Docker images on GitHub](https://github.com/nunchistudio/blacksmith-docker)
 - [Docker images on Docker Hub](https://hub.docker.com/r/nunchistudio)
-
-## Showcase
-
-- [Demo application on GitHub](https://github.com/nunchistudio/smithy)

@@ -8,7 +8,7 @@ import (
 New returns the appropriate logrus Logger given the environment.
 */
 func New() *logrus.Logger {
-	var log = DefaultLogger
+	var log = Default
 	log.AddHook(&UsingError{})
 
 	return log

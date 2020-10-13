@@ -16,8 +16,6 @@ about: For approved feature requests only
   - service/scheduler
 - **Involved adapters:**
   - store/postgres
-- **Involved services:**
-  - scheduler
 
 ## Changelog
 

@@ -11,39 +11,41 @@ when registering new migrations into the wanderer.
 var StatusAcknowledged = "acknowledged"
 
 /*
-StatusAwaiting is used to mark a migration as awaiting. This is used when a
-migration is awaiting to be run.
+StatusExecutingUp is used to inform a migration is executing its "up" logic.
 */
-var StatusAwaiting = "awaiting"
+var StatusExecutingUp = "executing(up)"
 
 /*
-StatusExecuting is used to mark a migration as executing. This is used when a
-migration is being executed.
+StatusExecutingDown is used to inform a migration is executing its "down" logic.
 */
-var StatusExecuting = "executing"
+var StatusExecutingDown = "executing(down)"
 
 /*
-StatusSucceeded is used to mark a migration as succeeded.
+StatusSucceededUp is used to inform a migration has succeeded its "up" logic.
 */
-var StatusSucceeded = "succeeded"
+var StatusSucceededUp = "succeeded(up)"
 
 /*
-StatusFailed is used to mark a migration as failed.
+StatusSucceededDown is used to inform a migration has succeeded its "down" logic.
+In other words, the migration has successfully been rollbacked.
 */
-var StatusFailed = "failed"
+var StatusSucceededDown = "succeeded(down)"
 
 /*
-StatusRollbacked is used to mark a migration as rollbacked.
+StatusFailedUp is used to inform a migration has failed to run its "up" logic.
 */
-var StatusRollbacked = "rollbacked"
+var StatusFailedUp = "failed(up)"
 
 /*
-validDirections is used to make sure the direction passed is valid.
+StatusFailedDown is used to inform a migration has failed to run its "up" logic.
 */
-var validDirections = map[string]bool{
-	"up":   true,
-	"down": true,
-}
+var StatusFailedDown = "failed(down)"
+
+/*
+StatusDiscarded is used to mark a migration as discarded. If a rollbacked migration
+is marked as discarded it can not be run again.
+*/
+var StatusDiscarded = "discarded"
 
 /*
 Migration contains the details about a specific migration, including its up and
@@ -56,28 +58,35 @@ type Migration struct {
 	// Example: "1UYc8EebLqCAFMOSkbYZdJwNLAJ"
 	ID string `json:"id"`
 
-	// Version is a 14 character string representation of the timestamp when the
-	// migration has been created. The name of the version is of the form
-	// YYYYMMDDHHMMSS, which is UTC timestamp identifying the migration.
+	// Version is the 14 character timestamp when the migration has been created.
+	// The name of the version is of the form YYYYMMDDHHMISS, which is a UTC
+	// timestamp identifying the migration.
 	//
 	// Example: "20060102150405"
-	Version string `json:"version"`
+	Version time.Time `json:"version"`
 
-	// InterfaceKind is the string representation of the interface kind the migration
-	// depends on.
+	// Scope is the string representation of the scope of the migration.
 	//
-	// Examples: "source", "source/trigger", "destination", "destination/action"
-	InterfaceKind string `json:"interface_kind"`
+	// Examples: "source:crm", "source/trigger:crm/register"
+	Scope string `json:"scope"`
 
-	// InterfaceString is the string representation of the interface the migration
-	// depends on.
+	// Name is the name of the migration to run or rollback. This is a part of the
+	// migration's filename.
 	//
-	// Examples: "crm", "crm/register", "postgres", "postgres/register"
-	InterfaceString string `json:"interface_string"`
+	// Example: "add_rbac"
+	Name string `json:"name"`
 
-	// Directions contains the details about the up and down logic to run. Directions
-	// must have two entries, where the key is either "up" or "down".
-	Directions map[string]*Direction `json:"directions"`
+	// Direction indicates which direction is being run at the moment when running
+	// or rolling back migrations. It shall be one of "up" or "down".
+	Direction string `json:"-"`
+
+	// Transitions is an array of the migration's transitions. It is used to keep
+	// track of successes, failures, and errors so the wanderer is aware of the
+	// migration's status.
+	//
+	// Note: It is up to the adapter to only return the latest migration's transition
+	// since this is the only one that really matters in this context.
+	Transitions [1]*Transition `json:"transitions"`
 
 	// CreatedAt is a timestamp of the migration creation date into the wanderer
 	// datastore.
@@ -85,47 +94,7 @@ type Migration struct {
 }
 
 /*
-Direction contains the up or down details for a migration.
-*/
-type Direction struct {
-
-	// ID is the unique identifier of the direction. It must be a valid KSUID.
-	//
-	// Example: "1UYc8EebLqCAFMOSkbYZdJwNLAJ"
-	ID string `json:"id"`
-
-	// Direction indicates if it is a "up" or "down" direction.
-	Direction string `json:"direction"`
-
-	// Filename is the name of the file containing the direction logic to be run.
-	// It must contain the version suffixed by a dot, and the direction prefixed
-	// by a dot.
-	//
-	// Example: "20060102150405.add_rbac.up.sql"
-	Filename string `json:"filename"`
-
-	// SHA256 is the SHA256 byte representation of the file's content. Once the
-	// direction has already been migrated once, the SHA256 shall never be modified.
-	SHA256 []byte `json:"sha256"`
-
-	// Transitions is an array of the direction's transitions. It is used to keep
-	// track of successes, failures, and errors so the wanderer is aware of the
-	// direction's status.
-	//
-	// Note: It is up to the adapter to only return the latest direction's transition
-	// since this is the only one that really matters in this context.
-	Transitions [1]*Transition `json:"transitions"`
-
-	// CreatedAt is a timestamp of the direction creation date into the wanderer
-	// datastore.
-	CreatedAt time.Time `json:"created_at,omitempty"`
-
-	// MigrationID is the ID of the migration related to this direction.
-	MigrationID string `json:"migration_id"`
-}
-
-/*
-Transition is used to keep track of the status of migration's direction.
+Transition is used to keep track of the status of migrations.
 */
 type Transition struct {
 
@@ -134,15 +103,11 @@ type Transition struct {
 	// Example: "1UYc8EebLqCAFMOSkbYZdJwNLAJ"
 	ID string `json:"id"`
 
-	// Attempt represents the number of tentatives that the direction has run
-	// before succeeded.
-	Attempt uint16 `json:"attempt"`
-
-	// StateBefore is the state of the direction before running the migration. This
-	// shall be nil when acknowledging the direction.
+	// StateBefore is the state of the migration before running it. This shall be
+	// nil when acknowledging the migration.
 	StateBefore *string `json:"state_before"`
 
-	// StateAfter is the state of the direction after running the new transition.
+	// StateAfter is the state of the migration after running the new transition.
 	StateAfter string `json:"state_after"`
 
 	// Error keeps track of encountered if any.
@@ -154,7 +119,4 @@ type Transition struct {
 
 	// MigrationID is the ID of the migration that is being run by the transition.
 	MigrationID string `json:"migration_id"`
-
-	// DirectionID is the ID of the direction that is being run by the transition.
-	DirectionID string `json:"direction_id"`
 }

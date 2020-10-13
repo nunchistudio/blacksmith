@@ -1,0 +1,13 @@
+package {{ .Package }}
+
+import (
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	"github.com/nunchistudio/blacksmith/flow/source"
+)
+
+var _ source.Source = &{{ .CapitalizedName }}{}
+
+{{ if .WithMigrations -}}
+var _ wanderer.WithMigrate = &{{ .CapitalizedName }}{}
+var _ wanderer.WithMigrations = &{{ .CapitalizedName }}{}
+{{ end }}

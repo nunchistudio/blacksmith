@@ -6,7 +6,7 @@ import (
 
 /*
 Meta includes information about the query's result returned by the wanderer when
-looking for entries (migrations, directions, or transitions).
+looking for entries (migrations or transitions).
 */
 type Meta struct {
 
@@ -17,10 +17,10 @@ type Meta struct {
 	// Pagination is the pagination details based on the count, offset, and limit.
 	Pagination *Pagination `json:"pagination"`
 
-	// Where is the constraints applied to the query to find migrations, directions,
-	// or transitions. This is included in the meta because the wanderer can set
-	// defaults or override some constraints (such as a maximum limit). This allows
-	// to be aware of the constraints actually applied to the query.
+	// Where is the constraints applied to the query to find migrations or transitions.
+	// This is included in the meta because the wanderer can set defaults or override
+	// some constraints (such as a maximum limit). This allows to be aware of the
+	// constraints actually applied to the query.
 	Where *WhereMigrations `json:"where"`
 }
 
@@ -51,33 +51,28 @@ entries into the wanderer.
 */
 type WhereMigrations struct {
 
-	// InterfaceKindsIn makes sure the entries returned by the query is related to
-	// any of the interface kind present in the slice.
-	InterfaceKindsIn []string `json:"interface_kinds_in,omitempty"`
+	// Name allows to search for a migration by its name.
+	Name string `json:"name,omitempty"`
 
-	// InterfaceKindsNotIn makes sure the entries returned by the query is not related
-	// to any of the interface kind present in the slice.
-	InterfaceKindsNotIn []string `json:"interface_kinds_notin,omitempty"`
+	// VersionBefore makes sure the entries returned by the query are related to a
+	// migration versioned before this instant.
+	VersionedBefore *time.Time `json:"versioned_before,omitempty"`
 
-	// InterfaceStringsIn makes sure the entries returned by the query is related to
-	// any of the interface string present in the slice.
-	InterfaceStringsIn []string `json:"interface_strings_in,omitempty"`
+	// VersionAfter makes sure the entries returned by the query are related to a
+	// migration versioned after this instant.
+	VersionedAfter *time.Time `json:"versioned_after,omitempty"`
 
-	// InterfaceStringsNotIn makes sure the entries returned by the query is not related
-	// to any of the interface string present in the slice.
-	InterfaceStringsNotIn []string `json:"interface_strings_notin,omitempty"`
+	// ScopeIn makes sure the entries returned by the query is related to any of
+	// the scope kind present in the slice.
+	ScopeIn []string `json:"scope_in,omitempty"`
 
-	// CreatedBefore makes sure the entries returned by the query are related to a
-	// migration created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
+	// ScopeNotIn makes sure the entries returned by the query is not related to
+	// any of the scope present in the slice.
+	ScopeNotIn []string `json:"scope_notin,omitempty"`
 
-	// CreatedAfter makes sure the entries returned by the query are related to a
-	// migration created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
-
-	// AndWhereDirections lets you define additional constraints related to the
-	// directions for the entries you are looking for.
-	AndWhereDirections *WhereDirections `json:"directions,omitempty"`
+	// AndWhereTransitions lets you define additional constraints related to the
+	// transitions for the migrations you are looking for.
+	AndWhereTransitions *WhereTransitions `json:"transitions,omitempty"`
 
 	// Offset specifies the number of entries to skip before starting to return entries
 	// from the query.
@@ -89,49 +84,16 @@ type WhereMigrations struct {
 }
 
 /*
-WhereDirections is used to set constraints on directions when looking for entries
+WhereTransitions is used to set constraints on transitions when looking for entries
 into the wanderer.
 */
-type WhereDirections struct {
+type WhereTransitions struct {
 
 	// MigrationID allows to find every entries related to a specific migration ID.
 	//
 	// Note: When set, other constraints are not applied (except parent offset and
 	// limit).
 	MigrationID string `json:"migration_id,omitempty"`
-
-	// DirectionsIn makes sure the entries returned by the query have any of the
-	// direction present in the slice.
-	DirectionsIn []string `json:"directions_in,omitempty"`
-
-	// DirectionsNotIn makes sure the entries returned by the query do not have any
-	// of the direction present in the slice.
-	DirectionsNotIn []string `json:"directions_notin,omitempty"`
-
-	// CreatedBefore makes sure the entries returned by the query are related to a
-	// direction created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
-
-	// CreatedAfter makes sure the entries returned by the query are related to a
-	// direction created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
-
-	// AndWhereTransitions lets you define additional constraints related to the
-	// transitions for the entries you are looking for.
-	AndWhereTransitions *WhereTransitions `json:"transitions,omitempty"`
-}
-
-/*
-WhereTransitions is used to set constraints on transitions when looking for entries
-into the wanderer.
-*/
-type WhereTransitions struct {
-
-	// DirectionID allows to find every entries related to a specific direction ID.
-	//
-	// Note: When set, other constraints are not applied (except parent offset and
-	// limit).
-	DirectionID string `json:"direction_id,omitempty"`
 
 	// StatusIn makes sure the entries returned by the query have any of the status
 	// present in the slice.
@@ -140,14 +102,6 @@ type WhereTransitions struct {
 	// StatusNotIn makes sure the entries returned by the query do not have any of
 	// the status present in the slice.
 	StatusNotIn []string `json:"status_notin,omitempty"`
-
-	// MinAttempts makes sure the entries returned by the query have equal to or greater
-	// than this number of attempts.
-	MinAttempts uint16 `json:"min_attempts,omitempty"`
-
-	// MaxAttempts makes sure the entries returned by the query have equal to or lesser
-	// than this number of attempts.
-	MaxAttempts uint16 `json:"max_attempts,omitempty"`
 
 	// CreatedBefore makes sure the entries returned by the query are related to a
 	// transition created before this instant.

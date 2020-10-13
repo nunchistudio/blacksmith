@@ -10,16 +10,26 @@ The most interesting use case is for capturing changes from databases. This way,
 whenever a condition is met in one of your databases, you can automatically listen
 for the changes and act on it.
 
-## Configuration
+## Create a CDC trigger
 
-To make a source's trigger handles CDC notifications, you first need to specifiy the
-mode to `cdc` in the trigger's options:
-```go
-func (t MyTrigger) Mode() *source.Mode {
-  return &source.Mode{
-    Mode: source.ModeCDC,
-  }
-}
+A CDC trigger can be generated with the `generate` command, as follow:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode cdc
+```
+
+This will generate the recommended files for a CDC trigger, inside the working
+directory.
+
+If you prefer, you can generate the trigger inside a directory with the `--path`
+flag:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode cdc --path ./sources/mysource
+```
+
+If you need to handle data migrations within the trigger, you can also add the
+`--migrations` flag:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode cdc --path ./sources/mysource --migrations
 ```
 
 ## Usage
@@ -37,26 +47,3 @@ trigger is done. To gracefully shutdown like in other trigger modes, the functio
 receives a message on `notifier.IsShuttingDown` and must write to `notifier.Done`
 whenever the function is ready to exit. Otherwise, the gateway will block until
 `true` is received on `notifier.Done`.
-
-## Example
-
-```go
-/*
-Extract runs in its own go routine. It is up to the function body
-to include the forever loop. When set to this mode, the function
-gives you access to channels to either return the payload or an
-error whenever needed.
-*/
-func (t MyTrigger) Extract(tk *source.Toolkit, notifier *source.Notifier) {
-  
-  for {
-    select {
-    // case <-notification:
-    //   notifier.Payload <- &source.Payload{}
-    //   notifier.Error <- &errors.Error{}
-    case <-notifier.IsShuttingDown:
-      notifier.Done <- true
-    }
-  }
-}
-```

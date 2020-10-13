@@ -5,129 +5,58 @@ enterprise: false
 
 # Guides & Tutorials
 
-Following is a cheatsheet of the methods used across sources, flows, and destinations
-for ETL operations.
-
+Following is a cheatsheet of the command lines to generate files in a few seconds.
 Please refer to each section on the left navigation for details and examples.
 
 ## Data Extraction
 
-### From HTTP requests
-
-```go
-func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
-
-  // ...
-  
-  return &source.Payload{
-    Context: ctx,
-    Data:    data,
-    Flows:   []flow.Flow{},
-  }, nil
-}
+Generate a source:
+```bash
+$ blacksmith generate source --name <name> --path ./relative/path --migrations
 ```
 
-### From CRON schedules
-
-```go
-func (t MyTrigger) Extract(tk *source.Toolkit) (*source.Payload, error) {
-
-  // ...
-
-  return &source.Payload{
-    Context: ctx,
-    Data:    data,
-    Flows:   []flow.Flow{},
-  }, nil
-}
+Generate a trigger using HTTP mode:
+```bash
+$ blacksmith generate trigger --name <name> --mode http --path ./relative/path --migrations
 ```
 
-### From CDC notifications
-
-```go
-func (t MyTrigger) Extract(tk *source.Toolkit, notifier *source.Notifier) {
-  
-  for {
-    select {
-    case <-notification:
-
-      // ...
-
-      notifier.Payload <- &source.Payload{
-        Context: ctx,
-        Data:    data,
-        Flows:   []flow.Flow{},
-      }
-    
-    case <-notifier.IsShuttingDown:
-      notifier.Done <- true
-    }
-  }
-}
+Generate a trigger using CRON mode:
+```bash
+$ blacksmith generate trigger --name <name> --mode cron --path ./relative/path --migrations
 ```
 
-### From Pub / Sub messages
+Generate a trigger using CDC mode:
+```bash
+$ blacksmith generate trigger --name <name> --mode cdc --path ./relative/path --migrations
+```
 
-```go
-func (t MyTrigger) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Payload, error) {
-
-  // ...
-  
-  return &source.Payload{
-    Context: ctx,
-    Data:    data,
-    Flows:   []flow.Flow{},
-  }, nil
-}
+Generate a trigger using subscription mode:
+```bash
+$ blacksmith generate trigger --name <name> --mode sub --path ./relative/path --migrations
 ```
 
 ## Data Transformation
 
-```go
-func (f *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
-  return map[string][]destination.Action{
-
-    // ...
-
-  }
-}
+Generate a flow:
+```bash
+$ blacksmith generate flow --name <name> --path ./relative/path
 ```
 
 ## Data Load
 
-### Step 1: Marshal the data
-
-```go
-func (a MyAction) Marshal(tk *destination.Toolkit) (*destination.Payload, error) {
-
-  // ...
-
-  return &destination.Payload{
-    Context: ctx,
-    Data:    data,
-  }, nil
-}
+Generate a destination:
+```bash
+$ blacksmith generate destination --name <name> --path ./relative/path --migrations
 ```
 
-### Step 2: Load the data
+Generate an action:
+```bash
+$ blacksmith generate action --name <name> --path ./relative/path --migrations
+```
 
-```go
-func (a MyAction) Run(tk *destination.Toolkit, queue *store.Queue, then chan<- destination.Then) {
+## Database migrations
 
-  for _, event := range queue.Events {
-    for _, job := range event.Jobs {
-
-      // ...
-
-      then <- destination.Then{
-        Jobs:         []string{job.ID},
-        Error:        nil,
-        ForceDiscard: false
-        OnSucceeded:  []destination.Action{},
-        OnFailed:     []destination.Action{},
-        OnDiscarded:  []destination.Action{},
-      }
-    }
-  }
-}
+Generate a migration:
+```bash
+$ blacksmith generate migration --name <name> --path ./relative/path
 ```

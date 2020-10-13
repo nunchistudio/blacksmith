@@ -1,0 +1,7 @@
+package {{ .Package }}
+
+import (
+	"github.com/nunchistudio/blacksmith/flow"
+)
+
+var _ flow.Flow = &{{ .CapitalizedName }}{}

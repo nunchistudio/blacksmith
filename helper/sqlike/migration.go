@@ -1,13 +1,13 @@
 package sqlike
 
 import (
-	"crypto/sha256"
-	"io"
+	"database/sql"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
-	"strconv"
 	"strings"
+	"time"
 
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/helper/errors"
@@ -30,7 +30,6 @@ func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: err.Error(),
-			Path:    []string{"Directory", directory},
 		})
 
 		return nil, fail
@@ -42,7 +41,7 @@ func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: err.Error(),
-			Path:    []string{"Directory", directory},
+			Path:    strings.Split(directory, "/"),
 		})
 
 		return nil, fail
@@ -55,7 +54,7 @@ func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: err.Error(),
-			Path:    []string{"Directory", directory},
+			Path:    strings.Split(directory, "/"),
 		})
 
 		return nil, fail
@@ -73,67 +72,69 @@ func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 
 	// Go through each migration file.
 	for _, file := range list {
-		var direction string
 
-		// Make sure the migration file is valid. If not, continue to the next one.
-		if strings.Contains(file.Name(), ".up.") {
-			direction = "up"
-		} else if strings.Contains(file.Name(), ".down.") {
-			direction = "down"
-		} else {
-			fail.Validations = append(fail.Validations, errors.Validation{
-				Message: "Not a valid migration file name",
-				Path:    []string{"File", directory, file.Name()},
-			})
-
+		// Make sure we can deal with the file.
+		filename := strings.Split(file.Name(), ".")
+		if len(filename) != 4 {
 			continue
+		} else if len(filename[0]) != 14 {
+			fail.Validations = append(fail.Validations, errors.Validation{
+				Message: "Version number must be formatted like YYYYMMDDHHMISS",
+				Path:    append(strings.Split(directory, "/"), file.Name()),
+			})
+		} else if filename[2] != "up" && filename[2] != "down" {
+			fail.Validations = append(fail.Validations, errors.Validation{
+				Message: "Migration must either be 'up' or 'down'",
+				Path:    append(strings.Split(directory, "/"), file.Name()),
+			})
+		} else if filename[3] != "sql" {
+			fail.Validations = append(fail.Validations, errors.Validation{
+				Message: "File extension not supported (must be '.sql')",
+				Path:    append(strings.Split(directory, "/"), file.Name()),
+			})
 		}
 
 		// Open the desired file so we can then use it.
-		f, err := os.Open(wd + directory + "/" + file.Name())
+		f, err := os.Open(filepath.Join(wd, directory, file.Name()))
 		defer f.Close()
 		if err != nil {
 			fail.Validations = append(fail.Validations, errors.Validation{
 				Message: err.Error(),
-				Path:    []string{"File", directory, file.Name()},
-			})
-		}
-
-		// Store the SHA256. This might be useful for the wanderer adapter to keep
-		// track of file changes.
-		h := sha256.New()
-		if _, err := io.Copy(h, f); err != nil {
-			fail.Validations = append(fail.Validations, errors.Validation{
-				Message: err.Error(),
-				Path:    []string{"File", directory, file.Name()},
+				Path:    append(strings.Split(directory, "/"), file.Name()),
 			})
 		}
 
 		// Retrieve the version name from the file name.
-		version := file.Name()[0:14]
-		_, err = strconv.ParseUint(version, 10, 32)
-		if err != nil || len(version) != 14 {
+		number := file.Name()[0:14]
+		if len(number) != 14 {
 			fail.Validations = append(fail.Validations, errors.Validation{
 				Message: "Failed to parse version name",
-				Path:    []string{"File", directory, file.Name()},
+				Path:    append(strings.Split(directory, "/"), file.Name()),
 			})
 		}
 
-		// Add the migration if it does not already exist. A migration must have a
-		// up and down files.
-		if _, exists := registered[version]; !exists {
-			registered[version] = &wanderer.Migration{
-				ID:         ksuid.New().String(),
-				Version:    version,
-				Directions: map[string]*wanderer.Direction{},
-			}
+		// Convert the stringified number version to a valid Go time.Time.
+		numbert, err := time.Parse("20060102150405", number)
+		if err != nil {
+			fail.Validations = append(fail.Validations, errors.Validation{
+				Message: "Failed to parse version name",
+				Path:    append(strings.Split(directory, "/"), file.Name()),
+			})
 		}
 
-		// Add the direction to the migration.
-		registered[version].Directions[direction] = &wanderer.Direction{
-			Direction: direction,
-			Filename:  file.Name(),
-			SHA256:    h.Sum(nil),
+		// Return now if anything bad happened.
+		if len(fail.Validations) > 0 {
+			return nil, fail
+		}
+
+		// Add the migration if it does not already exist. Retrieve the name from
+		// the file name.
+		if _, exists := registered[number]; !exists {
+			registered[number] = &wanderer.Migration{
+				ID:      ksuid.New().String(),
+				Version: numbert,
+				Name:    filename[1],
+			}
 		}
 	}
 
@@ -142,11 +143,95 @@ func LoadMigrations(directory string) ([]*wanderer.Migration, error) {
 		migrations = append(migrations, r)
 	}
 
-	// No need to keep track of validation errors if it is empty.
-	if len(fail.Validations) == 0 {
-		fail = nil
+	// Finally, return the migration files.
+	return migrations, nil
+}
+
+/*
+RunMigration runs a SQL migration within a transaction using the standard
+database/sql package.
+*/
+func RunMigration(db *sql.DB, directory string, migration *wanderer.Migration) error {
+	fail := &errors.Error{
+		Message:     "sqlike: Failed to run migration file",
+		Validations: []errors.Validation{},
 	}
 
-	// Finally, return the migration files and the error if any occurred.
-	return migrations, fail
+	// Make sure we can get the working directory.
+	// If an error occurred, we can not continue.
+	wd, err := os.Getwd()
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+		})
+
+		return fail
+	}
+
+	// Try to open the file given the migration details.
+	filename := migration.Version.Format("20060102150405") + "." + migration.Name + "." + migration.Direction + ".sql"
+	file, err := os.Open(filepath.Join(wd, directory, filename))
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+			Path:    strings.Split(directory, "/"),
+		})
+
+		return fail
+	}
+
+	// Close the file when done.
+	defer file.Close()
+
+	// Read the file so we will then be able to run its content.
+	buf, err := ioutil.ReadAll(file)
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+			Path:    strings.Split(filepath.Join(wd, directory, filename), "/"),
+		})
+
+		return fail
+	}
+
+	// Save the content of the file.
+	query := string(buf[:])
+
+	// Start the SQL transaction.
+	txn, err := db.Begin()
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+			Path:    strings.Split(filepath.Join(wd, directory, filename), "/"),
+		})
+
+		return fail
+	}
+
+	// Execute the SQL transaction.
+	_, err = txn.Exec(query)
+	if err != nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+			Path:    strings.Split(filepath.Join(wd, directory, filename), "/"),
+		})
+
+		return fail
+	}
+
+	// Finally commit it. If an error occured, rollback it.
+	err = txn.Commit()
+	if err != nil {
+		txn.Rollback()
+
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: err.Error(),
+			Path:    strings.Split(filepath.Join(wd, directory, filename), "/"),
+		})
+
+		return fail
+	}
+
+	// If we made it here then no error occured.
+	return nil
 }

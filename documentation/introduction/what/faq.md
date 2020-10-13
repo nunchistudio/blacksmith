@@ -44,4 +44,4 @@ The Go public APIs are [available on GitHub](https://github.com/nunchistudio/bla
 and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith/blob/master/LICENSE).
 
 The use of Blacksmith is governed by the
-[Blacksmith Terms and Conditions](http://nunchi.studio/legal/terms).
+[Blacksmith Terms and Conditions](http://nunchi.studio/blacksmith/legal/terms).

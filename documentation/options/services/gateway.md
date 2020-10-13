@@ -13,7 +13,7 @@ The gateway is the service extracting every events from sources' triggers.
 
   **Required:** no
 
-  **Defaults:** `:8080`
+  **Defaults:** `:9090`
 
 - `KeyFile`: Path to the SSL / TLS key file.
 
@@ -37,6 +37,11 @@ The gateway is the service extracting every events from sources' triggers.
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/service"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{
@@ -44,7 +49,7 @@ func Init() *blacksmith.Options {
     // ...
 
     Gateway: &service.Options{
-      Address:  ":8080",
+      Address:  ":9090",
       KeyFile:  "cert.key",
       CertFile: "cert.crt",
     },

@@ -32,20 +32,9 @@ type Wanderer interface {
 	// and the constraints really applied to it.
 	FindMigrations(*Toolkit, *WhereMigrations) ([]*Migration, *Meta, error)
 
-	// AddDirections inserts a list of directions into the datastore.
-	AddDirections(*Toolkit, []*Direction) error
-
-	// FindDirection returns a direction given the direction ID passed in params.
-	FindDirection(*Toolkit, string) (*Direction, error)
-
-	// FindDirections returns a list of directions matching the constraints passed
-	// in params. It also returns meta information about the query, such as pagination
-	// and the constraints really applied to it.
-	FindDirections(*Toolkit, *WhereMigrations) ([]*Direction, *Meta, error)
-
 	// AddTransitions inserts a list of transitions into the datastore to update
-	// their related direction status. We insert new transitions instead of updating
-	// the direction itself to keep track of the migration direction's history.
+	// their related migration status. We insert new transitions instead of updating
+	// the migration itself to keep track of the migration's history.
 	AddTransitions(*Toolkit, []*Transition) error
 
 	// FindTransition returns a transition given the transition ID passed in params.
@@ -66,9 +55,13 @@ Note: Feature only available in Blacksmith Enterprise Edition.
 type WithMigrate interface {
 
 	// Migrate is the migration logic for running every migrations for a source or
-	// a destination. The function gives access only to the migrations that need to
+	// a destination. The function gives access only to the migration that need to
 	// run with the appropriate direction "up" or "down".
-	Migrate(*Toolkit, []*Migration) error
+	//
+	// Note: The adapter can use the package helper/sqlike to easily leverage the
+	// standard database/sql and run the migration inside a transaction. See package
+	// helper/sqlike for more details.
+	Migrate(*Toolkit, *Migration) error
 }
 
 /*
@@ -85,5 +78,5 @@ type WithMigrations interface {
 	//
 	// Note: The adapter can use the package helper/sqlike to easily read migrations
 	// files from a directory. See package helper/sqlike for more details.
-	Migrations() ([]*Migration, error)
+	Migrations(*Toolkit) ([]*Migration, error)
 }

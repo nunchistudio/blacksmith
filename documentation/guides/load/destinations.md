@@ -15,76 +15,24 @@ to load.
 A destination is an interface of type
 [`destination.Destination`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Destination).
 
-## Example
+A destination can be generated with the `generate` command, as follow:
+```bash
+$ blacksmith generate destination --name mydestination
+```
 
-```go
-package mydestination
+This will generate the recommended files for a destination, inside the working
+directory.
 
-import (
-  "github.com/nunchistudio/blacksmith/flow/destination"
-)
+If you prefer, you can generate a destination inside a directory with the `--path`
+flag:
+```bash
+$ blacksmith generate destination --name mydestination --path ./destinations/mydestination
+```
 
-/*
-MyDestination implements the destination.Destination interface.
-*/
-type MyDestination struct {
-  options *destination.Options
-}
-
-/*
-New returns a valid Blacksmith destination.
-
-For the purpose of the guide, we will use a destination
-that does not support realtime loading, but with little
-interval. In other words, we do not want events to be
-loaded into this destination in realtime. This can be
-overridden by each action if necessary.
-
-In case of failure, we specify to retry every 2 minutes
-with a limit of 20 retries. After that, if the jobs still
-fail they will be marked as "discarded".
-*/
-func New() destination.Destination {
-  return &MyDestination{
-    options: &destination.Options{
-      DefaultSchedule: &destination.Schedule{
-        Realtime:   false,
-        Interval:   "@every 2m",
-        MaxRetries: 20,
-      },
-    },
-  }
-}
-
-/*
-String returns the string representation of the
-destination.
-*/
-func (d *MyDestination) String() string {
-  return "my-destination"
-}
-
-/*
-Options returns common destination options. They will be
-shared across every actions of this destination, except
-when overridden.
-*/
-func (d *MyDestination) Options() *destination.Options {
-  return d.options
-}
-
-/*
-Actions return a list of actions the destination is able
-to handle. Since we do not have an action yet, return an
-empty map for now.
-*/
-func (d *MyDestination) Actions() map[string]destination.Action {
-  return map[string]destination.Action{
-
-    // ...
-
-  }
-}
+If you need to handle data migrations within the destination, you can also add the
+`--migrations` flag:
+```bash
+$ blacksmith generate destination --name mydestination --path ./destinations/mydestination --migrations
 ```
 
 ### Register a destination
@@ -95,6 +43,13 @@ being used.
 You can add a destination as follow:
 ```go
 package main
+
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/flow/destination"
+
+  "github.com/<org>/<app>/mydestination"
+)
 
 func Init() *blacksmith.Options {
 

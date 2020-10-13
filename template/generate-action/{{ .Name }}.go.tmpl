@@ -1,0 +1,179 @@
+package {{ .Package }}
+
+import (
+	{{ if .WithMigrations -}} "database/sql" {{ end }}
+	"encoding/json"
+	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	"time"
+
+	"github.com/nunchistudio/blacksmith/adapter/store"
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	"github.com/nunchistudio/blacksmith/flow/destination"
+	"github.com/nunchistudio/blacksmith/helper/errors"
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+)
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }} implements the Blacksmith destination.Action interface for
+the action "{{ .Name }}".
+
+It holds the complete payload structure to load into the destination.
+Blacksmith needs "Version", "Context", "Data", and "SentAt" keys to
+ensure consistency across actions.
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }} struct {
+	Version string                      `json:"version,omitempty"`
+	Context *MyContext                  `json:"context"`
+	Data    *{{ .CapitalizedName }}Data `json:"data"`
+	SentAt  *time.Time                  `json:"sent_at,omitempty"`
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }}Data holds the data object sent to the destination.
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }}Data struct {
+
+	// ...
+
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+String returns the string representation of the action {{ .CapitalizedName }}.
+*/
+{{ end -}}
+
+func (a {{ .CapitalizedName }}) String() string {
+	return "{{ .Name }}"
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Schedule allows the action to override the schedule options of
+its destination. By default, do not override.
+*/
+{{ end -}}
+
+func (a {{ .CapitalizedName }}) Schedule() *destination.Schedule {
+	return nil
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Marshal is the function being run when the action receives data into
+the {{ .CapitalizedName }} receiver. Like for a source's trigger, it is also in
+charge of the "T" in the ETL process: it can Transform (if needed) the
+payload to the given data structure.
+*/
+{{ end -}}
+
+func (a {{ .CapitalizedName }}) Marshal(tk *destination.Toolkit) (*destination.Payload, error) {
+
+	{{ if .NoComments -}} {{ else -}}
+	// Try to marshal the data passed directly to the receiver.
+	{{ end -}}
+	data, err := json.Marshal(&a.Data)
+	if err != nil {
+		return nil, err
+	}
+
+	{{ if .NoComments -}} {{ else -}}
+	// Create a payload with the data. Since the 'Context' key is not
+	// set, the one from the event will automatically be applied.
+	{{ end -}}
+	p := &destination.Payload{
+		Version: a.Version,
+		Data:    data,
+		SentAt:  a.SentAt,
+	}
+
+	{{ if .NoComments -}} {{ else -}}
+	// Return the payload with the marshaled data.
+	{{ end -}}
+	return p, nil
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Load is the function being run by the scheduler to load the data into
+the destination. It is in charge of the "L" in the ETL process.
+
+It received a queue of events containing jobs related to this action
+only. When the action if configured for realtime loads, the queue of
+events will only contain a single event. If the action if configured
+for batch loads, this function will run given its schedule and the
+queue will contain every events with their respective jobs to load
+into the destinations.
+
+When jobs failed, the scheduler will automatically retry to load those
+given the schedule of the action, or the one from the destination. In
+this case, the queue of events will contain every failed jobs.
+*/
+{{ end -}}
+
+func (a {{ .CapitalizedName }}) Load(tk *destination.Toolkit, queue *store.Queue, then chan<- destination.Then) {
+
+	{{ if .NoComments -}} {{ else -}}
+	// We can go through every events received from the queue and their
+	// related jobs. The queue can contain one or many events. The jobs
+	// present in the events are specific to this action only.
+	{{ end -}}
+	for _, event := range queue.Events {
+		for _, job := range event.Jobs {
+
+			// ...
+
+			{{ if .NoComments -}} {{ else -}}
+			// Whenever we are ready, we inform the scheduler about the job
+			// status. Here we inform the scheduler for each job individually.
+			//
+			// In this case Error is not nil and we force the job to be
+			// discarded, because it is pointless to retry the job another
+			// time. In other scenarios, the scheduler will mark the job as
+			// "succeeded" if Error is nil, or as "failed" or "discarded" given
+			// the current attempt number of the job and the max retries allowed
+			// by the action.
+			{{ end -}}
+			then <- destination.Then{
+				Jobs: []string{job.ID},
+				Error: &errors.Error{
+					StatusCode: 401,
+					Message:    "Not authorized",
+					Validations: []errors.Validation{
+						{
+							Message: "Email address not authorized",
+							Path:    []string{"request", "payload", "data", "email"},
+						},
+					},
+				},
+				ForceDiscard: true,
+				OnFailed:     []destination.Action{},
+				OnDiscarded:  []destination.Action{},
+				OnSucceeded:  []destination.Action{},
+			}
+		}
+	}
+}
+
+{{ if .WithMigrations -}}
+{{ if .NoComments -}} {{ else -}}
+/*
+Migrations is the implementation of the wanderer.WithMigrations interface
+for the action {{ .CapitalizedName }}. It allows the action to have migrations
+registered within this action.
+
+It can leverage the sqlike package for finding compatible SQL files
+within a directory.
+*/
+{{ end -}}
+
+func (a {{ .CapitalizedName }}) Migrations(tk *wanderer.Toolkit) ([]*wanderer.Migration, error) {
+	return sqlike.LoadMigrations(filepath.Join("relative", "path", "{{ .Name }}", "migrations"))
+}
+{{ end -}}

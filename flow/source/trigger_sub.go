@@ -12,6 +12,10 @@ var ModeSubscriber = "subscriber"
 
 /*
 TriggerSubscriber is the interface used for triggers using a Pub / Sub topic.
+
+A new subscription trigger can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate trigger --name <name> --mode sub [--path <path>] [--migrations]
 */
 type TriggerSubscriber interface {
 
@@ -26,23 +30,22 @@ the pubsub adapter.
 */
 type Subscription struct {
 
-	// Broker is the middleman's name to use for subscribing to messages. It is not
-	// applicable for every adapters. It can be used to group messages per queue.
-	// When applicable, the broker is required.
+	// Topic is the topic name the pubsub adapter will use when it is required
+	// for working in tandem with the subscription name.
 	//
-	// Example for Kafka: "<consumer-group>"
-	// Example for NATS: "<queue>"
+	// Example for Kafka: "<topic>"
+	// Example for NATS: "<subject>"
 	// Example for RabbitMQ: N/A
 	// Example for Amazon Web Services: N/A
 	// Example for Google Cloud: N/A
 	// Example for Microsoft Azure: "<topic>"
-	Broker string `json:"broker,omitempty"`
+	Topic string `json:"topic,omitempty"`
 
-	// Subscription is the name used by the pubsub adapter to subscribe to messages.
-	// Unlike the broker, the ubscription is applicable and required by all adapters.
+	// Subscription is the queue or subscription name the pubsub adapter will use
+	// to subscribe to messages.
 	//
-	// Example for Kafka: "<topic>"
-	// Example for NATS: "<subject>"
+	// Example for Kafka: "<consumer-group>"
+	// Example for NATS: "<queue>"
 	// Example for RabbitMQ: "<queue>"
 	// Example for Amazon Web Services: "arn:aws:sqs:<region>:<id>:<queue>"
 	// Example for Google Cloud: "projects/<project>/subscriptions/<subscription>"

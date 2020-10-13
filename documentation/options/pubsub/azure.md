@@ -9,7 +9,7 @@ The Azure pub / sub adapter allows to connect to Service Bus subscriptions and
 therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](https://nunchi.studio/blacksmith/introduction/how).
+services, [as described in the introduction](/blacksmith/introduction/what/overview).
 
 ## Application configuration
 
@@ -17,6 +17,11 @@ To use Azure as the pub / sub adapter for your application, you must set the `Fr
 key to `azure` in `*pubsub.Options`:
 ```go
 package main
+
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/pubsub"
+)
 
 func Init() *blacksmith.Options {
 
@@ -70,7 +75,7 @@ func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
     Mode: source.ModeSubscriber,
     UsingSubscriber: &source.Subscription{
-      Broker:       "<topic>",
+      Topic:       "<topic>",
       Subscription: "<subscription>",
     },
   }
@@ -82,7 +87,7 @@ Bus. Each event can then be transformed and loaded to destinations.
 
 ### Subscription options
 
-- `Broker`: The Service Bus topic the subscription listens to.
+- `Topic`: The Service Bus topic the subscription listens to.
 
   **Required:** yes
 

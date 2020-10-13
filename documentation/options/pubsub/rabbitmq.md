@@ -9,7 +9,7 @@ The RabbitMQ pub / sub adapter allows to subscribe to queues and therefore extra
 data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](https://nunchi.studio/blacksmith/introduction/how).
+services, [as described in the introduction](/blacksmith/introduction/what/overview).
 
 ## Application configuration
 
@@ -17,6 +17,11 @@ To use RabbitMQ as the pub / sub adapter for your application, you must set the
 `From` key to `rabbitmq` in `*pubsub.Options`:
 ```go
 package main
+
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/pubsub"
+)
 
 func Init() *blacksmith.Options {
 

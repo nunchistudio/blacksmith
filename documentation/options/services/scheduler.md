@@ -13,7 +13,7 @@ The scheduler is the service loading jobs from destinations' triggers.
 
   **Required:** no
 
-  **Defaults:** `:8081`
+  **Defaults:** `:9091`
 
 - `KeyFile`: Path to the SSL / TLS key file.
 
@@ -37,6 +37,11 @@ The scheduler is the service loading jobs from destinations' triggers.
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/service"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{
@@ -44,7 +49,7 @@ func Init() *blacksmith.Options {
     // ...
 
     Scheduler: &service.Options{
-      Address:  ":8081",
+      Address:  ":9091",
       KeyFile:  "cert.key",
       CertFile: "cert.crt",
     },

@@ -20,6 +20,10 @@ type Actions map[string][]Action
 
 /*
 Action represents a specific action to run against a destination.
+
+A new action can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate action --name <name> [--path <path>] [--migrations]
 */
 type Action interface {
 

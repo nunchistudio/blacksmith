@@ -1,0 +1,54 @@
+package {{ .Package }}
+
+import (
+	"github.com/nunchistudio/blacksmith/flow"
+	"github.com/nunchistudio/blacksmith/flow/destination"
+)
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }} implements the Blacksmith flow.Flow interface for
+the flow "{{ .Name }}".
+
+It holds a common data structure used by triggers and then loaded
+to destinations by actions.
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }} struct {
+
+	// ...
+
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Options returns the flow options. When disabled, a flow will not be
+executed. Therefore no jobs will be created.
+*/
+{{ end -}}
+
+func (f *{{ .CapitalizedName }}) Options() *flow.Options {
+	return &flow.Options{
+		Enabled: true,
+	}
+}
+
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Transform is the function being run by when executing the flow from
+triggers. It is up to the flow to transform the data from sources'
+triggers to destinations' actions.
+*/
+{{ end -}}
+
+func (f *{{ .CapitalizedName }}) Transform(tk *flow.Toolkit) destination.Actions {
+	return map[string][]destination.Action{
+		"<my-destination>": []destination.Action{
+
+			// ...
+
+		},
+	}
+}

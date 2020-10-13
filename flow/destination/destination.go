@@ -8,6 +8,10 @@ var InterfaceDestination = "destination"
 /*
 Destination is the interface used to load events to third-party services. Those
 can be of any kind, such as APIs or databases.
+
+A new destination can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate destination --name <name> [--path <path>] [--migrations]
 */
 type Destination interface {
 

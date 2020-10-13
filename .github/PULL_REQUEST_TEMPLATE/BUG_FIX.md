@@ -20,8 +20,6 @@ about: You fixed an unexpected behavior and want to share the fix to the communi
   - service/scheduler
 - **Involved adapters:**
   - store/postgres
-- **Involved services:**
-  - scheduler
 
 ## Additional context
 

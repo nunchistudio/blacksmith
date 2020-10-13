@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: "postgres"
+    image: "postgres:13-alpine"
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_DB: "{{ .Name }}"
+      POSTGRES_USER: "{{ .Name }}"
+      POSTGRES_PASSWORD: "{{ .Name }}"
+    volumes:
+      - "./migrations:/docker-entrypoint-initdb.d"
+      - "{{ .Name }}:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+
+  nats:
+    container_name: "nats"
+    image: "nats:2-alpine"
+    restart: "unless-stopped"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+
+volumes:
+  {{ .Name }}:

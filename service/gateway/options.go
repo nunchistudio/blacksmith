@@ -13,6 +13,6 @@ will automatically be applied.
 */
 var Defaults = &service.Options{
 	Context:    context.Background(),
-	Address:    ":8080",
+	Address:    ":9090",
 	Middleware: rest.Middleware,
 }

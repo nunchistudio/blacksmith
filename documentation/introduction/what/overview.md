@@ -1,23 +1,19 @@
 ---
-title: Why Blacksmith
+title: Introduction to Blacksmith
 enterprise: false
 ---
 
-# Why Blacksmith
+# Introduction to Blacksmith
 
-Blacksmith is a platform specifically designed for data engineering teams. It allows
-you to build reliable data pipelines in a consistent way. Data extraction can happen
-on HTTP requests, CRON schedules, CDC notifications, and Pub / Sub messages. Then,
-jobs can be created against any kind of destination, such as HTTP APIs or data
-warehouses.
-
-The goal of Blacksmith is to address as many pain points as possible engineering
+Blacksmith is a Go framework specifically designed for data engineering teams. It
+allows you to design, build, and deploy reliable data platforms in a consistent
+way. The goal of Blacksmith is to address as many pain points as possible engineering
 teams encounter while working on data solutions.
 
-Any team that is building — or think about building — a complete data pipeline knows
+Any team that is building — or think about building — a complete data platform knows
 the tremendous amount of work needed to properly accomplish this mission. Think
 of Blacksmith as the central piece of your data engineering workflow, leading you
-to save months of customized and professional ETL work.
+to save months of customized and professional work.
 
 ## Features and benefits
 
@@ -25,9 +21,8 @@ The **Blacksmith Standard Edition** addresses the technical complexity of data
 engineering.
 
 - **Architecture reliability:** With a state-of-the-art queue and retry management
-  system, Blacksmith makes it very difficult to lose data between an event and the
-  finale data destination. Also, the services gracefully shutdown without interrupting
-  any active connections and tasks.
+  system, Blacksmith takes all the job management pain away. Also, the services
+  gracefully shutdown without interrupting any active connections and tasks.
 - **Flow automation:** Whenever an event happens or whenever data is received by a
   destination, other events can automatically be triggered using original or transformed
   data. Each event can have its own scheduling options. This let you have a central
@@ -59,16 +54,19 @@ engineering.
     considers a data warehouse as a traditional destination, you can use time-series
     or realtime analytical database as a data warehouse.
   - **Data ownership:** By not relying on a cloud provider for running your data
-    pipeline, you have complete control over your data and manage its entire
+    platform, you have complete control over your data and manage its entire
     lifecycle across your stack.
-- **Simplicity, clarity, performance:** Even though the data pipelines can sometimes
+- **Simplicity, clarity, performance:** Even though the data platforms can sometimes
   be complicated, Blacksmith makes it really easy to understand the desired behavior
   of each event.
 - **Adapter-based:** The flexibility brought by Blacksmith allows organizations to
   use the technologies they already love and adopted in their technical stack.
   Any piece of technology can be plugged into a Blacksmith application.
-- **Cloud-native & multi-cloud:** Data pipelines built on top of Blacksmith can
+- **Cloud-native & multi-cloud:** Data platforms built on top of Blacksmith can
   be deployed on any infrastructure or cloud-provider. There is no lock-in.
+- **Docker-based workflow:** Blacksmith takes environment parity to the next level
+  by leveraging Docker for most of operations. If your application works on your
+  machine, it works on any Docker host with no modification.
 - **Scaffolding:** The Blacksmith CLI lets you generate sources and destinations
   in a simple command-line to extend your application as quickly and easily as
   possible.
@@ -77,7 +75,7 @@ The **Blacksmith Enterprise Edition** addresses the complexity of collaboration
 and governance across multi-team and multi-scope data solutions.
 
 - **REST API:** The Enterprise Edition comes with a REST API so organizations can
-  bring data pipeline information as well as historical and real time events / jobs
+  bring data platform information as well as historical and real time events / jobs
   into third-party applications.
 - **Dashboard:** We created a dashboard serving as a reference implementation of
   the REST API. It allows you to visualize everything that happened or is happening

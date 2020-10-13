@@ -11,10 +11,27 @@ or for a given subscription, it will automatically be received by the `subscribe
 
 This mode is only available if the Pub / Sub adapter is configured for the application.
 
-## Configuration
+## Create a subscription trigger
 
-Please refer to your Pub / Sub adapter configuration page for details about trigger
-options. [Go to configuration reference.](http://localhost:2000/blacksmith/options)
+A subscription trigger can be generated with the `generate` command, as follow:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode sub
+```
+
+This will generate the recommended files for a subscription trigger, inside the working
+directory.
+
+If you prefer, you can generate the trigger inside a directory with the `--path`
+flag:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode sub --path ./sources/mysource
+```
+
+If you need to handle data migrations within the trigger, you can also add the
+`--migrations` flag:
+```bash
+$ blacksmith generate trigger --name mytrigger --mode sub --path ./sources/mysource --migrations
+```
 
 ## Usage
 
@@ -26,30 +43,5 @@ The signature of the `Extract` function is:
 Extract(*source.Toolkit, *pubsub.Message) (*source.Payload, error)
 ```
 
-## Example
-
-```go
-/*
-Extract is the function being executed when a new message is
-received. The function gives access to the message body as well
-as its metadata.
-*/
-func (t MyTrigger) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Payload, error) {
-
-  // Try to unmarshal the data from the message.
-  var m MyTrigger
-  json.Unmarshal(msg.Body, &m)
-  
-  // You now have access to the data.
-  tk.Logger.Info("New message received:", m)
-
-  // Return the context, data, and a collection of flows to execute
-  // against destinations with transformed data. More details about
-  // data flowing in the "Flows" guide.
-  return &source.Payload{
-    Context: ctx,
-    Data:    data,
-    Flows:   []flow.Flow{},
-  }, nil
-}
-```
+Please refer to your Pub / Sub adapter configuration page for details about trigger
+options. [Go to configuration reference.](/blacksmith/options)

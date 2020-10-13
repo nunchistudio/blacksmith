@@ -3,14 +3,15 @@ package logger
 import (
 	"encoding/json"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/nunchistudio/blacksmith/helper/errors"
+
+	"github.com/sirupsen/logrus"
 )
 
 /*
 UsingError respect the logrus Hook interface and allows the Blacksmith logger
-to format errors across adapters and in the application.
+to format errors (using the helper/errors package) across adapters and in the
+application.
 */
 type UsingError struct{}
 

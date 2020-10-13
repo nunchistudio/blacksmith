@@ -23,7 +23,6 @@ will automatically be applied.
 var Defaults = &Options{
 	Context:      context.Background(),
 	Topic:        "blacksmith",
-	Broker:       "blacksmith",
 	Subscription: "blacksmith",
 }
 
@@ -43,7 +42,7 @@ type Options struct {
 	// Connection is the connection string to connect to the pubsub.
 	Connection string `json:"-"`
 
-	// Topic is the topic name the pubsub adapter will use to publish messages to.
+	// Topic is the topic name the pubsub adapter will use to publish messages.
 	//
 	// Example for Kafka: "<topic>"
 	// Example for NATS: "<subject>"
@@ -53,27 +52,14 @@ type Options struct {
 	// Example for Microsoft Azure: "<topic>"
 	Topic string `json:"topic"`
 
-	// Broker is the middleman's name to use for pushing or subscribing to messages.
-	// It is not applicable for every adapters. It can be used to group messages per
-	// queue and therefore help the adapter create a load balancing or ensure a
-	// single active consumer.
+	// Subscription is the queue or subscription name the pubsub adapter will use
+	// to subscribe to messages.
 	//
 	// Example for Kafka: "<consumer-group>"
 	// Example for NATS: "<queue>"
-	// Example for RabbitMQ: N/A
-	// Example for Amazon Web Services: N/A
-	// Example for Google Cloud: N/A
-	// Example for Microsoft Azure: N/A
-	Broker string `json:"broker,omitempty"`
-
-	// Subscription is the subscription name the pubsub adapter will use to subscribe
-	// to messages when different from the topic.
-	//
-	// Example for Kafka: N/A
-	// Example for NATS: N/A
 	// Example for RabbitMQ: "<queue>"
 	// Example for Amazon Web Services: "arn:aws:sqs:<region>:<id>:<queue>"
 	// Example for Google Cloud: "projects/<project>/subscriptions/<subscription>"
 	// Example for Microsoft Azure: "<subscription>"
-	Subscription string `json:"subscription,omitempty"`
+	Subscription string `json:"subscription"`
 }

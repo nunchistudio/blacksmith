@@ -9,7 +9,7 @@ The NATS pub / sub adapter allows to subscribe to topics and therefore extract d
 from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](https://nunchi.studio/blacksmith/introduction/how).
+services, [as described in the introduction](/blacksmith/introduction/what/overview).
 
 ## Application configuration
 
@@ -18,6 +18,11 @@ key to `nats` in `*pubsub.Options`:
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/pubsub"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{
@@ -25,10 +30,10 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:       "nats",
-      Topic:      "blacksmith",
-      Broker:     "blacksmith",
-      Connection: "nats://127.0.0.1:4222",
+      From:         "nats",
+      Topic:        "blacksmith",
+      Subscription: "blacksmith",
+      Connection:   "nats://127.0.0.1:4222",
     },
   }
 
@@ -43,10 +48,10 @@ func Init() *blacksmith.Options {
 
   **Required:** yes
 
-- ` Broker`: The queue used by the scheduler to receive the jobs forwarded by the
-  gateway. We leverage NATS queues to benefit a single active consumer when deploying
-  in distributed environments. This allows to receive messages only once, and
-  therefore do not have duplicated data.
+- ` Subscription`: The queue used by the scheduler to receive the jobs forwarded
+  by the gateway. We leverage NATS queues to benefit a single active consumer
+  when deploying in distributed environments. This allows to receive messages
+  only once, and therefore do not have duplicated data.
 
   **Required:** yes
 
@@ -83,8 +88,8 @@ func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
     Mode: source.ModeSubscriber,
     UsingSubscriber: &source.Subscription{
-      Broker:       "my-queue",
-      Subscription: "my-subject",
+      Topic:        "my-subject",
+      Subscription: "my-queue",
     },
   }
 }
@@ -95,10 +100,10 @@ Each event can then be transformed and loaded to destinations.
 
 ### Subscription options
 
-- `Broker`: The queue group used for receiving messages.
+- `Topic`: The subject to subscribe to for receiving messages.
 
   **Required:** yes
 
-- `Subscription`: The subject to subscribe to for receiving messages.
+- `Subscription`: The queue group used for receiving messages.
 
   **Required:** yes

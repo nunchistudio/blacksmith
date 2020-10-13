@@ -18,57 +18,22 @@ it allows to:
 A flow is of type
 [`flow.Flow`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow?tab=doc#Flow).
 
-## Example
+A flow can be generated with the `generate` command, as follow:
+```bash
+$ blacksmith generate flow --name myflow
+```
 
-```go
-package myflow
+This will generate the recommended files for a flow, inside the working
+directory.
 
-import (
-  "github.com/nunchistudio/blacksmith/flow"
-  "github.com/nunchistudio/blacksmith/flow/destination"
-)
-
-/*
-MyFlow implements the flow.Flow interface.
-*/
-type MyFlow struct {
-  Username  string `json:"username"`
-  FullName  string `json:"full_name"`
-  FirstName string `json:"first_name"`
-  LastName  string `json:"last_name"`
-  Email     string `json:"email"`
-}
-
-/*
-Options returns common flow options. When the flow
-is disabled, the scheduler will not go through it
-and therefore no jobs related to this flow will
-be created.
-*/
-func (f *MyFlow) Options() *flow.Options {
-  return &flow.Options{
-    Enabled: true,
-  }
-}
-
-/*
-Transform is the function called by the scheduler and
-allows to run — independently from one another — a
-collection of actions. Since we do not have a destination
-yet, return an empty map for now.
-*/
-func (f *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
-  return map[string][]destination.Action{
-
-    // ...
-
-  }
-}
+If you prefer, you can generate a flow inside a directory with the `--path` flag:
+```bash
+$ blacksmith generate flow --name myflow --path ./flows/myflow
 ```
 
 ## Call a flow from a trigger
 
-Given the HTTP action we created before, we can now call the flow from the `Payload`
+Given a trigger (here is of mode HTTP), we can now call the flow from the `Payload`
 returned by the `Extract` function like this:
 ```go
 func (mt MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {

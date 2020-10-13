@@ -9,7 +9,7 @@ The Apache Kafka pub / sub adapter allows to subscribe to topics and therefore
 extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](https://nunchi.studio/blacksmith/introduction/how).
+services, [as described in the introduction](/blacksmith/introduction/what/overview).
 
 ## Application configuration
 
@@ -18,6 +18,11 @@ the `From` key to `kafka` in `*pubsub.Options`:
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/pubsub"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{
@@ -25,10 +30,10 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:       "kafka",
-      Topic:      "blacksmith",
-      Broker:     "blacksmith",
-      Connection: "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094",
+      From:         "kafka",
+      Topic:        "blacksmith",
+      Subscription: "blacksmith",
+      Connection:   "127.0.0.1:9092,127.0.0.1:9093,127.0.0.1:9094",
     },
   }
 
@@ -43,9 +48,9 @@ func Init() *blacksmith.Options {
 
   **Required:** yes
 
-- ` Broker`: The consumer group used by the scheduler to receive the jobs forwarded
-  by the gateway. We leverage Kafka consumer groups to benefit a single active
-  consumer when deploying in distributed environments. This allows to receive
+- ` Subscription`: The consumer group used by the scheduler to receive the jobs
+  forwarded by the gateway. We leverage Kafka consumer groups to benefit a single
+  active consumer when deploying in distributed environments. This allows to receive
   messages only once, and therefore do not have duplicated data.
 
   **Required:** yes
@@ -82,8 +87,8 @@ func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
     Mode: source.ModeSubscriber,
     UsingSubscriber: &source.Subscription{
-      Broker:       "my-consumer-group",
-      Subscription: "my-topic",
+      Topic:        "my-topic",
+      Subscription: "my-consumer-group",
     },
   }
 }
@@ -94,10 +99,10 @@ a given topic. Each event can then be transformed and loaded to destinations.
 
 ### Subscription options
 
-- `Broker`: The consumer group used for receiving messages.
+- `Topic`: The topic to subscribe to for receiving messages.
 
   **Required:** yes
 
-- `Subscription`: The topic to subscribe to for receiving messages.
+- `Subscription`: The consumer group used for receiving messages.
 
   **Required:** yes

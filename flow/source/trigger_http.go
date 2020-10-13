@@ -11,6 +11,10 @@ var ModeHTTP = "http"
 
 /*
 TriggerHTTP is the interface used for triggers using a HTTP route.
+
+A new HTTP trigger can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate trigger --name <name> --mode http [--path <path>] [--migrations]
 */
 type TriggerHTTP interface {
 

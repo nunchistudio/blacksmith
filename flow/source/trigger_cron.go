@@ -7,6 +7,10 @@ var ModeCRON = "cron"
 
 /*
 TriggerCRON is the interface used for triggers using a CRON logic.
+
+A new CRON trigger can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate trigger --name <name> --mode cron [--path <path>] [--migrations]
 */
 type TriggerCRON interface {
 

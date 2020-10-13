@@ -36,6 +36,11 @@ Some options can be loaded from the environment variables.
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/wanderer"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{
@@ -52,7 +57,7 @@ func Init() *blacksmith.Options {
 }
 ```
 
-#### SQL migration
+## SQL migration
 
 Before using the adapter, you first need to run the following migration:
 
@@ -61,38 +66,23 @@ CREATE SCHEMA IF NOT EXISTS blacksmith_wanderer;
 
 CREATE TABLE IF NOT EXISTS blacksmith_wanderer.migrations (
   id VARCHAR(27) PRIMARY KEY,
-  version VARCHAR(14) NOT NULL,
-  interface_kind TEXT NOT NULL,
-  interface_string TEXT NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS blacksmith_wanderer.directions (
-  id VARCHAR(27) PRIMARY KEY,
-  filename TEXT NOT NULL,
-  direction TEXT NOT NULL,
-  sha256 BYTEA NOT NULL,
-  migration_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.migrations (id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-    DEFERRABLE INITIALLY DEFERRED,
+  version TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  scope TEXT NOT NULL,
+  name TEXT NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS blacksmith_wanderer.transitions (
   id VARCHAR(27) PRIMARY KEY,
-  attempt INTEGER NOT NULL,
   state_before TEXT,
   state_after TEXT NOT NULL,
   error JSONB,
   migration_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.migrations (id)
     ON UPDATE CASCADE ON DELETE CASCADE
     DEFERRABLE INITIALLY DEFERRED,
-  direction_id VARCHAR(27) NOT NULL REFERENCES blacksmith_wanderer.directions (id)
-    ON UPDATE CASCADE ON DELETE CASCADE
-    DEFERRABLE INITIALLY DEFERRED,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE UNIQUE INDEX migrations_version
-  ON blacksmith_wanderer.migrations (version, interface_kind, interface_string);
+  ON blacksmith_wanderer.migrations (version, scope);
 ```

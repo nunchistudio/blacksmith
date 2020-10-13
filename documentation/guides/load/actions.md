@@ -12,139 +12,23 @@ An action is in charge of loading some data to a destination.
 An action is an interface of type
 [`destination.Action`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Action).
 
-## Example
+An action can be generated with the `generate` command, as follow:
+```bash
+$ blacksmith generate action --name myaction
+```
 
-```go
-package mydestination
+This will generate the recommended files for an action, inside the working
+directory.
 
-import (
-  "encoding/json"
-  "time"
+If you prefer, you can generate an action inside a directory with the `--path` flag:
+```bash
+$ blacksmith generate action --name myaction --path ./destinations/mydestination
+```
 
-  "github.com/nunchistudio/blacksmith/adapter/store"
-  "github.com/nunchistudio/blacksmith/flow/destination"
-)
-
-/*
-User holds information about a user for this destination.
-*/
-type User struct {
-  FullName string `json:"full_name"`
-  Email    string `json:"email"`
-}
-
-/*
-MyAction is the payload structure received by an
-action and that will be sent by the scheduler. Blacksmith
-needs 'Context', 'Data', and 'SentAt' keys to ensure
-consistency across events.
-
-The 'Version' key allows schema versioning, following
-best practices for production. More details in the
-next guide.
-*/
-type MyAction struct {
-  Version string     `json:"version,omitempty"`
-  Context *MyContext `json:"context"`
-  Data    *User      `json:"data"`
-  SentAt  *time.Time `json:"sent_at"`
-}
-
-/*
-String returns the string representation of the action.
-*/
-func (a MyAction) String() string {
-  return "register"
-}
-
-/*
-Schedule allows destinations' actions to override the
-schedule options of their related destination.
-
-For the purpose of the demo, we override the original
-schedule of the destination for a specific one. The data
-will be loaded in realtime with a retry every minute in
-case of failure with a maximum of 3 retries before being
-discarded.
-*/
-func (a MyAction) Schedule() *destination.Schedule {
-  return &destination.Schedule{
-    Realtime:   true,
-    Interval:   "@every 1m",
-    MaxRetries: 3,
-  }
-}
-
-/*
-Marshal is the function being run to transform the data
-received. Like for a source's trigger, it is also in charge
-of the "T" in the ETL process: it can Transform (if needed)
-the payload to the given data structure.
-*/
-func (a MyAction) Marshal(tk *destination.Toolkit) (*destination.Payload, error) {
-
-  // Try to marshal the action data passed directly to the
-  // struct.
-  buff, err := json.Marshal(&a.Data)
-  if err != nil {
-    return nil, err
-  }
-
-  // Create a payload with the data. Since the 'Context' key
-  // is not set, the one from the event will automatically be
-  // applied.
-  p := &destination.Payload{
-    Data: buff,
-  }
-
-  // Return the payload with the marshaled data.
-  return p, nil
-}
-
-/*
-Load is the function being run when the event is loaded into
-the destination by the scheduler. It is in charge of the "L"
-in the ETL process: it Loads the data to the destination.
-
-In this case, since there is an error, the job will fail and
-will be marked as "discarded" after 3 retries. Otherwise, the
-scheduler will consider the job has "succeeded".
-*/
-func (a MyAction) Load(tk *destination.Toolkit, queue *store.Queue, then chan<- destination.Then) {
-
-  // Go through each event of the queue. The queue only contains
-  // the jobs needed to be run against this destination's action.
-  for _, event := range queue.Events {
-    for _, job := range event.Jobs {
-      var u User
-      json.Unmarshal(job.Data, &u)
-
-      // ...
-
-      // Once our business logic to load the data to the
-      // destination is done we can inform the scheduler
-      // about the job status. If Jobs is nil or empty, all
-      // jobs from the queue will be affected by the result.
-      // This allows to either load the data entry-per-entry
-      // or in batch if the destination allows it. If a job ID
-      // is not returned, the scheduler will not be aware of
-      // its status and will mark it as 'unknown'.
-      //
-      // OnSucceeded, OnFailed, and OnDiscarded allows to run
-      // actions from the same destination given the job status.
-      then <- destination.Then{
-        Jobs: []string{job.ID},
-        Error: &errors.Error{
-          StatusCode: 400,
-          Message:    "Internal Server Error",
-        },
-        OnSucceeded: []destination.Action{},
-        OnFailed:    []destination.Action{},
-        OnDiscarded: []destination.Action{},
-      }
-    }
-  }
-}
+If you need to handle data migrations within the action, you can also add the
+`--migrations` flag:
+```bash
+$ blacksmith generate action --name myaction --path ./destinations/mydestination --migrations
 ```
 
 ## Register an action

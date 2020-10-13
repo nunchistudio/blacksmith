@@ -1,0 +1,309 @@
+package {{ .Package }}
+
+import (
+	{{ if .WithMigrations -}} "database/sql" {{ end }}
+	"encoding/json"
+	{{ if (eq .Mode "http") -}} "net/http" {{ end }}
+	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	"time"
+
+	{{ if (eq .Mode "sub") -}} "github.com/nunchistudio/blacksmith/adapter/pubsub" {{ end }}
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	"github.com/nunchistudio/blacksmith/flow"
+	"github.com/nunchistudio/blacksmith/flow/source"
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+)
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }} implements the Blacksmith source.Trigger interface for
+the trigger "{{ .Name }}".
+
+It holds the complete payload structure sent by an event and that will be
+received by the gateway. Blacksmith needs "Version", "Context", "Data", and
+"SentAt" keys to ensure consistency across triggers.
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }} struct {
+	Version string                      `json:"version,omitempty"`
+	Context *MyContext                  `json:"context"`
+	Data    *{{ .CapitalizedName }}Data `json:"data"`
+	SentAt  *time.Time                  `json:"sent_at,omitempty"`
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .CapitalizedName }}Data holds the data sent by an event.
+*/
+{{ end -}}
+
+type {{ .CapitalizedName }}Data struct {
+
+	// ...
+
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+String returns the string representation of the trigger {{ .CapitalizedName }}.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) String() string {
+	return "{{ .Name }}"
+}
+
+{{ if (eq .Mode "http") }}
+{{ if .NoComments -}} {{ else -}}
+/*
+Mode allows to register the trigger as a HTTP route. This means, every
+time a "POST" request is executed against the route "/endpoint", the
+Extract function will run.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeHTTP,
+		UsingHTTP: &source.Route{
+			Methods:  []string{"POST"},
+			Path:     "/endpoint",
+			ShowMeta: true,
+			ShowData: true,
+		},
+	}
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Extract is the function being run when the HTTP route is triggered. It is
+in charge of the "E" in the ETL process: Extract the data from the source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
+
+	{{ if .NoComments -}} {{ else -}}
+	// Create an empty payload, catch unwanted fields, and unmarshal it.
+	// Return an error if any occured.
+	{{ end -}}
+	var payload {{ .CapitalizedName }}
+	decoder := json.NewDecoder(req.Body)
+	decoder.DisallowUnknownFields()
+	err := decoder.Decode(&payload)
+	if err != nil {
+		return nil, err
+	}
+
+	{{ if .NoComments -}} {{ else -}}
+	// Try to marshal the context from the request payload.
+	{{ end -}}
+	ctx, err := json.Marshal(&payload.Context)
+	if err != nil {
+		return nil, err
+	}
+
+	{{ if .NoComments -}} {{ else -}}
+	// Try to marshal the data from the request payload.
+	{{ end -}}
+	data, err := json.Marshal(&payload.Data)
+	if err != nil {
+		return nil, err
+	}
+
+	{{ if .NoComments -}} {{ else -}}
+	// Return the context, data, and a collection of flows to run.
+	{{ end -}}
+	return &source.Payload{
+		Version: payload.Version,
+		Context: ctx,
+		Data:    data,
+		SentAt:  payload.SentAt,
+		Flows: []flow.Flow{
+
+			// ...
+
+		},
+	}, nil
+}
+
+{{ else if (eq .Mode "cron") }}
+{{ if .NoComments -}} {{ else -}}
+/*
+Mode allows to register the trigger as a CRON schedule. This means,
+every time the schedule is met, the Extract function will run.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeCRON,
+		UsingCRON: &source.Schedule{
+			Interval: "@every 1h",
+		},
+	}
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Extract is the function being run when the CRON schedule is met. It is in
+charge of the "E" in the ETL process: Extract the data from the source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit) (*source.Payload, error) {
+
+	// ...
+
+	{{ if .NoComments -}} {{ else -}}
+	// Return the context, data, and a collection of flows to run.
+	{{ end -}}
+	return &source.Payload{
+		Version: version,
+		Context: ctx,
+		Data:    data,
+		SentAt:  sentAt,
+		Flows: []flow.Flow{
+
+			// ...
+
+		},
+	}, nil
+}
+
+{{ else if (eq .Mode "cdc") }}
+{{ if .NoComments -}} {{ else -}}
+/*
+Mode allows to register the trigger as a CDC listener. This means,
+every time a notification is captured, the Extract function will run.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeCDC,
+	}
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Extract is the function being run when a notification is captured. It
+is in charge of the "E" in the ETL process: Extract the data from the
+source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+
+Also, since this mode is asynchronous, there is no way for the gateway
+to know when the trigger is done. To gracefully shutdown, the function
+receives a message on "IsShuttingDown" and must write to "IsDone" whenever
+the function is ready to exit. Otherwise, the gateway will block until
+"true" is received on "IsDone".
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, notifier *source.Notifier) {
+
+	// ...
+
+	for {
+		select {
+		{{ if .NoComments -}} {{ else -}}
+		// case <-notification:
+		// 	notifier.Payload <- &source.Payload{}
+		// 	notifier.Error <- &errors.Error{}
+		{{ end -}}
+
+		case <-notifier.IsShuttingDown:
+			notifier.Done <- true
+		}
+	}
+}
+
+{{ else if (eq .Mode "sub") }}
+{{ if .NoComments -}} {{ else -}}
+/*
+Mode allows to register the trigger as a subscriber in a Pub / Sub
+mechanism. This means, every time a message is received by a subscription,
+the Extract function will run.
+
+This leverages the Pub / Sub adapter configured in the application.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeSubscriber,
+		UsingSubscriber: &source.Subscription{
+			Topic:        "<topic>",
+			Subscription: "<subscription>",
+		},
+	}
+}
+
+{{ if .NoComments -}} {{ else -}}
+/*
+Extract is the function being run when a new message is received in
+the subscriber. It is in charge of the "E" in the ETL process: Extract
+the data from the source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Payload, error) {
+
+	{{ if .NoComments -}} {{ else -}}
+	// Try to unmarshal the data from the message.
+	{{ end -}}
+	var m Trigger
+	json.Unmarshal(msg.Body, &m)
+
+	// ...
+
+	{{ if .NoComments -}} {{ else -}}
+	// Return the context, data, and a collection of flows to run.
+	{{ end -}}
+	return &source.Payload{
+		Version: version,
+		Context: ctx,
+		Data:    data,
+		SentAt:  sentAt,
+		Flows: []flow.Flow{
+
+			// ...
+
+		},
+	}, nil
+}
+{{ end -}}
+
+
+{{ if .WithMigrations -}}
+{{ if .NoComments -}} {{ else -}}
+/*
+Migrations is the implementation of the wanderer.WithMigrations interface
+for the trigger {{ .CapitalizedName }}. It allows the trigger to have migrations
+registered within this trigger.
+
+It can leverage the sqlike package for finding compatible SQL files
+within a directory.
+*/
+{{ end -}}
+
+func (t {{ .CapitalizedName }}) Migrations(tk *wanderer.Toolkit) ([]*wanderer.Migration, error) {
+	return sqlike.LoadMigrations(filepath.Join("relative", "path", "{{ .Name }}", "migrations"))
+}
+{{ end -}}

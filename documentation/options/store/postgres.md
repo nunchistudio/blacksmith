@@ -36,6 +36,11 @@ Some options can be loaded from the environment variables.
 ```go
 package main
 
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/store"
+)
+
 func Init() *blacksmith.Options {
 
   var options = &blacksmith.Options{

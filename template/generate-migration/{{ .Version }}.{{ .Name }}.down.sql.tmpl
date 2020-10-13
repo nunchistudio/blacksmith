@@ -1,0 +1,8 @@
+{{ if .NoComments -}} {{ else -}}
+/*
+{{ .Version }}.{{ .Name }}.down.sql
+
+The following code is the "down" migration for the version "{{ .Version }}".
+Once this migration acknowledged, its filename must never be modified.
+*/
+{{ end -}}

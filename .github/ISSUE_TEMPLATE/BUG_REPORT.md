@@ -23,8 +23,6 @@ about: You are experiencing an issue with Blacksmith that is different than the 
   - service/scheduler
 - **Involved adapters:**
   - store/postgres
-- **Involved services:**
-  - scheduler
 
 ## Additional context
 

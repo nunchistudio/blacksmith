@@ -9,7 +9,7 @@ The AWS pub / sub adapter allows to subscribe to SQS queues and therefore extrac
 data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](https://nunchi.studio/blacksmith/introduction/how).
+services, [as described in the introduction](/blacksmith/introduction/what/overview).
 
 ## Application configuration
 
@@ -17,6 +17,11 @@ To use AWS as the pub / sub adapter for your application, you must set the `From
 key to `aws` in `*pubsub.Options`:
 ```go
 package main
+
+import (
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/pubsub"
+)
 
 func Init() *blacksmith.Options {
 

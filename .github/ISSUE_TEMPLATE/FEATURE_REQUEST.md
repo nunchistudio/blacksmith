@@ -19,10 +19,9 @@ about: You though about a new feature or use case that Blacksmith can cover
 
 - **Involved packages:**
   - adapter/store
-  - adapter/scheduler
+  - service/scheduler
 - **Involved adapters:**
   - store/postgres
-  - scheduler/enterprise
 
 ## Additional context
 

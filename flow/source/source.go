@@ -8,6 +8,10 @@ var InterfaceSource = "source"
 /*
 Source is the interface used to load events from cloud services, databases, or
 any kind of application able to send data or push notifications.
+
+A new source can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate source --name <name> [--path <path>] [--migrations]
 */
 type Source interface {
 

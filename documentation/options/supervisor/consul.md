@@ -84,6 +84,13 @@ connection string) if not found.
 
 package main
 
+import (
+  "context"
+
+  "github.com/nunchistudio/blacksmith"
+  "github.com/nunchistudio/blacksmith/adapter/supervisor"
+)
+
 func Init() *blacksmith.Options {
 
   ctx := context.Background()

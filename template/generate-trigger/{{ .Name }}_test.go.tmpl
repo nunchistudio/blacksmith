@@ -1,0 +1,21 @@
+package {{ .Package }}
+
+import (
+	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	"github.com/nunchistudio/blacksmith/flow/source"
+)
+
+var _ source.Trigger = {{ .CapitalizedName }}{}
+{{ if (eq .Mode "http") -}}
+var _ source.TriggerHTTP = {{ .CapitalizedName }}{}
+{{ else if (eq .Mode "cron") -}}
+var _ source.TriggerCRON = {{ .CapitalizedName }}{}
+{{ else if (eq .Mode "cdc") -}}
+var _ source.TriggerCDC = {{ .CapitalizedName }}{}
+{{ else if (eq .Mode "sub") -}}
+var _ source.TriggerSubscriber = {{ .CapitalizedName }}{}
+{{ end }}
+{{ if .WithMigrations -}}
+var _ wanderer.WithMigrate = {{ .CapitalizedName }}{}
+var _ wanderer.WithMigrations = {{ .CapitalizedName }}{}
+{{ end }}

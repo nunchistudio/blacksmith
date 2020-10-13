@@ -6,6 +6,10 @@ import (
 
 /*
 Flow is a middleman allowing triggers to run actions.
+
+A new flow can be generated using the Blacksmith CLI:
+
+  $ blacksmith generate flow --name <name> [--path <path>]
 */
 type Flow interface {
 

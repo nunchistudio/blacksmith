@@ -94,7 +94,7 @@ matters):
 - the destination's schedule; or
 - the default schedule.
 
-Once configured, the `pubsub` adapter allows realtine message extraction from
+Once configured, the `pubsub` adapter allows realtime message extraction from
 queues / topics / subscriptions.
 
 Available `pubsub` adapters:
@@ -152,6 +152,17 @@ Available `supervisor` adapters:
 - Consul (`consul`)
 
 > The *supervisor* is only available using Blacksmith Enterprise Edition.
+
+## Environment parity with Docker
+
+Blacksmith leverages Docker to ensure environment parity and make deployments as
+smooth as possible. When running a command that needs to build and / or run an
+application, the CLI will communicate with the Docker instance installed on the
+machine, and will run itself inside a container created based on a `Dockerfile`.
+
+By forwarding most of the command of the local Blacksmith CLI to a container, we
+make sure your application can run on different machines, regardless the environment,
+as long as a Docker daemon is running.
 
 ## Conclusion
 
