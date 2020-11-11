@@ -19,32 +19,32 @@ type Options struct {
 
 	// Logger allows you to use a logrus Logger across all Blacksmith adapters and
 	// the application built on top of it.
-	Logger *logrus.Logger
+	Logger *logrus.Logger `json:"-"`
 
 	// Supervisor is the options passed to use the supervisor adapter.
 	// The supervisor is optional.
-	Supervisor *supervisor.Options
+	Supervisor *supervisor.Options `json:"supervisor"`
 
 	// Wanderer is the options passed to use the wanderer adapter.
 	// The wanderer is optional.
-	Wanderer *wanderer.Options
+	Wanderer *wanderer.Options `json:"wanderer"`
 
 	// Store is the options passed to use the store adapter.
-	Store *store.Options
+	Store *store.Options `json:"store"`
 
 	// PubSub is the options passed to use the pubsub adapter.
 	// The pusub is optional.
-	PubSub *pubsub.Options
+	PubSub *pubsub.Options `json:"pubsub"`
 
 	// Gateway is the options passed to use the gateway service.
-	Gateway *service.Options
+	Gateway *service.Options `json:"gateway"`
 
 	// Scheduler is the options passed to use the scheduler service.
-	Scheduler *service.Options
+	Scheduler *service.Options `json:"scheduler"`
 
 	// Sources is a slice of options passed to create sources.
-	Sources []*source.Options
+	Sources []*source.Options `json:"-"`
 
 	// Destinations is a slice of options passed to create destinations.
-	Destinations []*destination.Options
+	Destinations []*destination.Options `json:"-"`
 }

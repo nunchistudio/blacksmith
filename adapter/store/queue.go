@@ -80,11 +80,11 @@ type Event struct {
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload.
-	Context []byte `json:"context,omitempty"`
+	Context []byte `json:"context"`
 
 	// Data is the marshaled representation of the "data" key presents in the event's
 	// payload.
-	Data []byte `json:"data,omitempty"`
+	Data []byte `json:"data"`
 
 	// Jobs is a list of jobs to execute related to the event. A destination should
 	// have at most 1 job per event.
@@ -129,11 +129,11 @@ type Job struct {
 
 	// Context is the marshaled representation of the "context" key presents in the
 	// event's payload when the destination's event has been marshaled.
-	Context []byte `json:"context,omitempty"`
+	Context []byte `json:"context"`
 
 	// Data is the marshaled representation of the "data" key presents in the event's
 	// payload when the destination's event has been marshaled.
-	Data []byte `json:"data,omitempty"`
+	Data []byte `json:"data"`
 
 	// Transitions is an array of the job's transitions. It is used to keep track of
 	// successes, failures, and errors so the store is aware of the job's status.
@@ -174,7 +174,7 @@ type Transition struct {
 	StateAfter string `json:"state_after"`
 
 	// Error keeps track of encountered error if any.
-	Error error `json:"error,omitempty"`
+	Error error `json:"error"`
 
 	// CreatedAt is a timestamp of the transition creation date into the store.
 	CreatedAt time.Time `json:"created_at"`

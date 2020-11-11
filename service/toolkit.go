@@ -4,6 +4,7 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/pubsub"
 	"github.com/nunchistudio/blacksmith/adapter/store"
 	"github.com/nunchistudio/blacksmith/adapter/supervisor"
+	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/flow/destination"
 	"github.com/nunchistudio/blacksmith/flow/source"
 
@@ -35,4 +36,15 @@ type Toolkit struct {
 
 	// Supervisor is the supervisor adapter registered in the Blacksmith application.
 	Supervisor supervisor.Supervisor
+
+	// Wanderer is the wanderer adapter registered in the Blacksmith application.
+	Wanderer wanderer.Wanderer
+
+	// Gateway is the options passed for the gateway service registered in the
+	// Blacksmith application.
+	Gateway *Options
+
+	// Gateway is the options passed for the scheduler service registered in the
+	// Blacksmith application.
+	Scheduler *Options
 }

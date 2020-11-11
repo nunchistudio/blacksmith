@@ -2,6 +2,8 @@ package wanderer
 
 import (
 	"time"
+
+	"github.com/nunchistudio/blacksmith/helper/rest"
 )
 
 /*
@@ -15,7 +17,7 @@ type Meta struct {
 	Count uint16 `json:"count"`
 
 	// Pagination is the pagination details based on the count, offset, and limit.
-	Pagination *Pagination `json:"pagination"`
+	Pagination *rest.Pagination `json:"pagination"`
 
 	// Where is the constraints applied to the query to find migrations or transitions.
 	// This is included in the meta because the wanderer can set defaults or override
@@ -25,34 +27,10 @@ type Meta struct {
 }
 
 /*
-Pagination holds the pagination details when looking for entries into the wanderer.
-*/
-type Pagination struct {
-
-	// Current is the current page.
-	Current uint16 `json:"current"`
-
-	// Previous is the previous page. It will be nil if there is no previous page.
-	Previous *uint16 `json:"previous"`
-
-	// Next is the next page. It will be nil if there is no next page.
-	Next *uint16 `json:"next"`
-
-	// First is the first page. It will always be 1.
-	First uint16 `json:"first"`
-
-	// Last is the last page.
-	Last uint16 `json:"last"`
-}
-
-/*
 WhereMigrations is used to set constraints on the migrations when looking for
 entries into the wanderer.
 */
 type WhereMigrations struct {
-
-	// Name allows to search for a migration by its name.
-	Name string `json:"name,omitempty"`
 
 	// VersionBefore makes sure the entries returned by the query are related to a
 	// migration versioned before this instant.
@@ -76,11 +54,11 @@ type WhereMigrations struct {
 
 	// Offset specifies the number of entries to skip before starting to return entries
 	// from the query.
-	Offset uint16 `json:"offset,omitempty"`
+	Offset uint16 `json:"offset"`
 
 	// Limit specifies the number of entries to return after the offset clause has
 	// been processed.
-	Limit uint16 `json:"limit,omitempty"`
+	Limit uint16 `json:"limit"`
 }
 
 /*
@@ -93,7 +71,7 @@ type WhereTransitions struct {
 	//
 	// Note: When set, other constraints are not applied (except parent offset and
 	// limit).
-	MigrationID string `json:"migration_id,omitempty"`
+	MigrationID string `json:"migration.id,omitempty"`
 
 	// StatusIn makes sure the entries returned by the query have any of the status
 	// present in the slice.
@@ -102,12 +80,4 @@ type WhereTransitions struct {
 	// StatusNotIn makes sure the entries returned by the query do not have any of
 	// the status present in the slice.
 	StatusNotIn []string `json:"status_notin,omitempty"`
-
-	// CreatedBefore makes sure the entries returned by the query are related to a
-	// transition created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
-
-	// CreatedAfter makes sure the entries returned by the query are related to a
-	// transition created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
 }

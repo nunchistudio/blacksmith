@@ -6,7 +6,7 @@ import (
 
 /*
 Middleware is the default HTTP middleware used in the gateway and scheduler
-adapters. It can be replaced by any in-house function to control the
+services. It can be replaced by any in-house function to control the
 request / response lifecycle of your application.
 */
 func Middleware(next http.Handler) http.Handler {

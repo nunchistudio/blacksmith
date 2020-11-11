@@ -27,3 +27,4 @@ scopes:
   - "logger"
   - "sqlike"
   - "cli"
+  - "admin"

@@ -29,6 +29,17 @@ func Init() *blacksmith.Options {
 		Scheduler: &service.Options{
 			// KeyFile:  "server.key",
 			// CertFile: "server.crt",
+			Admin: &service.Admin{
+				Enabled: true,
+				Middleware: func(next http.Handler) http.Handler {
+					return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+						res.Header().Set("Content-Type", "application/json")
+						res.Header().Set("Access-Control-Allow-Origin", "*")
+
+						next.ServeHTTP(res, req)
+					})
+				},
+			},
 		},
 
 		Store: &store.Options{

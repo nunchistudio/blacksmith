@@ -2,6 +2,8 @@ package store
 
 import (
 	"time"
+
+	"github.com/nunchistudio/blacksmith/helper/rest"
 )
 
 /*
@@ -15,34 +17,13 @@ type Meta struct {
 	Count uint16 `json:"count"`
 
 	// Pagination is the pagination details based on the count, offset, and limit.
-	Pagination *Pagination `json:"pagination"`
+	Pagination *rest.Pagination `json:"pagination"`
 
 	// Where is the constraints applied to the query to find events, jobs, or
 	// transitions. This is included in the meta because the store can set defaults
 	// or override some constraints (such as a maximum limit). This allows to be aware
 	// of the constraints actually applied to the query.
 	Where *WhereEvents `json:"where"`
-}
-
-/*
-Pagination holds the pagination details when looking for entries into the store.
-*/
-type Pagination struct {
-
-	// Current is the current page.
-	Current uint16 `json:"current"`
-
-	// Previous is the previous page. It will be nil if there is no previous page.
-	Previous *uint16 `json:"previous"`
-
-	// Next is the next page. It will be nil if there is no next page.
-	Next *uint16 `json:"next"`
-
-	// First is the first page. It will always be 1.
-	First uint16 `json:"first"`
-
-	// Last is the last page.
-	Last uint16 `json:"last"`
 }
 
 /*
@@ -53,27 +34,35 @@ type WhereEvents struct {
 
 	// SourcesIn makes sure the entries returned by the query have any of the source
 	// name present in the slice.
-	SourcesIn []string `json:"sources_in,omitempty"`
+	SourcesIn []string `json:"events.sources_in,omitempty"`
 
 	// SourcesNotIn makes sure the entries returned by the query do not have any
 	// of the source name present in the slice.
-	SourcesNotIn []string `json:"sources_notin,omitempty"`
+	SourcesNotIn []string `json:"events.sources_notin,omitempty"`
 
 	// TriggersIn makes sure the entries returned by the query have any of the source's
-	// event name present in the slice.
-	TriggersIn []string `json:"triggers_in,omitempty"`
+	// trigger name present in the slice.
+	TriggersIn []string `json:"events.triggers_in,omitempty"`
 
 	// TriggersNotIn makes sure the entries returned by the query do not have any
-	// of the source's event name present in the slice.
-	TriggersNotIn []string `json:"triggers_notin,omitempty"`
+	// of the source's trigger name present in the slice.
+	TriggersNotIn []string `json:"events.triggers_notin,omitempty"`
+
+	// VersionsIn makes sure the entries returned by the query have any of the source's
+	// version present in the slice.
+	VersionsIn []string `json:"events.versions_in,omitempty"`
+
+	// VersionsNotIn makes sure the entries returned by the query do not have any
+	// of the source's version present in the slice.
+	VersionsNotIn []string `json:"events.versions_notin,omitempty"`
 
 	// CreatedBefore makes sure the entries returned by the query are related to an
 	// event created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
+	CreatedBefore *time.Time `json:"events.created_before,omitempty"`
 
 	// CreatedAfter makes sure the entries returned by the query are related to an
 	// event created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
+	CreatedAfter *time.Time `json:"events.created_after,omitempty"`
 
 	// AndWhereJobs lets you define additional constraints related to the jobs for
 	// the entries you are looking for.
@@ -81,11 +70,11 @@ type WhereEvents struct {
 
 	// Offset specifies the number of entries to skip before starting to return entries
 	// from the query.
-	Offset uint16 `json:"offset,omitempty"`
+	Offset uint16 `json:"offset"`
 
 	// Limit specifies the number of entries to return after the offset clause has
 	// been processed.
-	Limit uint16 `json:"limit,omitempty"`
+	Limit uint16 `json:"limit"`
 }
 
 /*
@@ -97,31 +86,39 @@ type WhereJobs struct {
 	//
 	// Note: When set, other constraints are not applied (except parent offset and
 	// limit).
-	EventID string `json:"event_id,omitempty"`
+	EventID string `json:"event.id,omitempty"`
 
 	// DestinationsIn makes sure the entries returned by the query have any of the
 	// destination name present in the slice.
-	DestinationsIn []string `json:"destinations_in,omitempty"`
+	DestinationsIn []string `json:"jobs.destinations_in,omitempty"`
 
 	// DestinationsNotIn makes sure the entries returned by the query do not have any
 	// of the destination name present in the slice.
-	DestinationsNotIn []string `json:"destinations_notin,omitempty"`
+	DestinationsNotIn []string `json:"jobs.destinations_notin,omitempty"`
 
 	// ActionsIn makes sure the entries returned by the query have any of the destination's
-	// event name present in the slice.
-	ActionsIn []string `json:"actions_in,omitempty"`
+	// action name present in the slice.
+	ActionsIn []string `json:"jobs.actions_in,omitempty"`
 
 	// ActionsNotIn makes sure the entries returned by the query do not have any of
-	// the destination's event name present in the slice.
-	ActionsNotIn []string `json:"actions_notin,omitempty"`
+	// the destination's action name present in the slice.
+	ActionsNotIn []string `json:"jobs.actions_notin,omitempty"`
+
+	// VersionsIn makes sure the entries returned by the query have any of the
+	// destination's version present in the slice.
+	VersionsIn []string `json:"jobs.versions_in,omitempty"`
+
+	// VersionsNotIn makes sure the entries returned by the query do not have any of
+	// the destination's version present in the slice.
+	VersionsNotIn []string `json:"jobs.versions_notin,omitempty"`
 
 	// CreatedBefore makes sure the entries returned by the query are related to a
 	// job created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
+	CreatedBefore *time.Time `json:"jobs.created_before,omitempty"`
 
 	// CreatedAfter makes sure the entries returned by the query are related to a
 	// job created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
+	CreatedAfter *time.Time `json:"jobs.created_after,omitempty"`
 
 	// AndWhereTransitions lets you define additional constraints related to the
 	// transitions for the entries you are looking for.
@@ -138,29 +135,21 @@ type WhereTransitions struct {
 	//
 	// Note: When set, other constraints are not applied (except parent offset and
 	// limit).
-	JobID string `json:"job_id,omitempty"`
+	JobID string `json:"job.id,omitempty"`
 
 	// StatusIn makes sure the entries returned by the query have any of the status
 	// present in the slice.
-	StatusIn []string `json:"status_in,omitempty"`
+	StatusIn []string `json:"jobs.status_in,omitempty"`
 
 	// StatusNotIn makes sure the entries returned by the query do not have any of
 	// the status present in the slice.
-	StatusNotIn []string `json:"status_notin,omitempty"`
+	StatusNotIn []string `json:"jobs.status_notin,omitempty"`
 
 	// MinAttempts makes sure the entries returned by the query have equal to or greater
 	// than this number of attempts.
-	MinAttempts uint16 `json:"min_attempts,omitempty"`
+	MinAttempts uint16 `json:"jobs.min_attempts,omitempty"`
 
 	// MaxAttempts makes sure the entries returned by the query have equal to or lesser
 	// than this number of attempts.
-	MaxAttempts uint16 `json:"max_attempts,omitempty"`
-
-	// CreatedBefore makes sure the entries returned by the query are related to a
-	// transition created before this instant.
-	CreatedBefore *time.Time `json:"created_before,omitempty"`
-
-	// CreatedAfter makes sure the entries returned by the query are related to a
-	// transition created after this instant.
-	CreatedAfter *time.Time `json:"created_after,omitempty"`
+	MaxAttempts uint16 `json:"jobs.max_attempts,omitempty"`
 }

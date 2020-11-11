@@ -36,4 +36,29 @@ type Options struct {
 	// If a handler is attached, all routes within this handler will be prefixed with
 	// "/api".
 	Attach http.Handler `json:"-"`
+
+	// Admin is the options used to setup the admin REST API and attach it to a
+	// service.
+	//
+	// Reference: https://nunchi.studio/blacksmith/api/introduction/overview
+	//
+	// Note: Feature only available in Blacksmith Enterprise Edition.
+	Admin *Admin `json:"admin"`
+}
+
+/*
+Admin is the options used to setup the admin REST API and attach it to a service.
+
+Reference: https://nunchi.studio/blacksmith/api/introduction/overview
+
+Note: Feature only available in Blacksmith Enterprise Edition.
+*/
+type Admin struct {
+
+	// Enabled allows to enable the REST API and therefore attach it to a service.
+	Enabled bool `json:"enabled"`
+
+	// Middleware is the HTTP middleware chain that will be applied to the admin
+	// API.
+	Middleware func(http.Handler) http.Handler `json:"-"`
 }

@@ -15,4 +15,8 @@ var Defaults = &service.Options{
 	Context:    context.Background(),
 	Address:    ":9091",
 	Middleware: rest.Middleware,
+	Admin: &service.Admin{
+		Enabled:    true,
+		Middleware: rest.Middleware,
+	},
 }
