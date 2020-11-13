@@ -16,13 +16,11 @@ application.
 type UsingError struct{}
 
 /*
-Levels return the level used by the hook. Use for error level and above.
+Levels return the level used by the hook. Use for error level only.
 */
 func (hook *UsingError) Levels() []logrus.Level {
 	return []logrus.Level{
 		logrus.ErrorLevel,
-		logrus.FatalLevel,
-		logrus.PanicLevel,
 	}
 }
 

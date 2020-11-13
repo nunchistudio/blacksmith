@@ -20,17 +20,6 @@ var Default = &logrus.Logger{
 }
 
 /*
-Production is the recommended logger for production environments.
-*/
-var Production = &logrus.Logger{
-	Out:       os.Stdout,
-	Level:     logrus.WarnLevel,
-	Hooks:     logrus.LevelHooks{},
-	Formatter: &logrus.JSONFormatter{},
-	ExitFunc:  os.Exit,
-}
-
-/*
 CLI is the logger used by the Blacksmith CLI for managing logs in a non-running
 application.
 */

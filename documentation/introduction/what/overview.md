@@ -63,11 +63,11 @@ engineering.
   use the technologies they already love and adopted in their technical stack.
   Any piece of technology can be plugged into a Blacksmith application.
 - **Cloud-native & multi-cloud:** Data platforms built on top of Blacksmith can
-  be deployed on any infrastructure or cloud-provider. There is no lock-in.
+  be deployed on any infrastructure or cloud-provider. There is no cloud lock-in.
 - **Docker-based workflow:** Blacksmith takes environment parity to the next level
   by leveraging Docker for most of operations. If your application works on your
   machine, it works on any Docker host with no modification.
-- **Scaffolding:** The Blacksmith CLI lets you generate sources and destinations
+- **Scaffolding:** The Blacksmith CLI lets you generate any kind of resources
   in a simple command-line to extend your application as quickly and easily as
   possible.
 
@@ -77,10 +77,6 @@ and governance across multi-team and multi-scope data solutions.
 - **REST API:** The Enterprise Edition comes with a REST API so organizations can
   bring data platform information as well as historical and real time events / jobs
   into third-party applications.
-- **Dashboard:** We created a dashboard serving as a reference implementation of
-  the REST API. It allows you to visualize everything that happened or is happening
-  in a Blacksmith application. It can be customized in any way needed to fit the
-  requirements of businesses.
 - **Server health-checks:** Instead of using the Standard adapters, organizations
   can switch to the Enterprise Edition of the gateway and scheduler to add these
   services to their service mesh. More details about adapters in the next guide.

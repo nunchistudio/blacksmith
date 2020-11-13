@@ -1,5 +1,9 @@
 package errors
 
+import (
+	"encoding/json"
+)
+
 /*
 Error is used across every Blacksmith packages to normalize error handling. Error
 implements the standard error interface.
@@ -39,14 +43,10 @@ to use Error as a standard error across Blacksmith packages and can be unmarshal
 by the logrus Logger with custom hooks.
 */
 func (err *Error) Error() string {
-	msg := err.Message
 
-	if err.Validations != nil && len(err.Validations) > 0 {
-		msg += "\n"
-		for _, validation := range err.Validations {
-			msg += "  - " + validation.Message + "\n"
-		}
-	}
+	// Marshal the error.
+	b, _ := json.Marshal(err)
 
-	return msg
+	// Return the string representation of the JSON.
+	return string(b)
 }

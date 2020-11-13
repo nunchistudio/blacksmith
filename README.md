@@ -1,5 +1,3 @@
-> This repository only contains the public Go APIs used by the Blacksmith platform.
-
 # Blacksmith
 
 After a few years we decided to crystallize all of our data engineering best
@@ -16,6 +14,18 @@ the tremendous amount of work needed to properly accomplish this mission. Think
 of Blacksmith as the central piece of your data engineering workflow, leading you
 to save months of customized and professional work.
 
+By leveraging Blacksmith, organizations benefit a single source of truth for all
+their data with a unique developer experience:
+```bash
+curl -X GET 'https://example.com/admin/store/jobs' \
+  -d events.sources_in=cms \
+  -d events.sources_in=crm \
+  -d jobs.destinations_in=warehouse \
+  -d jobs.actions_in=register \
+  -d jobs.status_in=discarded \
+  -d offset=0 -d limit=100
+```
+
 ## Product offerings
 
 Blacksmith is available in two editions:
@@ -30,7 +40,7 @@ Blacksmith is available in two editions:
 ## Links
 
 - [Learn more on Nunchi website](https://nunchi.studio/blacksmith)
-- [API reference on Go developer portal](https://pkg.go.dev/github.com/nunchistudio/blacksmith?tab=doc)
+- [Reference on Go developer portal](https://pkg.go.dev/github.com/nunchistudio/blacksmith?tab=doc)
 
 ## Professional services
 

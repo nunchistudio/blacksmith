@@ -47,4 +47,22 @@ type Options struct {
 
 	// Destinations is a slice of options passed to create destinations.
 	Destinations []*destination.Options `json:"-"`
+
+	// License holds the license details for using Blacksmith Enterprise Edition.
+	// This is not necessary for using the Standard Edition.
+	License *License `json:"-"`
+}
+
+/*
+License holds the license details for using Blacksmith Enterprise Edition.
+*/
+type License struct {
+
+	// Key is the subscription license key. This information can also be set using
+	// the environment variable `BLACKSMITH_LICENSE_KEY`
+	Key string `json:"-"`
+
+	// Token is the subscription license token. This information can also be set
+	// using the environment variable `BLACKSMITH_LICENSE_TOKEN`.
+	Token string `json:"-"`
 }
