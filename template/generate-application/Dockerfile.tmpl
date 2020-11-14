@@ -1,9 +1,5 @@
 FROM nunchistudio/blacksmith-standard:0.13.0-alpine
 
-ENV NATS_SERVER_URL=nats://host.docker.internal:4222
-ENV POSTGRES_STORE_URL=postgres://{{ .Name }}:{{ .Name }}@host.docker.internal:5432/{{ .Name }}?sslmode=disable
-ENV POSTGRES_WANDERER_URL=postgres://{{ .Name }}:{{ .Name }}@host.docker.internal:5432/{{ .Name }}?sslmode=disable
-
 ADD ./ /{{ .Name }}
 WORKDIR /{{ .Name }}
 
