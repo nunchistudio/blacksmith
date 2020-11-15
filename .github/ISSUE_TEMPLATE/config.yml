@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: "Open a ticket"
-    url: "https://nunchi.studio/forms/ticket"
+    url: "https://nunchi.studio/blacksmith/forms/ticket"
     about: "If your encounter an issue and have a valid support subscription, you can open a ticket using the appropriate form"

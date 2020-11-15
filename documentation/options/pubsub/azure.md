@@ -75,7 +75,7 @@ func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
     Mode: source.ModeSubscriber,
     UsingSubscriber: &source.Subscription{
-      Topic:       "<topic>",
+      Topic:        "<topic>",
       Subscription: "<subscription>",
     },
   }
