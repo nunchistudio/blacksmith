@@ -47,16 +47,25 @@ type Options struct {
 }
 
 /*
-Admin is the options used to setup the admin REST API and attach it to a service.
-
-Reference: https://nunchi.studio/blacksmith/api/introduction/overview
+Admin is the options used to attach the admin REST API and dashboard to a service.
 
 Note: Feature only available in Blacksmith Enterprise Edition.
 */
 type Admin struct {
 
 	// Enabled allows to enable the REST API and therefore attach it to a service.
+	//
+	// API reference: https://nunchi.studio/blacksmith/api
 	Enabled bool `json:"enabled"`
+
+	// WithDashboard allows to attach the default Blacksmith dashboard to the
+	// service. It can only be set if Enabled is also set to `true`.
+	//
+	// Note: The default dashboard is an open-source "template" repository. It can
+	// be forked and can run on its own server if you do not want to attach it here.
+	//
+	// Repository: https://github.com/nunchistudio/blacksmith-dashboard
+	WithDashboard bool `json:"dashboard"`
 
 	// Middleware is the HTTP middleware chain that will be applied to the admin
 	// API.

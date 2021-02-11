@@ -16,7 +16,8 @@ var Defaults = &service.Options{
 	Address:    ":9091",
 	Middleware: rest.Middleware,
 	Admin: &service.Admin{
-		Enabled:    true,
-		Middleware: rest.Middleware,
+		Enabled:       true,
+		WithDashboard: true,
+		Middleware:    rest.Middleware,
 	},
 }
