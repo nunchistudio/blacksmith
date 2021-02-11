@@ -56,13 +56,13 @@ type WhereEvents struct {
 	// of the source's version present in the slice.
 	VersionsNotIn []string `json:"events.versions_notin,omitempty"`
 
-	// CreatedBefore makes sure the entries returned by the query are related to an
-	// event created before this instant.
-	CreatedBefore *time.Time `json:"events.created_before,omitempty"`
+	// ReceivedBefore makes sure the entries returned by the query are related to
+	// an event received before this instant.
+	ReceivedBefore *time.Time `json:"events.received_before,omitempty"`
 
-	// CreatedAfter makes sure the entries returned by the query are related to an
-	// event created after this instant.
-	CreatedAfter *time.Time `json:"events.created_after,omitempty"`
+	// ReceivedAfter makes sure the entries returned by the query are related to
+	// an event received after this instant.
+	ReceivedAfter *time.Time `json:"events.received_after,omitempty"`
 
 	// AndWhereJobs lets you define additional constraints related to the jobs for
 	// the entries you are looking for.

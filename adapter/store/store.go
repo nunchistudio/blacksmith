@@ -55,4 +55,9 @@ type Store interface {
 	// in params. It also returns meta information about the query, such as pagination
 	// and the constraints really applied to it.
 	FindTransitions(*Toolkit, *WhereEvents) ([]*Transition, *Meta, error)
+
+	// Purge purges every events, jobs, and transitions from the store. It is run
+	// for each purge policies defined in the store's options, at the defined
+	// intervals.
+	Purge(*Toolkit, *WhereEvents) error
 }

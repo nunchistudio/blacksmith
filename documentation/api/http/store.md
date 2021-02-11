@@ -570,3 +570,43 @@ job.
     ]
   }
   ```
+
+## Purge entries from store
+
+This endpoint allows to manually purge the store from specific entries. Because
+this can take some time and there is no data returned, this will asynchronously
+run the task in background and inform the client the request has been accepted.
+
+Even though the request is accepted, this does not serve as a guarantee for the
+task to succeed.
+
+- **Method:** `POST`
+- **Path:** `/admin/store/purge`
+- **Query params:** As listed at the top of this document. The `offset` and `limit`
+  params will not be applied.
+
+- **Example request:**
+  ```bash
+  $ curl --request POST --url 'http://localhost:9091/admin/store/purge' \
+    -d jobs.status_in=discarded \
+    -d events.received_before='2021-02-09 15:23:00'
+  ```
+
+- **Example response**:
+  ```json
+  {
+    "statusCode": 202,
+    "message": "Accepted",
+    "meta": {
+      "where": {
+        "events.received_before": "2021-02-09T15:23:00Z",
+        "jobs": {
+          "transitions": {
+            "jobs.status_in": ["discarded"]
+          }
+        }
+      }
+    }
+  }
+
+  ```
