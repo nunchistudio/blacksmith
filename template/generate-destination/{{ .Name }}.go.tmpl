@@ -1,16 +1,54 @@
 package {{ .Package }}
 
 import (
-	{{ if .WithMigrations -}} "database/sql" {{ end }}
-	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	"context"
+	{{ if (or .WithMigrations (eq .Starter "database/sql")) -}}
+	"database/sql"
+	{{ end -}}
+	{{ if (eq .Starter "net/http") -}}
+	"net/http"
+	{{ end -}}
+	{{ if .WithMigrations -}}
+	"path/filepath"
+	{{ end -}}
 	"time"
 
-	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith/adapter/wanderer"
+	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/destination"
-	{{ if .WithMigrations -}}"github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith/helper/sqlike"
+	{{- end }}
+
+	{{ if (eq .Starter "gocloud/blob") -}}
+	"gocloud.dev/blob"
+	_ "{{ .DriverPath }}"
+	{{ else if (eq .Starter "gocloud/docstore") -}}
+	"gocloud.dev/docstore"
+	_ "{{ .DriverPath }}"
+	{{ else if (eq .Starter "gocloud/pubsub") -}}
+	"gocloud.dev/pubsub"
+	_ "{{ .DriverPath }}"
+	{{- end }}
 )
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
+/*
+Context is a dictionary of information that provides useful context about an
+action. It can shared across actions of a destination, or event between multiple
+destinations.
+
+The context should be used inside every actions for consistency. It must be a
+valid JSON since it will be used by encoding/json Marshal and Unmarshal functions.
+*/
+{{ end -}}
+
+type Context struct {
+	// ...
+}
+
+{{ if not .NoComments -}}
 /*
 {{ .CapitalizedName }} implements the Blacksmith destination.Destination interface
 for the destination "{{ .Name }}".
@@ -19,15 +57,61 @@ for the destination "{{ .Name }}".
 
 type {{ .CapitalizedName }} struct {
 	options *destination.Options
+	context context.Context
+
+	{{ if (eq .Starter "net/http") -}}
+	client *http.Client
+	{{ else if (eq .Starter "database/sql") -}}
+	db *sql.DB
+	{{ else if (eq .Starter "gocloud/blob") -}}
+	bucket *blob.Bucket
+	{{ else if (eq .Starter "gocloud/docstore") -}}
+	collection *docstore.Collection
+	{{ else if (eq .Starter "gocloud/pubsub") -}}
+	topic *pubsub.Topic
+	{{- end }}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 New returns a valid Blacksmith destination.Destination for {{ .CapitalizedName }}.
 */
 {{ end -}}
 
 func New() destination.Destination {
+	ctx := context.Background()
+
+	{{ if (eq .Starter "net/http") -}}
+	{{ if not .NoComments -}}
+	// Create the HTTP client.
+	{{ end -}}
+	client := http.DefaultClient
+
+	{{ else if (eq .Starter "database/sql") -}}
+	{{ if not .NoComments -}}
+	// Create the SQL client.
+	{{ end -}}
+	db, _ := sql.Open("<driver-name>", "<driver-url>")
+
+	{{ else if (eq .Starter "gocloud/blob") -}}
+	{{ if not .NoComments -}}
+	// Open a connection with the bucket.
+	{{ end -}}
+	bucket, _ := blob.OpenBucket(ctx, "<driver-url>")
+
+	{{ else if (eq .Starter "gocloud/docstore") -}}
+	{{ if not .NoComments -}}
+	// Open a connection with the collection.
+	{{ end -}}
+	collection, _ := docstore.OpenCollection(ctx, "<driver-url>")
+
+	{{ else if (eq .Starter "gocloud/pubsub") -}}
+	{{ if not .NoComments -}}
+	// Open a connection with the topic.
+	{{ end -}}
+	topic, _ := pubsub.OpenTopic(ctx, "<driver-url>")
+	{{ end }}
+
 	return &{{ .CapitalizedName }}{
 		options: &destination.Options{
 			Versions: map[string]time.Time{
@@ -40,10 +124,22 @@ func New() destination.Destination {
 				MaxRetries: 50,
 			},
 		},
+		context: ctx,
+		{{ if (eq .Starter "net/http") -}}
+		client: client,
+		{{ else if (eq .Starter "database/sql") -}}
+		db: db,
+		{{ else if (eq .Starter "gocloud/blob") -}}
+		bucket: bucket,
+		{{ else if (eq .Starter "gocloud/docstore") -}}
+		collection: collection,
+		{{ else if (eq .Starter "gocloud/pubsub") -}}
+		topic: topic,
+		{{- end }}
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 String returns the string representation of the destination {{ .CapitalizedName }}.
 */
@@ -53,7 +149,7 @@ func (d *{{ .CapitalizedName }}) String() string {
 	return "{{ .Name }}"
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Options returns common destination options for {{ .CapitalizedName }}. They will
 be shared across every actions of this destination, except when overridden.
@@ -64,7 +160,7 @@ func (d *{{ .CapitalizedName }}) Options() *destination.Options {
 	return d.options
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Actions return a list of actions the destination {{ .CapitalizedName }} is able
 to handle.
@@ -80,7 +176,7 @@ func (d *{{ .CapitalizedName }}) Actions() map[string]destination.Action {
 }
 
 {{ if .WithMigrations -}}
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Migrate is the implementation of the wanderer.WithMigrate interface
 for the destination {{ .CapitalizedName }}. It allows the destination, and all
@@ -93,7 +189,7 @@ a SQL transaction, using the standard database/sql package.
 {{ end -}}
 
 func (d *{{ .CapitalizedName }}) Migrate(tk *wanderer.Toolkit, migration *wanderer.Migration) error {
-	db, err := sql.Open("<driver>", "<connection>")
+	db, err := sql.Open("<driver-name>", "<driver-url>")
 	if err != nil {
 		return err
 	}
@@ -102,11 +198,11 @@ func (d *{{ .CapitalizedName }}) Migrate(tk *wanderer.Toolkit, migration *wander
 	return sqlike.RunMigration(db, filepath.Join("relative", "path", "{{ .Name }}", "migrations"), migration)
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Migrations is the implementation of the wanderer.WithMigrations interface
 for the destination {{ .CapitalizedName }}. It allows the destination to have
-migrations registered within this destination.
+migrations.
 
 It can leverage the sqlike package for finding compatible SQL files
 within a directory.

@@ -1,23 +1,35 @@
 package {{ .Package }}
 
 import (
-	{{ if .WithMigrations -}} "database/sql" {{ end }}
+	{{ if .WithMigrations -}}
+	"database/sql"
+	{{ end -}}
 	"encoding/json"
-	{{ if (eq .Mode "http") -}} "net/http" {{ end }}
-	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	{{ if (eq .Mode "http") -}}
+	"net/http"
+	{{ end -}}
+	{{ if .WithMigrations -}}
+	"path/filepath"
+	{{ end -}}
 	"time"
 
-	{{ if (eq .Mode "sub") -}} "github.com/nunchistudio/blacksmith/adapter/pubsub" {{ end }}
-	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	{{ if (eq .Mode "sub") -}}
+	"github.com/nunchistudio/blacksmith/adapter/pubsub"
+	{{ end -}}
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith/adapter/wanderer"
+	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow"
 	"github.com/nunchistudio/blacksmith/flow/source"
-	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith/helper/sqlike"
+	{{- end }}
 )
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
-{{ .CapitalizedName }} implements the Blacksmith source.Trigger interface for
-the trigger "{{ .Name }}".
+{{ .CapitalizedName }} implements the Blacksmith source.Trigger interface
+for the trigger "{{ .Name }}".
 
 It holds the complete payload structure sent by an event and that will be
 received by the gateway. Blacksmith needs "Version", "Context", "Data", and
@@ -27,24 +39,22 @@ received by the gateway. Blacksmith needs "Version", "Context", "Data", and
 
 type {{ .CapitalizedName }} struct {
 	Version string                      `json:"version,omitempty"`
-	Context *MyContext                  `json:"context"`
+	Context *Context                    `json:"context"`
 	Data    *{{ .CapitalizedName }}Data `json:"data"`
 	SentAt  *time.Time                  `json:"sent_at,omitempty"`
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 {{ .CapitalizedName }}Data holds the data sent by an event.
 */
 {{ end -}}
 
 type {{ .CapitalizedName }}Data struct {
-
 	// ...
-
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 String returns the string representation of the trigger {{ .CapitalizedName }}.
 */
@@ -54,8 +64,8 @@ func (t {{ .CapitalizedName }}) String() string {
 	return "{{ .Name }}"
 }
 
-{{ if (eq .Mode "http") }}
-{{ if .NoComments -}} {{ else -}}
+{{ if (eq .Mode "http") -}}
+{{ if not .NoComments -}}
 /*
 Mode allows to register the trigger as a HTTP route. This means, every
 time a "POST" request is executed against the route "/endpoint", the
@@ -75,7 +85,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Extract is the function being run when the HTTP route is triggered. It is
 in charge of the "E" in the ETL process: Extract the data from the source.
@@ -88,7 +98,7 @@ destinations' actions.
 
 func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Create an empty payload, catch unwanted fields, and unmarshal it.
 	// Return an error if any occured.
 	{{ end -}}
@@ -100,7 +110,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (
 		return nil, err
 	}
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Try to marshal the context from the request payload.
 	{{ end -}}
 	ctx, err := json.Marshal(&payload.Context)
@@ -108,7 +118,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (
 		return nil, err
 	}
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Try to marshal the data from the request payload.
 	{{ end -}}
 	data, err := json.Marshal(&payload.Data)
@@ -116,7 +126,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (
 		return nil, err
 	}
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
 	return &source.Payload{
@@ -132,8 +142,8 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (
 	}, nil
 }
 
-{{ else if (eq .Mode "cron") }}
-{{ if .NoComments -}} {{ else -}}
+{{ else if (eq .Mode "cron") -}}
+{{ if not .NoComments -}}
 /*
 Mode allows to register the trigger as a CRON schedule. This means,
 every time the schedule is met, the Extract function will run.
@@ -149,7 +159,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Extract is the function being run when the CRON schedule is met. It is in
 charge of the "E" in the ETL process: Extract the data from the source.
@@ -164,7 +174,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit) (*source.Payload, er
 
 	// ...
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
 	return &source.Payload{
@@ -180,8 +190,8 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit) (*source.Payload, er
 	}, nil
 }
 
-{{ else if (eq .Mode "cdc") }}
-{{ if .NoComments -}} {{ else -}}
+{{ else if (eq .Mode "cdc") -}}
+{{ if not .NoComments -}}
 /*
 Mode allows to register the trigger as a CDC listener. This means,
 every time a notification is captured, the Extract function will run.
@@ -194,7 +204,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Extract is the function being run when a notification is captured. It
 is in charge of the "E" in the ETL process: Extract the data from the
@@ -218,7 +228,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, notifier *source.Not
 
 	for {
 		select {
-		{{ if .NoComments -}} {{ else -}}
+		{{ if not .NoComments -}}
 		// case <-notification:
 		// 	notifier.Payload <- &source.Payload{}
 		// 	notifier.Error <- &errors.Error{}
@@ -230,8 +240,8 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, notifier *source.Not
 	}
 }
 
-{{ else if (eq .Mode "sub") }}
-{{ if .NoComments -}} {{ else -}}
+{{ else if (eq .Mode "sub") -}}
+{{ if not .NoComments -}}
 /*
 Mode allows to register the trigger as a subscriber in a Pub / Sub
 mechanism. This means, every time a message is received by a subscription,
@@ -251,7 +261,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Extract is the function being run when a new message is received in
 the subscriber. It is in charge of the "E" in the ETL process: Extract
@@ -265,15 +275,15 @@ destinations' actions.
 
 func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Payload, error) {
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Try to unmarshal the data from the message.
 	{{ end -}}
-	var m Trigger
+	var m {{ .CapitalizedName }}
 	json.Unmarshal(msg.Body, &m)
 
 	// ...
 
-	{{ if .NoComments -}} {{ else -}}
+	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
 	return &source.Payload{
@@ -290,13 +300,12 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message)
 }
 {{ end -}}
 
-
 {{ if .WithMigrations -}}
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Migrations is the implementation of the wanderer.WithMigrations interface
 for the trigger {{ .CapitalizedName }}. It allows the trigger to have migrations
-registered within this trigger.
+isolated from its parent source.
 
 It can leverage the sqlike package for finding compatible SQL files
 within a directory.

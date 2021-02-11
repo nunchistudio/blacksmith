@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/nunchistudio/blacksmith"
 	"github.com/nunchistudio/blacksmith/adapter/pubsub"
 	"github.com/nunchistudio/blacksmith/adapter/store"
@@ -10,7 +12,7 @@ import (
 	"github.com/nunchistudio/blacksmith/service"
 )
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments }}
 /*
 Init is the entrypoint of {{ .CapitalizedName }}, a Blacksmith application.
 It is used by the Blacksmith CLI to load the application as a
@@ -30,7 +32,8 @@ func Init() *blacksmith.Options {
 			// KeyFile:  "server.key",
 			// CertFile: "server.crt",
 			Admin: &service.Admin{
-				Enabled: true,
+				Enabled:       true,
+				WithDashboard: true,
 				Middleware: func(next http.Handler) http.Handler {
 					return http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 						res.Header().Set("Content-Type", "application/json")
@@ -44,7 +47,30 @@ func Init() *blacksmith.Options {
 
 		Store: &store.Options{
 			From: "postgres",
+			PurgePolicies: []*store.PurgePolicy{
+				{
+					Interval: "@weekly",
+					WhereEvents: &store.WhereEvents{
+						AndWhereJobs: &store.WhereJobs{
+							AndWhereTransitions: &store.WhereTransitions{
+								StatusIn: []string{
+									store.StatusSucceeded,
+								},
+								StatusNotIn: []string{
+									store.StatusAcknowledged,
+									store.StatusAwaiting,
+									store.StatusExecuting,
+									store.StatusFailed,
+									store.StatusDiscarded,
+									store.StatusUnknown,
+								},
+							},
+						},
+					},
+				},
+			},
 		},
+
 		Wanderer: &wanderer.Options{
 			From: "postgres",
 		},

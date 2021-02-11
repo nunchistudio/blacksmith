@@ -5,7 +5,7 @@ import (
 	"github.com/nunchistudio/blacksmith/flow/destination"
 )
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 {{ .CapitalizedName }} implements the Blacksmith flow.Flow interface for
 the flow "{{ .Name }}".
@@ -16,12 +16,10 @@ to destinations by actions.
 {{ end -}}
 
 type {{ .CapitalizedName }} struct {
-
 	// ...
-
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Options returns the flow options. When disabled, a flow will not be
 executed. Therefore no jobs will be created.
@@ -34,8 +32,7 @@ func (f *{{ .CapitalizedName }}) Options() *flow.Options {
 	}
 }
 
-
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Transform is the function being run by when executing the flow from
 triggers. It is up to the flow to transform the data from sources'
@@ -46,9 +43,7 @@ triggers to destinations' actions.
 func (f *{{ .CapitalizedName }}) Transform(tk *flow.Toolkit) destination.Actions {
 	return map[string][]destination.Action{
 		"<my-destination>": []destination.Action{
-
 			// ...
-
 		},
 	}
 }

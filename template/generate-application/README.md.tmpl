@@ -2,15 +2,32 @@
 
 {{ .CapitalizedName }} is a [Blacksmith](https://nunchi.studio/blacksmith) application.
 
-Blacksmith is a Go framework specifically designed for data engineering teams. It
-allows you to design, build, and deploy reliable data platforms in a consistent
-way. The goal of Blacksmith is to address as many pain points as possible engineering
-teams encounter while working on data solutions.
+Blacksmith is a programmable low-code ecosystem, offering a complete and consistent
+data engineering solution. It allows you to design, build, and deploy reliable data
+engineering platforms in a consistent way. The goal of Blacksmith is to address as
+many pain points as possible data engineering teams encounter.
 
-Any team that is building — or think about building — a complete data platform knows
-the tremendous amount of work needed to properly accomplish this mission. Think
-of Blacksmith as the central piece of your data engineering workflow, leading you
-to save months of customized and professional work.
+Any team that is building — or think about building — a complete data engineering
+platform knows the tremendous amount of work needed to properly accomplish this
+mission. Think of Blacksmith as the central piece of your data engineering workflow,
+leading you to save months of customized and professional work.
+
+By leveraging Blacksmith, organizations benefit a single source of truth for all
+their data with a unique developer experience.
+
+Powerful REST API ([Enterprise Edition](https://nunchi.studio/blacksmith/editions)):
+```bash
+$ curl --request GET --url 'https://example.com/admin/api/store/jobs' \
+  -d events.sources_in=cms \
+  -d events.sources_in=crm \
+  -d jobs.destinations_in=warehouse \
+  -d jobs.actions_in=register \
+  -d jobs.status_in=discarded \
+  -d offset=0 -d limit=100
+```
+
+Built-in dashboard ([Enterprise Edition](https://nunchi.studio/blacksmith/editions)):
+![Blacksmith Dashboard](https://nunchi.studio/images/blacksmith/dashboard.002.png)
 
 ## Links
 
@@ -23,4 +40,4 @@ to save months of customized and professional work.
 Along consulting and training, Nunchi provides different product offerings as well
 as different levels of support.
 
-- [Discover our services](https://nunchi.studio/blacksmith/support)
+- [Discover our services](https://nunchi.studio/support)

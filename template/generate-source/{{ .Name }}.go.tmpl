@@ -1,16 +1,39 @@
 package {{ .Package }}
 
 import (
-	{{ if .WithMigrations -}} "database/sql" {{ end }}
-	{{ if .WithMigrations -}} "path/filepath" {{ end }}
+	{{ if .WithMigrations -}}
+  "database/sql"
+  {{ end -}}
+	{{ if .WithMigrations -}}
+  "path/filepath"
+  {{ end -}}
 	"time"
 
-	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	{{ if .WithMigrations -}}
+  "github.com/nunchistudio/blacksmith/adapter/wanderer"
+  {{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/source"
-	{{ if .WithMigrations -}}"github.com/nunchistudio/blacksmith/helper/sqlike" {{ end }}
+	{{ if .WithMigrations -}}
+  "github.com/nunchistudio/blacksmith/helper/sqlike"
+  {{- end }}
 )
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
+/*
+Context is a dictionary of information that provides useful context about an
+event. It can shared across triggers of a source, or event between multiple
+sources.
+
+The context should be used inside every triggers for consistency. It must be a
+valid JSON since it will be used by encoding/json Marshal and Unmarshal functions.
+*/
+{{ end -}}
+
+type Context struct {
+	// ...
+}
+
+{{ if not .NoComments -}}
 /*
 {{ .CapitalizedName }} implements the Blacksmith source.Source interface for
 the source "{{ .Name }}".
@@ -21,7 +44,7 @@ type {{ .CapitalizedName }} struct {
 	options *source.Options
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 New returns a valid Blacksmith source.Source for {{ .CapitalizedName }}.
 */
@@ -38,7 +61,7 @@ func New() source.Source {
 	}
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 String returns the string representation of the source {{ .CapitalizedName }}.
 */
@@ -48,7 +71,7 @@ func (s *{{ .CapitalizedName }}) String() string {
 	return "{{ .Name }}"
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Options returns common source options for {{ .CapitalizedName }}. They will be
 shared across every triggers of this source, except when overridden.
@@ -59,7 +82,7 @@ func (s *{{ .CapitalizedName }}) Options() *source.Options {
 	return s.options
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Triggers return a list of triggers the source {{ .CapitalizedName }} is able
 to handle.
@@ -75,7 +98,7 @@ func (s *{{ .CapitalizedName }}) Triggers() map[string]source.Trigger {
 }
 
 {{ if .WithMigrations -}}
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Migrate is the implementation of the wanderer.WithMigrate interface
 for the source {{ .CapitalizedName }}. It allows the source, and all of its
@@ -88,7 +111,7 @@ a SQL transaction, using the standard database/sql package.
 {{ end -}}
 
 func (s *{{ .CapitalizedName }}) Migrate(tk *wanderer.Toolkit, migration *wanderer.Migration) error {
-	db, err := sql.Open("<driver>", "<connection>")
+	db, err := sql.Open("<driver-name>", "<driver-url>")
 	if err != nil {
 		return err
 	}
@@ -97,11 +120,10 @@ func (s *{{ .CapitalizedName }}) Migrate(tk *wanderer.Toolkit, migration *wander
 	return sqlike.RunMigration(db, filepath.Join("relative", "path", "{{ .Name }}", "migrations"), migration)
 }
 
-{{ if .NoComments -}} {{ else -}}
+{{ if not .NoComments -}}
 /*
 Migrations is the implementation of the wanderer.WithMigrations interface
-for the source {{ .CapitalizedName }}. It allows the source to have migrations
-registered within this source.
+for the source {{ .CapitalizedName }}. It allows the source to have migrations.
 
 It can leverage the sqlike package for finding compatible SQL files
 within a directory.

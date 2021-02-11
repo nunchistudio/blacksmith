@@ -1,7 +1,9 @@
 package {{ .Package }}
 
 import (
-	{{ if .WithMigrations -}} "github.com/nunchistudio/blacksmith/adapter/wanderer" {{ end }}
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith/adapter/wanderer"
+	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/destination"
 )
 
@@ -10,4 +12,4 @@ var _ destination.Destination = &{{ .CapitalizedName }}{}
 {{ if .WithMigrations -}}
 var _ wanderer.WithMigrate = &{{ .CapitalizedName }}{}
 var _ wanderer.WithMigrations = &{{ .CapitalizedName }}{}
-{{ end }}
+{{ end -}}
