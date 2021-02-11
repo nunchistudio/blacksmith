@@ -2,7 +2,7 @@ package sqlike
 
 import (
 	"database/sql"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -184,7 +184,7 @@ func RunMigration(db *sql.DB, directory string, migration *wanderer.Migration) e
 	defer file.Close()
 
 	// Read the file so we will then be able to run its content.
-	buf, err := ioutil.ReadAll(file)
+	buf, err := io.ReadAll(file)
 	if err != nil {
 		fail.Validations = append(fail.Validations, errors.Validation{
 			Message: err.Error(),
