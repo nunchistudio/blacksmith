@@ -12,6 +12,8 @@ ErrorNotFound handles HTTP 404 error responses. When called, the calling functio
 must return to avoid writing several times on the HTTP response writer.
 */
 func ErrorNotFound(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+
 	body := errors.Error{
 		StatusCode: 404,
 		Message:    "Not Found",
@@ -27,6 +29,8 @@ ErrorInternal handles HTTP 500 error responses. When called, the calling functio
 must return to avoid writing several times on the HTTP response writer.
 */
 func ErrorInternal(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+
 	body := errors.Error{
 		StatusCode: 500,
 		Message:    "Internal Server Error",
