@@ -57,4 +57,5 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```

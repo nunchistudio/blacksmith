@@ -8,7 +8,7 @@ enterprise: false
 A source is a collection of triggers emitted from a same source. For example, a
 database could be used as a source and register:
 - CRON triggers for running recurring tasks;
-- CDC triggers for listening for notifications.
+- CDC triggers for watching for notifications.
 
 ## Create a source
 
@@ -18,6 +18,7 @@ A source is an interface of type
 A source can be generated with the `generate` command, as follow:
 ```bash
 $ blacksmith generate source --name mysource
+
 ```
 
 This will generate the recommended files for a source, inside the working
@@ -25,13 +26,18 @@ directory.
 
 If you prefer, you can generate a source inside a directory with the `--path` flag:
 ```bash
-$ blacksmith generate source --name mysource --path ./sources/mysource
+$ blacksmith generate source --name mysource \
+  --path ./sources/mysource
+
 ```
 
-If you need to handle data migrations within the source, you can also add the
-`--migrations` flag:
+If you need to [handle data migrations](/blacksmith/guides/practices/migrations)
+within the source, you can also add the `--migrations` flag:
 ```bash
-$ blacksmith generate source --name mysource --path ./sources/mysource --migrations
+$ blacksmith generate source --name mysource \
+  --path ./sources/mysource \
+  --migrations
+
 ```
 
 ## Register a source
@@ -65,4 +71,5 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```

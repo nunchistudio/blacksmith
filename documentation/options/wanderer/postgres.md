@@ -55,6 +55,7 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```
 
 ## SQL migration
@@ -85,4 +86,5 @@ CREATE TABLE IF NOT EXISTS blacksmith_wanderer.transitions (
 
 CREATE UNIQUE INDEX migrations_version
   ON blacksmith_wanderer.migrations (version, scope);
+
 ```

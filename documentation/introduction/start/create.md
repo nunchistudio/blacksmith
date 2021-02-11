@@ -13,14 +13,16 @@ enterprise: false
 The best way to create a new Blacksmith application is by using the `generate`
 command of the CLI. The following command generates all the required files in the
 current directory:
-```go
+```bash
 $ blacksmith generate application --name myapp
+
 ```
 
 If you prefer, you can generate a new application inside a directory with the
 `--path` flag:
-```go
+```bash
 $ blacksmith generate application --name myapp --path ./myapp
+
 ```
 
 The directory will be created if it does not exist yet.
@@ -40,6 +42,7 @@ The CLI needs to validate, load, and run an application. To achieve this, it mus
 have a `main` package including the following function signature:
 ```go
 func Init() *blacksmith.Options
+
 ```
 
 Blacksmith options is of type
@@ -65,6 +68,7 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```
 
 ## Go modules
@@ -74,14 +78,16 @@ sure you have `go.mod` with the required dependencies within it:
 ```go
 module github.com/<org>/<app>
 
-go 1.15
+go 1.16
 
-require github.com/nunchistudio/blacksmith v0.14.0
+require github.com/nunchistudio/blacksmith v0.15.0
 
-replace golang.org/x/sys => golang.org/x/sys v0.0.0-20190602015325-4c4f7f33c9ed
+replace golang.org/x/sys => golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c
+
 ```
 
 Validate and lock the dependencies by executing the command:
 ```bash
 $ go mod tidy
+
 ```

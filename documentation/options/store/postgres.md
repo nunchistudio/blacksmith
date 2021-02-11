@@ -55,6 +55,7 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```
 
 ## SQL migration
@@ -106,4 +107,5 @@ CREATE TABLE IF NOT EXISTS blacksmith_store.transitions (
     DEFERRABLE INITIALLY DEFERRED,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
 );
+
 ```

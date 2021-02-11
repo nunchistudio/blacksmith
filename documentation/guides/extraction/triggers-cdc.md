@@ -14,7 +14,9 @@ for the changes and act on it.
 
 A CDC trigger can be generated with the `generate` command, as follow:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode cdc
+$ blacksmith generate trigger --name mytrigger \
+  --mode cdc
+
 ```
 
 This will generate the recommended files for a CDC trigger, inside the working
@@ -23,16 +25,23 @@ directory.
 If you prefer, you can generate the trigger inside a directory with the `--path`
 flag:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode cdc --path ./sources/mysource
+$ blacksmith generate trigger --name mytrigger \
+  --mode cdc \
+  --path ./sources/mysource
+
 ```
 
-If you need to handle data migrations within the trigger, you can also add the
-`--migrations` flag:
+If you need to [handle data migrations](/blacksmith/guides/practices/migrations)
+within the trigger, you can also add the `--migrations` flag:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode cdc --path ./sources/mysource --migrations
+$ blacksmith generate trigger --name mytrigger \
+  --mode cdc \
+  --path ./sources/mysource \
+  --migrations
+
 ```
 
-## Usage
+## Usage of a CDC trigger
 
 If the trigger mode is `cdc`, it must respect the interface
 [`source.TriggerCDC`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerCDC).
@@ -40,6 +49,7 @@ If the trigger mode is `cdc`, it must respect the interface
 The signature of the `Extract` function is:
 ```go
 Extract(*source.Toolkit, *source.Notifier)
+
 ```
 
 Since this mode is asynchronous, there is no way for the gateway to know when the

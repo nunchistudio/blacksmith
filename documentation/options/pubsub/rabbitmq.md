@@ -9,7 +9,7 @@ The RabbitMQ pub / sub adapter allows to subscribe to queues and therefore extra
 data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](/blacksmith/introduction/what/overview).
+services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
@@ -39,6 +39,7 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```
 
 ### Application options
@@ -92,6 +93,7 @@ func (t MyTrigger) Mode() *source.Mode {
     },
   }
 }
+
 ```
 
 The trigger will receive in realtime every events of a RabbitMQ queue. Each event

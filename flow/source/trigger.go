@@ -70,14 +70,14 @@ type Payload struct {
 	// Context is a dictionary of information that provides useful context about an
 	// event. The context should be used inside every events for consistency.
 	//
-	// It must be a valid JSON since it will be used using json Marshal and Unmarshal
-	// functions.
+	// It must be a valid JSON since it will be used using encoding/json Marshal and
+	// Unmarshal functions.
 	Context []byte `json:"context"`
 
 	// Data is the byte representation of the data sent by the event.
 	//
-	// It must be a valid JSON since it will be used using json Marshal and Unmarshal
-	// functions.
+	// It must be a valid JSON since it will be used using encoding/json Marshal and
+	// Unmarshal functions.
 	Data []byte `json:"data"`
 
 	// Flows defines the flows of actions to run when this trigger is executed.

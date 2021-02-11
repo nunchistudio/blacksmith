@@ -9,13 +9,23 @@ Triggers of mode `subscriber` allow data extraction from messages received in a
 Pub / Sub mechanism. This way, whenever a message is published on a given topic
 or for a given subscription, it will automatically be received by the `subscriber`.
 
-This mode is only available if the Pub / Sub adapter is configured for the application.
+This mode is only available if the `pubsub` adapter is configured for the application.
+
+Available `pubsub` adapters:
+- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure`)
+- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google`)
+- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws`)
+- [Kafka](/blacksmith/options/pubsub/kafka) (`kafka`)
+- [NATS](/blacksmith/options/pubsub/nats) (`nats`)
+- [RabbitMQ](/blacksmith/options/pubsub/rabbitmq) (`rabbitmq`)
 
 ## Create a subscription trigger
 
 A subscription trigger can be generated with the `generate` command, as follow:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode sub
+$ blacksmith generate trigger --name mytrigger \
+  --mode sub
+
 ```
 
 This will generate the recommended files for a subscription trigger, inside the working
@@ -24,16 +34,23 @@ directory.
 If you prefer, you can generate the trigger inside a directory with the `--path`
 flag:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode sub --path ./sources/mysource
+$ blacksmith generate trigger --name mytrigger \
+  --mode sub \
+  --path ./sources/mysource
+
 ```
 
-If you need to handle data migrations within the trigger, you can also add the
-`--migrations` flag:
+If you need to [handle data migrations](/blacksmith/guides/practices/migrations)
+within the trigger, you can also add the `--migrations` flag:
 ```bash
-$ blacksmith generate trigger --name mytrigger --mode sub --path ./sources/mysource --migrations
+$ blacksmith generate trigger --name mytrigger \
+  --mode sub \
+  --path ./sources/mysource \
+  --migrations
+
 ```
 
-## Usage
+## Usage of a subscription trigger
 
 If the trigger mode is `subscriber`, it must respect the interface
 [`source.TriggerSubscriber`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerSubscriber).
@@ -41,6 +58,7 @@ If the trigger mode is `subscriber`, it must respect the interface
 The signature of the `Extract` function is:
 ```go
 Extract(*source.Toolkit, *pubsub.Message) (*source.Payload, error)
+
 ```
 
 Please refer to your Pub / Sub adapter configuration page for details about trigger

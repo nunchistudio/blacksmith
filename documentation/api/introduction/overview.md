@@ -49,7 +49,7 @@ For example, the following request allows to retrieve every events in the `store
 adapter coming from the source `my-source` and where produced jobs are either
 `failed` or `discarded`, with a limit of `50` events per page:
 ```bash
-curl -G 'http://localhost:9091/admin/store/events' \
+$ curl --request GET --url 'http://localhost:9091/admin/api/store/events' \
   -d events.sources_in=my-source \
   -d jobs.status_in=failed \
   -d jobs.status_in=discarded \

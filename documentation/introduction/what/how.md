@@ -5,15 +5,76 @@ enterprise: false
 
 # How it works
 
-Wether it is your first time doing data engineering or not, this guide is important
+Whether it is your first time doing data engineering or not, this guide is important
 since it describes some specifities of how Blacksmith works.
 
-## Sources and destinations
+## Layers
 
-The central piece of Blacksmith is to act as a data pipeline. Its role is to take
-care of Extracting data from *sources*, Transforming it when necessary, and Loading
-it to *destinations*. This mission is also known as ETL, or ELT. Each source has
-*triggers* and each destination has *actions*.
+Blacksmith is composed of several layers, each acting within its own scope for
+better separation of concerns.
+
+### Go API
+
+The **Blacksmith Go API** is a public-facing collection of packages. It is written
+in [Go](https://golang.org/), "*the language of the cloud*". It allows you to
+define your data stack as-code for complete control and versioning.
+
+Related resources:
+- [Blacksmith repository on GitHub](https://github.com/nunchistudio/blacksmith)
+- [Go reference on Go Developer Portal](https://pkg.go.dev/github.com/nunchistudio/blacksmith)
+
+### Docker environment
+
+**Blacksmith on Docker** ensures environment parity and make deployments a breeze.
+When running a command that needs to build and / or run an application, the CLI
+will communicate with the Docker instance installed on the machine, and will run
+itself inside a container created based on a `Dockerfile`.
+
+By forwarding most of the command of the local Blacksmith CLI to a container, we
+make sure your application can run on different machines, regardless the environment,
+as long as a Docker daemon is running.
+
+The Docker images contain all the non-public logic for running a Blacksmith
+application. Therefore, running Blacksmith outside one of these images is not
+officially supported.
+
+Related resources:
+- [Docker images on GitHub](https://github.com/nunchistudio/blacksmith-docker)
+- [Docker images on Docker Hub](https://hub.docker.com/r/nunchistudio)
+
+### UI kit
+
+The **Blacksmith UI kit** is a collection of open-source, reusable, front-end
+components. It allows to embed any kind of information from your Blacksmith
+application in a custom dashboard within a few lines of code. This layer is
+particularly useful for front-end developers when creating custom dashboards.
+
+Related resources:
+- [Blacksmith UI kit on GitHub](https://github.com/nunchistudio/blacksmith-ui)
+- [Storybook of Blacksmith UI](/storybook/blacksmith-eui)
+
+### Dashboard
+
+The **Blacksmith Dashboard** is the dashboard built-in within any application using
+the Enterprise Edition. It leverages the Blacksmith UI kit to simplify custom work
+on top of it.
+
+![Blacksmith Dashboard](/images/blacksmith/dashboard.002.png)
+
+Related resources:
+- ["Template" repository on GitHub](https://github.com/nunchistudio/blacksmith-dashboard)
+
+## Concepts
+
+### Sources and destinations
+
+The main role of Blacksmith is to act as a data pipeline. This role takes care of
+Extracting data from *sources*, Transforming it when necessary, and Loading it
+to *destinations*. Blacksmith can handle transformations both before and after
+saving the jobs' payload, allowing to keep the original events and still having
+optimized data for each job.
+
+Each source has *triggers* and each destination has *actions*.
 
 In other words, a Blacksmith application is able to receive events from sources'
 triggers, transform data of these events, and run it against the appropriate
@@ -31,32 +92,40 @@ as retry logic — but can override it in special cases.
 Both triggers and actions have a business logic for handling enrichment, transformation,
 and automating the data flow.
 
-## The gateway and scheduler
+### The gateway and scheduler
 
-Instead of using a lot of micro-services and over-engineer the whole process, Blacksmith
-keep data pipelines simple with only two services: the *gateway* and the *scheduler*.
+Instead of using a lot of micro-services and over-engineer the whole process,
+Blacksmith keep data pipelines as simple as possible with only two services: the
+*gateway* and the *scheduler*.
 
 The gateway is in charge of extracting the events from sources on triggers. It can
 happen on:
-- HTTP requests;
-- CRON schedules;
-- CDC notifications;
-- Pub / Sub messages.
+- [HTTP requests](/blacksmith/guides/extraction/triggers-http);
+- [CRON schedules](/blacksmith/guides/extraction/triggers-cron);
+- [CDC notifications](/blacksmith/guides/extraction/triggers-cdc);
+- [Pub / Sub messages](/blacksmith/guides/extraction/triggers-sub).
 
-The scheduler is in charge of loading the events into actions of destinations.
+The scheduler is in charge of loading the events into actions of destinations,
+creating *jobs*. There is an infinity of possibilities and workarounds for loading
+data to destinations. Instead of locking users into a few limited patterns and
+still not covering every needs you may have, we offer a few *starters*. It simplifies
+development, enforces best practices, and still allows a complete freedom on how
+data is loaded. Starters allow to smoothly load data to:
+- [HTTP APIs](/blacksmith/guides/load/actions-http);
+- [SQL databases](/blacksmith/guides/load/actions-sql);
+- [NoSQL databases](/blacksmith/guides/load/actions-docstore);
+- [Blob storages](/blacksmith/guides/load/actions-blob);
+- [Pub / Sub mechanisms](/blacksmith/guides/load/actions-pub).
 
 ![Step 02](/images/blacksmith/how.002.png)
 
 These services can run on a single machine but should be splitted for production
 use. This way, you gain more flexibility, security, and scalability.
 
-The services can be `standard` or `enterprise`, depending on the Blacksmith Edition
-you rely on.
-
-## Database-as-a-Queue
+### Database-as-a-Queue
 
 The gateway needs a way to keep track of received events. The scheduler needs a
-way to keep track of *jobs* to execute onto destinations, and their status (also
+way to keep track of jobs to execute onto destinations, and their status (also
 called *transitions*). So it can be aware of successes, failures, and discards.
 
 The best way to achieve this is to have a persistent *store*. Every events received
@@ -69,9 +138,9 @@ transitions.
 The `store` adapter is the only one required along the services.
 
 Available `store` adapters:
-- PostgreSQL (`postgres`)
+- [PostgreSQL](/blacksmith/options/store/postgres) (`postgres`)
 
-## Enabling realtime
+### Enabling realtime
 
 The store is perfect to persist events, jobs, and status. But we often need to
 send data from sources to destinations in realtime.
@@ -93,14 +162,14 @@ Once configured, the `pubsub` adapter allows realtime message extraction from
 queues / topics / subscriptions.
 
 Available `pubsub` adapters:
-- Azure Service Bus (`azure`)
-- Google Pub / Sub (`google`)
-- AWS SNS / SQS (`aws`)
-- Kafka (`kafka`)
-- NATS (`nats`)
-- RabbitMQ (`rabbitmq`)
+- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure`)
+- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google`)
+- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws`)
+- [Kafka](/blacksmith/options/pubsub/kafka) (`kafka`)
+- [NATS](/blacksmith/options/pubsub/nats) (`nats`)
+- [RabbitMQ](/blacksmith/options/pubsub/rabbitmq) (`rabbitmq`)
 
-## Versioning migrations
+### Versioning migrations
 
 Data pipelines often — to not say always — need to communicate with databases.
 Managing and versioning database migrations is a difficult task to achieve,
@@ -126,9 +195,9 @@ The `wanderer` adapter is optional. It is only needed when managing migrations f
 a Blacksmith application.
 
 Available `wanderer` adapters:
-- PostgreSQL (`postgres`)
+- [PostgreSQL](/blacksmith/options/wanderer/postgres) (`postgres`)
 
-## Distributed environments
+### Distributed environments
 
 Most companies need to have zero downtime to maximize their service availability.
 
@@ -142,20 +211,9 @@ The `supervisor` adapter is optional. It is only needed when running Blacksmith
 applications in distributed environments.
 
 Available `supervisor` adapters:
-- Consul (`consul`)
+- [Consul](/blacksmith/options/supervisor/consul) (`consul`)
 
-## Environment parity with Docker
-
-Blacksmith leverages Docker to ensure environment parity and make deployments as
-smooth as possible. When running a command that needs to build and / or run an
-application, the CLI will communicate with the Docker instance installed on the
-machine, and will run itself inside a container created based on a `Dockerfile`.
-
-By forwarding most of the command of the local Blacksmith CLI to a container, we
-make sure your application can run on different machines, regardless the environment,
-as long as a Docker daemon is running.
-
-## Conclusion
+### Conclusion
 
 By splitting Blacksmith into two services only, we ensure simplicity and consistency.
 This also add a great separation of concerns for better security and scalability.

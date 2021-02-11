@@ -62,6 +62,7 @@ func New() source.Source {
     },
   }
 }
+
 ```
 
 ### Usage
@@ -90,6 +91,7 @@ func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Paylo
     Flows:   []flow.Flow{},
   }, nil
 }
+
 ```
 
 ## Version a destination
@@ -119,6 +121,7 @@ func New() destination.Destination {
     },
   }
 }
+
 ```
 
 ### Usage
@@ -144,4 +147,5 @@ func (a MyAction) Load(tk *destination.Toolkit, queue *store.Queue, then chan<- 
     }
   }
 }
+
 ```

@@ -27,6 +27,7 @@ RUN rm -rf go.sum
 RUN go mod tidy
 
 EXPOSE 9090 9091
+
 ```
 
 ## In development
@@ -40,4 +41,5 @@ get started even faster in development. It contains:
 You can customize the stack as much as you need, and run it with:
 ```bash
 $ docker-compose up -d
+
 ```

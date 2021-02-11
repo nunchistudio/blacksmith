@@ -15,11 +15,12 @@ the Blacksmith application. It does not include information about sources and
 destinations.
 
 - **Method:** `GET`
-- **Path:** `/admin/options`
+- **Path:** `/admin/api/options`
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/options'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/options'
+
   ```
 
 - **Example response**:
@@ -54,15 +55,25 @@ destinations.
       "gateway": {
         "address": ":9090",
         "admin": {
-          "enabled": false
+          "enabled": false,
+          "dashboard": false
         }
       },
       "scheduler": {
         "address": ":9091",
         "admin": {
-          "enabled": true
+          "enabled": true,
+          "dashboard": true
         }
+      },
+      "blacksmith": {
+        "version": "0.15.0"
+      },
+      "go": {
+        "version": "1.16",
+        "environment": "darwin/amd64"
       }
     }
   }
+
   ```

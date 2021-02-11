@@ -16,16 +16,18 @@ bootstrapped.  To simplify this best practice, Blacksmith generates `.env` and
 to the `.gitignore` to ensure it is not versioned alongside your code.
 
 A `.env` file contains a collection of variables following the format:
-```bash
+```txt
 KEY=value
+
 ```
 
 A `.env` file for a Blacksmith application can contain configuration for the
 adapters as well as the license details for the Enterprise Edition:
-```bash
+```txt
 BLACKSMITH_LICENSE_KEY=omSYn27xhL6OKwvpuHrf
 BLACKSMITH_LICENSE_TOKEN=Li5eVI3RJ6Chi9w3QSHf
 NATS_SERVER_URL=nats://localhost:4222
 POSTGRES_STORE_URL=postgres://app:app@localhost:5432/app
 POSTGRES_WANDERER_URL=postgres://app:app@localhost:5432/app
+
 ```

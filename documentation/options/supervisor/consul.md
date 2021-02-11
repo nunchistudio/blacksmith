@@ -5,11 +5,15 @@ enterprise: true
 
 # Consul supervisor
 
-The use of Consul from a Blacksmith application allows to:
-- Automatically register / deregister the gateway and scheduler services from the
-  registry;
-- Automatically handle sessions and locks across nodes to avoid access collision
-  when working within a multi-node environment.
+The use of Consul from a Blacksmith application allows to automatically register
+and deregister the `gateway` and `scheduler` services from the registry:
+
+![Blacksmith with Consul](/images/blacksmith/consul.001.png)
+
+It also automatically handle sessions and locks across nodes to avoid access
+collision when working within a multi-node environment:
+
+![Blacksmith with Consul](/images/blacksmith/consul.002.png)
 
 ## Options
 
@@ -37,7 +41,7 @@ connection string) if not found.
 
   **Required:** yes (if `Options.Supervisor.Join.Address` is not set)
 
-  **Example:** `127.0.0.1:8500`
+  **Example:** `http://127.0.0.1:8500`
 
   **Order:** environment variable, options
 
@@ -105,11 +109,12 @@ func Init() *blacksmith.Options {
       From:    "consul",
       Context: ctx,
       Join: &supervisor.Node{
-        Address: "127.0.0.1:8500",
+        Address: "http://127.0.0.1:8500",
       },
     },
   }
 
   return options
 }
+
 ```

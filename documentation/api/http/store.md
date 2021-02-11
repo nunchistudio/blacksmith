@@ -6,7 +6,8 @@ enterprise: true
 # Store resources
 
 The HTTP API exposes endpoints to retrieve events, jobs, and jobs' status (also
-known as jobs' transitions) of a Blacksmith application.
+known as jobs' transitions) of a Blacksmith application. This also exposes an
+endpoint for [purging data from the `store` adapter](/blacksmith/guides/practices/purge).
 
 When retrieving a collection of events or jobs, the request can have query params
 for searching, filtering, grouping, and paginating objects. This is a very powerful
@@ -57,19 +58,19 @@ List of available query params:
   **Description:** Makes sure the entries returned by the query do not have any
   of the source's version present in the slice.
 
-- **Name:** `events.created_before`
+- **Name:** `events.received_before`
 
   **Type:** `time.Time`
 
   **Description:** Makes sure the entries returned by the query are related to an
-  event created before this instant.
+  event received before this instant.
 
-- **Name:** `events.created_after`
+- **Name:** `events.received_after`
 
   **Type:** `time.Time`
 
   **Description:** Makes sure the entries returned by the query are related to an
-  event created after this instant.
+  event received after this instant.
 
 - **Name**: `jobs.destinations_in`
 
@@ -181,15 +182,16 @@ included in events and jobs information. Jobs only include their current state,
 which is their lastest transition.
 
 - **Method:** `GET`
-- **Path:** `/admin/store/events`
+- **Path:** `/admin/api/store/events`
 - **Query params:** As listed at the top of this document.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/store/events' \
+  $ curl --request GET --url 'http://localhost:9091/admin/api/store/events' \
     -d events.sources_in=my-source \
     -d offset=50 \
     -d limit=50
+
   ```
 
 - **Example response**:
@@ -265,6 +267,7 @@ which is their lastest transition.
 
     ]
   }
+
   ```
 
 ## Retrieve a specific event
@@ -274,13 +277,14 @@ including their `context` and `data` keys. Jobs only include their current state
 which is their lastest transition.
 
 - **Method:** `GET`
-- **Path:** `/admin/store/events/:event_id`
+- **Path:** `/admin/api/store/events/:event_id`
 - **Route params:**
   - `event_id`: ID of the event to retrieve.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/store/events/1jbDyotE3aB7qYNOaSQRlLa3sRK'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/store/events/1jbDyotE3aB7qYNOaSQRlLa3sRK'
+
   ```
 
 - **Example response**:
@@ -338,6 +342,7 @@ which is their lastest transition.
       "ingested_at": "2020-10-30T13:22:34.006282Z"
     }
   }
+
   ```
 
 ## Retrieve all jobs
@@ -346,13 +351,14 @@ This endpoint exposes all the jobs registered in the store given the filters pas
 as query parameters.
 
 - **Method:** `GET`
-- **Path:** `/admin/store/jobs`
+- **Path:** `/admin/api/store/jobs`
 - **Query params:** As listed at the top of this document.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/store/jobs' \
+  $ curl --request GET --url 'http://localhost:9091/admin/api/store/jobs' \
     -d events.sources_in=my-source
+
   ```
 
 - **Example response**:
@@ -419,6 +425,7 @@ as query parameters.
 
     ]
   }
+
   ```
 
 ## Retrieve a specific job
@@ -427,13 +434,14 @@ This endpoint exposes details about a single migration registered in the wandere
 including its current status, which is its latest transition.
 
 - **Method:** `GET`
-- **Path:** `/admin/store/jobs/:job_id`
+- **Path:** `/admin/api/store/jobs/:job_id`
 - **Route params:**
   - `job_id`: ID of the job to retrieve.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/store/jobs/1jbF63OeSFBbuez4351lfZ4f2jL'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/store/jobs/1jbF63OeSFBbuez4351lfZ4f2jL'
+
   ```
 
 - **Example response**:
@@ -478,6 +486,7 @@ including its current status, which is its latest transition.
       "event_id": "1jbF681tRCyaleY0P5lcKpgejkg"
     }
   }
+
   ```
 
 ## Retrieve a job's transitions
@@ -486,7 +495,7 @@ This endpoint exposes all the transitions registered in the store for a given
 job.
 
 - **Method:** `GET`
-- **Path:** `/admin/store/jobs/:job_id/transitions`
+- **Path:** `/admin/api/store/jobs/:job_id/transitions`
 - **Route params:**
   - `job_id`: ID of the job to retrieve.
 
@@ -511,8 +520,9 @@ job.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/store/jobs/1jbHsR1l5r10ozAZFY4D23o2uZr/transitions' \
+  $ curl --request GET --url 'http://localhost:9091/admin/api/store/jobs/1jbHsR1l5r10ozAZFY4D23o2uZr/transitions' \
     -d limit=100
+
   ```
 
 - **Example response**:
@@ -569,6 +579,7 @@ job.
       
     ]
   }
+
   ```
 
 ## Purge entries from store
@@ -581,13 +592,13 @@ Even though the request is accepted, this does not serve as a guarantee for the
 task to succeed.
 
 - **Method:** `POST`
-- **Path:** `/admin/store/purge`
+- **Path:** `/admin/api/store/purge`
 - **Query params:** As listed at the top of this document. The `offset` and `limit`
   params will not be applied.
 
 - **Example request:**
   ```bash
-  $ curl --request POST --url 'http://localhost:9091/admin/store/purge' \
+  $ curl --request POST --url 'http://localhost:9091/admin/api/store/purge' \
     -d jobs.status_in=discarded \
     -d events.received_before='2021-02-09 15:23:00'
   ```

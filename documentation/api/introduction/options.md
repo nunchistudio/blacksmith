@@ -13,7 +13,6 @@ of middleware passed to the parent service's options. This way, any HTTP logic
 can be added for authentication, authorization, or other security requirements.
 
 Example:
-
 ```go
 package main
 
@@ -54,4 +53,5 @@ func Init() *blacksmith.Options {
 
   return options
 }
+
 ```

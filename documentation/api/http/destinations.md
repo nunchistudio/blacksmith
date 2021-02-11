@@ -14,11 +14,12 @@ This endpoint exposes all the destinations registered in an application, includi
 the options for each one.
 
 - **Method:** `GET`
-- **Path:** `/admin/destinations`
+- **Path:** `/admin/api/destinations`
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/destinations'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/destinations'
+
   ```
 
 - **Example response**:
@@ -49,6 +50,7 @@ the options for each one.
       
     ]
   }
+
   ```
 
 ## Retrieve a specific destination
@@ -57,13 +59,14 @@ This endpoint exposes details about a single destination registered in an applic
 including its options and actions.
 
 - **Method:** `GET`
-- **Path:** `/admin/destinations/:destination_name`
+- **Path:** `/admin/api/destinations/:destination_name`
 - **Route params:**
   - `destination_name`: Name of the destination to retrieve.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/destinations/my-destination'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/destinations/my-destination'
+
   ```
 
 - **Example response**:
@@ -95,4 +98,5 @@ including its options and actions.
       ]
     }
   }
+
   ```

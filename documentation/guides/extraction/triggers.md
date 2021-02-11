@@ -27,6 +27,7 @@ func (s *MySource) Triggers() map[string]source.Trigger {
     "my-trigger": MyTrigger{},
   }
 }
+
 ```
 
 ## Notes about triggers

@@ -5,15 +5,17 @@ enterprise: false
 
 # Introduction to Blacksmith
 
-Blacksmith is a Go framework specifically designed for data engineering teams. It
-allows you to design, build, and deploy reliable data platforms in a consistent
-way. The goal of Blacksmith is to address as many pain points as possible engineering
-teams encounter while working on data solutions.
+Blacksmith is a programmable low-code ecosystem, offering a complete and consistent
+data engineering solution. It allows you to design, build, and deploy reliable data
+engineering platforms in a consistent way. The goal of Blacksmith is to address as
+many pain points as possible data engineering teams encounter.
 
-Any team that is building — or think about building — a complete data platform knows
-the tremendous amount of work needed to properly accomplish this mission. Think
-of Blacksmith as the central piece of your data engineering workflow, leading you
-to save months of customized and professional work.
+Any team that is building — or think about building — a complete data engineering
+platform knows the tremendous amount of work needed to properly accomplish this
+mission. Think of Blacksmith as the central piece of your data engineering workflow,
+leading you to save months of customized and professional work.
+
+![Blacksmith Dashboard](/images/blacksmith/dashboard.002.png)
 
 ## Features and benefits
 
@@ -77,9 +79,8 @@ and governance across multi-team and multi-scope data solutions.
 - **REST API:** The Enterprise Edition comes with a REST API so organizations can
   bring data platform information as well as historical and real time events / jobs
   into third-party applications.
-- **Server health-checks:** Instead of using the Standard adapters, organizations
-  can switch to the Enterprise Edition of the gateway and scheduler to add these
-  services to their service mesh. More details about adapters in the next guide.
+- **Server health-checks:** Organizations can switch to the Enterprise Edition to
+  add Blacksmith services into their service mesh.
 - **Distributed environments:** Blacksmith applications can be deployed in distributed
   and high-available environments. By using a distributed lock mechanism, we ensure
   strong data consistency and stronger fault-tolerance across nodes.
@@ -87,3 +88,10 @@ and governance across multi-team and multi-scope data solutions.
   especially if there is more than one engineer working on the code base. By using
   the Blacksmith Enterprise Edition, organizations can run and version database
   migrations smoothly with no conflicts across teams.
+- **UI kit:** The UI kit is a collection of open-source, reusable, front-end
+  components. It allows to embed any kind of information from your Blacksmith
+  application in a custom dashboard within a few lines of code. This layer is
+  particularly useful for creating custom dashboards.
+- **Dashboard:** The dashboard is the default UI built-in within any application
+  using the Enterprise Edition. It leverages the Blacksmith UI kit to simplify
+  custom work on top of it.

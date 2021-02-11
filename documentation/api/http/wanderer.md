@@ -65,14 +65,15 @@ This endpoint exposes all the migrations registered in the wanderer given the
 filters passed as query parameters.
 
 - **Method:** `GET`
-- **Path:** `/admin/wanderer/migrations`
+- **Path:** `/admin/api/wanderer/migrations`
 - **Query params:** As listed at the top of this document.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/wanderer/migrations' \
+  $ curl --request GET --url 'http://localhost:9091/admin/api/wanderer/migrations' \
     -d migrations.status_in=acknowledged \
     -d migrations.scopes_in=destination:my-destination
+
   ```
 
 - **Example response**:
@@ -125,6 +126,7 @@ filters passed as query parameters.
 
     ]
   }
+
   ```
 
 ## Retrieve a specific migration
@@ -133,13 +135,14 @@ This endpoint exposes details about a single migration registered in the wandere
 including its current status, which is its latest transition.
 
 - **Method:** `GET`
-- **Path:** `/admin/wanderer/migrations/:migration_id`
+- **Path:** `/admin/api/wanderer/migrations/:migration_id`
 - **Route params:**
   - `migration_id`: ID of the migration to retrieve.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/wanderer/migrations/1jbTWtayiztjlceyq9OiZiudL84'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/wanderer/migrations/1jbTWtayiztjlceyq9OiZiudL84'
+
   ```
 
 - **Example response**:
@@ -165,6 +168,7 @@ including its current status, which is its latest transition.
       "created_at": "2020-10-30T15:30:26.804643Z"
     }
   }
+
   ```
 
 ## Retrieve a migration's transitions
@@ -173,7 +177,7 @@ This endpoint exposes all the transitions registered in the wanderer for a given
 migration.
 
 - **Method:** `GET`
-- **Path:** `/admin/wanderer/migrations/:migration_id/transitions`
+- **Path:** `/admin/api/wanderer/migrations/:migration_id/transitions`
 - **Route params:**
   - `migration_id`: ID of the migration to retrieve.
 
@@ -198,8 +202,9 @@ migration.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/wanderer/migrations/1jbTWtayiztjlceyq9OiZiudL84/transitions' \
+  $ curl --request GET --url 'http://localhost:9091/admin/api/wanderer/migrations/1jbTWtayiztjlceyq9OiZiudL84/transitions' \
     -d limit=50
+
   ```
 
 - **Example response**:
@@ -238,4 +243,5 @@ migration.
       
     ]
   }
+
   ```

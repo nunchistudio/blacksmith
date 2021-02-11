@@ -14,11 +14,12 @@ This endpoint exposes all the sources registered in an application, including
 the options for each one.
 
 - **Method:** `GET`
-- **Path:** `/admin/sources`
+- **Path:** `/admin/api/sources`
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/sources'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/sources'
+
   ```
 - **Example response**:
   ```json
@@ -46,6 +47,7 @@ the options for each one.
 
     ]
   }
+
   ```
 
 ## Retrieve a specific source
@@ -54,13 +56,14 @@ This endpoint exposes details about a single source registered in an application
 including its options and triggers.
 
 - **Method:** `GET`
-- **Path:** `/admin/sources/:source_name`
+- **Path:** `/admin/api/sources/:source_name`
 - **Route params:**
   - `source_name`: Name of the source to retrieve.
 
 - **Example request:**
   ```bash
-  curl -G 'http://localhost:9091/admin/sources/my-source'
+  $ curl --request GET --url 'http://localhost:9091/admin/api/sources/my-source'
+
   ```
 - **Example response**:
   ```json
@@ -101,11 +104,12 @@ including its options and triggers.
               "show_data": true
             }
           }
-        }
+        },
         
         [...]
         
       ]
     }
   }
+
   ```

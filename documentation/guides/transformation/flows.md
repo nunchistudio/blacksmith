@@ -21,6 +21,7 @@ A flow is of type
 A flow can be generated with the `generate` command, as follow:
 ```bash
 $ blacksmith generate flow --name myflow
+
 ```
 
 This will generate the recommended files for a flow, inside the working
@@ -28,7 +29,9 @@ directory.
 
 If you prefer, you can generate a flow inside a directory with the `--path` flag:
 ```bash
-$ blacksmith generate flow --name myflow --path ./flows/myflow
+$ blacksmith generate flow --name myflow \
+  --path ./flows/myflow
+
 ```
 
 ## Call a flow from a trigger
@@ -36,7 +39,7 @@ $ blacksmith generate flow --name myflow --path ./flows/myflow
 Given a trigger (here is of mode HTTP), we can now call the flow from the `Payload`
 returned by the `Extract` function like this:
 ```go
-func (mt MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
+func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
 
   // ...
 
@@ -51,4 +54,5 @@ func (mt MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payl
     },
   }, nil
 }
+
 ```
