@@ -87,10 +87,10 @@ $ blacksmith generate destination --name mydestination \
 ```
 
 Available drivers:
-- `firestore` for using Google Firestore.
-- `dynamodb` for using Amazon DynamoDB.
+- `aws/dynamodb` for using Amazon DynamoDB.
+- `azure/cosmosdb` for using MongoDB on Azure with CosmosDB.
+- `google/firestore` for using Google Firestore.
 - `mongodb` for using MongoDB.
-- `cosmosdb` for using MongoDB on Azure with CosmosDB.
 
 ### Starter for blob storages
 
@@ -104,9 +104,9 @@ $ blacksmith generate destination --name mydestination \
 ```
 
 Available drivers:
-- `aws` for using Amazon S3.
-- `azure` for using Azure Blog Storage.
-- `google` for using Google Cloud Storage.
+- `aws/s3` for using Amazon S3.
+- `azure/blob` for using Azure Blob Storage.
+- `google/storage` for using Google Cloud Storage.
 - `file` for using local file storage.
 
 ### Starter for Pub / Sub
@@ -123,9 +123,9 @@ $ blacksmith generate destination --name mydestination \
 This allows to publish messages on topics for the supported drivers.
 
 Available drivers:
-- `aws` for using AWS SNS / SQS.
-- `azure` for using Azure Service Bus.
-- `google` for using Google Pub / Sub.
+- `aws/snssqs` for using AWS SNS / SQS.
+- `azure/servicebus` for using Azure Service Bus.
+- `google/pubsub` for using Google Pub / Sub.
 - `kafka` for using Apache Kafka.
 - `nats` for using NATS.
 - `rabbitmq` for using RabbitMQ.

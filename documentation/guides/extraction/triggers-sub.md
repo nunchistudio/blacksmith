@@ -12,9 +12,9 @@ or for a given subscription, it will automatically be received by the `subscribe
 This mode is only available if the `pubsub` adapter is configured for the application.
 
 Available `pubsub` adapters:
-- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure`)
-- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google`)
-- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws`)
+- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws/snssqs`)
+- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure/servicebus`)
+- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google/pubsub`)
 - [Kafka](/blacksmith/options/pubsub/kafka) (`kafka`)
 - [NATS](/blacksmith/options/pubsub/nats) (`nats`)
 - [RabbitMQ](/blacksmith/options/pubsub/rabbitmq) (`rabbitmq`)

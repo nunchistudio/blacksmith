@@ -162,9 +162,9 @@ Once configured, the `pubsub` adapter allows realtime message extraction from
 queues / topics / subscriptions.
 
 Available `pubsub` adapters:
-- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure`)
-- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google`)
-- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws`)
+- [AWS SNS / SQS](/blacksmith/options/pubsub/aws) (`aws/snssqs`)
+- [Azure Service Bus](/blacksmith/options/pubsub/azure) (`azure/servicebus`)
+- [Google Pub / Sub](/blacksmith/options/pubsub/google) (`google/pubsub`)
 - [Kafka](/blacksmith/options/pubsub/kafka) (`kafka`)
 - [NATS](/blacksmith/options/pubsub/nats) (`nats`)
 - [RabbitMQ](/blacksmith/options/pubsub/rabbitmq) (`rabbitmq`)

@@ -8,12 +8,12 @@ import (
 AvailableAdapters is a list of available pubsub adapters.
 */
 var AvailableAdapters = map[string]bool{
-	"aws":      true,
-	"azure":    true,
-	"google":   true,
-	"kafka":    true,
-	"nats":     true,
-	"rabbitmq": true,
+	"aws/snssqs":       true,
+	"azure/servicebus": true,
+	"google/pubsub":    true,
+	"kafka":            true,
+	"nats":             true,
+	"rabbitmq":         true,
 }
 
 /*

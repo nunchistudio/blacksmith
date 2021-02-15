@@ -14,7 +14,7 @@ services, [as described in the introduction](/blacksmith/introduction/what/how).
 ## Application configuration
 
 To use Google Cloud as the pub / sub adapter for your application, you must set
-the `From` key to `google` in `*pubsub.Options`:
+the `From` key to `google/pubsub` in `*pubsub.Options`:
 ```go
 package main
 
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "google",
+      From:         "google/pubsub",
       Topic:        "projects/<project>/topics/<topic>",
       Subscription: "projects/<project>/subscriptions/<subscription>",
     },

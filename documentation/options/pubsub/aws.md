@@ -14,7 +14,7 @@ services, [as described in the introduction](/blacksmith/introduction/what/how).
 ## Application configuration
 
 To use AWS as the pub / sub adapter for your application, you must set the `From`
-key to `aws` in `*pubsub.Options`:
+key to `aws/snssqs` in `*pubsub.Options`:
 ```go
 package main
 
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "aws",
+      From:         "aws/snssqs",
       Topic:        "arn:aws:sns:<region>:<id>:<topic>",
       Subscription: "arn:aws:sqs:<region>:<id>:<queue>",
     },

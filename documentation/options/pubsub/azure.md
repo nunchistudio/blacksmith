@@ -14,7 +14,7 @@ services, [as described in the introduction](/blacksmith/introduction/what/how).
 ## Application configuration
 
 To use Azure as the pub / sub adapter for your application, you must set the `From`
-key to `azure` in `*pubsub.Options`:
+key to `azure/servicebus` in `*pubsub.Options`:
 ```go
 package main
 
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "azure",
+      From:         "azure/servicebus",
       Topic:        "<topic>",
       Subscription: "<subscription>",
     },

@@ -22,9 +22,9 @@ The starter `gocloud/blob` generates a destination using the
 blob storages.
 
 Available drivers:
-- `aws` for using Amazon S3.
-- `azure` for using Azure Blog Storage.
-- `google` for using Google Cloud Storage.
+- `aws/s3` for using Amazon S3.
+- `azure/blob` for using Azure Blob Storage.
+- `google/storage` for using Google Cloud Storage.
 - `file` for using local file storage.
 
 ## Create a blob action

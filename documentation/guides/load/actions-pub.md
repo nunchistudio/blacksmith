@@ -22,9 +22,9 @@ The starter `gocloud/pubsub` generates a destination using the
 topics.
 
 Available drivers:
-- `aws` for using AWS SNS / SQS.
-- `azure` for using Azure Service Bus.
-- `google` for using Google Pub / Sub.
+- `aws/snssqs` for using AWS SNS / SQS.
+- `azure/servicebus` for using Azure Service Bus.
+- `google/pubsub` for using Google Pub / Sub.
 - `kafka` for using Apache Kafka.
 - `nats` for using NATS.
 - `rabbitmq` for using RabbitMQ.
