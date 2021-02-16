@@ -20,9 +20,9 @@ collision when working within a multi-node environment:
 - `Join`: The node of the distributed system to join. Each running instance of
   Blacksmith must join a different Consul agent to avoid access collision.
   - `Address`: The Consul agent URL to dial to leverage distributed locks. When
-  set, this will override the `CONSUL_ADDRESS` environment variable. **We strongly
-  recommend the use of the `CONSUL_ADDRESS` environment variable to avoid
-  connection strings in your code.**
+    set, this will override the `CONSUL_ADDRESS` environment variable. **We strongly
+    recommend the use of the `CONSUL_ADDRESS` environment variable to avoid
+    connection strings in your code.**
   - `Tags`: Slice of tags related to the node.
   - `Meta`: Collection of meta-data related to the node.
 
@@ -85,7 +85,6 @@ connection string) if not found.
 ## Example
 
 ```go
-
 package main
 
 import (

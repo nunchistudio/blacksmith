@@ -10,7 +10,8 @@ import (
 AvailableAdapters is a list of available supervisors adapters.
 */
 var AvailableAdapters = map[string]bool{
-	"consul": true,
+	"consul":   true,
+	"postgres": true,
 }
 
 /*

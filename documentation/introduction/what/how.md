@@ -200,18 +200,24 @@ Available `wanderer` adapters:
 ### Distributed environments
 
 Most companies need to have zero downtime to maximize their service availability.
+Blacksmith can run in a high availability (HA) to protect against outages by running
+multiple Blacksmith instances. 
 
 Blacksmith applications can optionally leverage a *supervisor*, which is in charge
-of acquiring and releasing lock accesses in distributed environments. This ensures
-resources in a multi-nodes cluster are accessed by a single instance of the
-gateway, scheduler, and CLI to avoid collision when listening for events, executing
-jobs, or running migrations.
+of acquiring and releasing lock accesses in distributed environments. This is also
+known as a *distributed semaphore*.
 
-The `supervisor` adapter is optional. It is only needed when running Blacksmith
-applications in distributed environments.
+The `supervisor` adapter ensures resources in a multi-nodes are accessed by a single
+instance of the gateway, scheduler, and CLI to avoid collision when listening for
+events, executing jobs, or running migrations.
+
+The `supervisor` adapter is optional. It is highly recommended when running
+Blacksmith applications in distributed environments or when several engineers can
+work on database migrations at the same time.
 
 Available `supervisor` adapters:
 - [Consul](/blacksmith/options/supervisor/consul) (`consul`)
+- [PostgreSQL](/blacksmith/options/supervisor/postgres) (`postgres`)
 
 ### Conclusion
 
@@ -225,4 +231,6 @@ allows realtime events forwarding between the gateway and scheduler.
 
 The wanderer keeps track of migrations across every sources and destinations.
 
-The supervisor allows to run Blacksmith applications in distributed environments.
+The supervisor provides coordination to run Blacksmith applications in distributed
+environments. It also allows several engineers to work at the same time on the
+application with no conflicts when running migrations.

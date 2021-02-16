@@ -31,6 +31,8 @@ Some options can be loaded from the environment variables.
 
   **Example:** `postgres://user:password@127.0.0.1/database`
 
+  **Order:** options, environment variable
+
 ## Example
 
 ```go
