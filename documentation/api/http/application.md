@@ -36,8 +36,8 @@ destinations.
           "address": "https://consul-1.example.com",
           "tags": ["blacksmith"],
           "meta": {
-            "go_version": "1.15.3",
-            "blacksmith_version": "0.14.0"
+            "go_version": "1.16.0",
+            "blacksmith_version": "0.15.0"
           }
         }
       },

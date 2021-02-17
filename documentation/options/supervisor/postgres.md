@@ -21,9 +21,9 @@ and can work with any kind of extensions.
     **We strongly recommend the use of the `POSTGRES_SUPERVISOR_URL` environment
     variable to avoid connection strings in your code.**
 
-  **Required:** no
+    **Required:** no
 
-  **Example:** `postgres://user:password@127.0.0.1/database`
+    **Example:** `postgres://user:password@127.0.0.1/database`
 
 ## Environment variables
 

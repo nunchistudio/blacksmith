@@ -71,7 +71,7 @@ The use of Blacksmith is governed by the
 
 Public repositories:
 - The Go public API is [available on GitHub](https://github.com/nunchistudio/blacksmith),
-  and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith/blob/master/LICENSE).
+  and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith/blob/main/LICENSE).
 - The UI kit is [available on GitHub](https://github.com/nunchistudio/blacksmith-ui),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-ui/blob/main/LICENSE).
 - The default dashboard is [available on GitHub](https://github.com/nunchistudio/blacksmith-dashboard),

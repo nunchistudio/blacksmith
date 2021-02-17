@@ -25,7 +25,7 @@ contribution guidelines as light but rock-solid as possible.
 - Commit messages and pull requests must respect the
   [Conventional Commits Specification](https://www.conventionalcommits.org/).
   The types and scopes to follow can be found on the
-  [`semantic.yml` file](https://github.com/nunchistudio/blacksmith/blob/master/.github/semantic.yml).
+  [`semantic.yml` file](https://github.com/nunchistudio/blacksmith/blob/main/.github/semantic.yml).
 - You sign every Git commits using your real name and real email address. If you
   set your `user.name` and `user.email` git configs, you can sign your commit
   automatically using `git commit -s`. Example:

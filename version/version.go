@@ -10,7 +10,7 @@ Blacksmith is the Blacksmith version number that is being run at the moment,
 formatted for semantic versioning.
 */
 func Blacksmith() string {
-	return "0.14.0"
+	return "0.15.0"
 }
 
 /*
