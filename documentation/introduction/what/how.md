@@ -5,68 +5,19 @@ enterprise: false
 
 # How it works
 
-Whether it is your first time doing data engineering or not, this guide is important
-since it describes some specifities of how Blacksmith works.
+Blacksmith is a programmable low-code ecosystem, offering a complete and consistent
+data engineering solution. It allows you to design, build, and deploy reliable data
+engineering platforms in a consistent way. The goal of Blacksmith is to address as
+many pain points as possible data engineering teams encounter.
 
-## Layers
-
-Blacksmith is composed of several layers, each acting within its own scope for
-better separation of concerns.
-
-### Go API
-
-The **Blacksmith Go API** is a public-facing collection of packages. It is written
-in [Go](https://golang.org/), "*the language of the cloud*". It allows you to
-define your data stack as-code for complete control and versioning.
-
-Related resources:
-- [Blacksmith repository on GitHub](https://github.com/nunchistudio/blacksmith)
-- [Go reference on Go Developer Portal](https://pkg.go.dev/github.com/nunchistudio/blacksmith)
-
-### Docker environment
-
-**Blacksmith on Docker** ensures environment parity and make deployments a breeze.
-When running a command that needs to build and / or run an application, the CLI
-will communicate with the Docker instance installed on the machine, and will run
-itself inside a container created based on a `Dockerfile`.
-
-By forwarding most of the command of the local Blacksmith CLI to a container, we
-make sure your application can run on different machines, regardless the environment,
-as long as a Docker daemon is running.
-
-The Docker images contain all the non-public logic for running a Blacksmith
-application. Therefore, running Blacksmith outside one of these images is not
-officially supported.
-
-Related resources:
-- [Docker images on GitHub](https://github.com/nunchistudio/blacksmith-docker)
-- [Docker images on Docker Hub](https://hub.docker.com/r/nunchistudio)
-
-### UI kit
-
-The **Blacksmith UI kit** is a collection of open-source, reusable, front-end
-components. It allows to embed any kind of information from your Blacksmith
-application in a custom dashboard within a few lines of code. This layer is
-particularly useful for front-end developers when creating custom dashboards.
-
-Related resources:
-- [Blacksmith UI kit on GitHub](https://github.com/nunchistudio/blacksmith-ui)
-- [Storybook of Blacksmith UI](/storybook/blacksmith-eui)
-
-### Dashboard
-
-The **Blacksmith Dashboard** is the dashboard built-in within any application using
-the Enterprise Edition. It leverages the Blacksmith UI kit to simplify custom work
-on top of it.
+Any team that is building — or think about building — a complete data engineering
+platform knows the tremendous amount of work needed to properly accomplish this
+mission. Think of Blacksmith as the central piece of your data engineering workflow,
+leading you to save months of customized and professional work.
 
 ![Blacksmith Dashboard](/images/blacksmith/dashboard.002.png)
 
-Related resources:
-- ["Template" repository on GitHub](https://github.com/nunchistudio/blacksmith-dashboard)
-
-## Concepts
-
-### Sources and destinations
+## Sources and destinations
 
 The main role of Blacksmith is to act as a data pipeline. This role takes care of
 Extracting data from *sources*, Transforming it when necessary, and Loading it
@@ -84,6 +35,9 @@ Sources can be websites, mobile applications, third-party services, databases, e
 Destinations can be databases, data warehouses, or third-party services for analytics
 or marketing.
 
+A system can be treated both as a source *and* destination, allowing bidirectional
+data flows.
+
 ![Step 01](/images/blacksmith/how.001.png)
 
 Triggers and actions inherit properties of their parent source or destination — such
@@ -92,7 +46,7 @@ as retry logic — but can override it in special cases.
 Both triggers and actions have a business logic for handling enrichment, transformation,
 and automating the data flow.
 
-### The gateway and scheduler
+## The gateway and scheduler
 
 Instead of using a lot of micro-services and over-engineer the whole process,
 Blacksmith keep data pipelines as simple as possible with only two services: the
@@ -122,7 +76,7 @@ data is loaded. Starters allow to smoothly load data to:
 These services can run on a single machine but should be splitted for production
 use. This way, you gain more flexibility, security, and scalability.
 
-### Database-as-a-Queue
+## Database-as-a-Queue
 
 The gateway needs a way to keep track of received events. The scheduler needs a
 way to keep track of jobs to execute onto destinations, and their status (also
@@ -140,7 +94,7 @@ The `store` adapter is the only one required along the services.
 Available `store` adapters:
 - [PostgreSQL](/blacksmith/options/store/postgres) (`postgres`)
 
-### Enabling realtime
+## Enabling realtime
 
 The store is perfect to persist events, jobs, and status. But we often need to
 send data from sources to destinations in realtime.
@@ -169,7 +123,7 @@ Available `pubsub` adapters:
 - [NATS](/blacksmith/options/pubsub/nats) (`nats`)
 - [RabbitMQ](/blacksmith/options/pubsub/rabbitmq) (`rabbitmq`)
 
-### Versioning migrations
+## Versioning migrations
 
 Data pipelines often — to not say always — need to communicate with databases.
 Managing and versioning database migrations is a difficult task to achieve,
@@ -197,7 +151,7 @@ a Blacksmith application.
 Available `wanderer` adapters:
 - [PostgreSQL](/blacksmith/options/wanderer/postgres) (`postgres`)
 
-### Distributed environments
+## Distributed environments
 
 Most companies need to have zero downtime to maximize their service availability.
 Blacksmith can run in a high availability (HA) to protect against outages by running
@@ -219,7 +173,7 @@ Available `supervisor` adapters:
 - [Consul](/blacksmith/options/supervisor/consul) (`consul`)
 - [PostgreSQL](/blacksmith/options/supervisor/postgres) (`postgres`)
 
-### Conclusion
+## Conclusion
 
 By splitting Blacksmith into two services only, we ensure simplicity and consistency.
 This also add a great separation of concerns for better security and scalability.

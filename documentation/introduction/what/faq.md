@@ -29,7 +29,8 @@ of software in addition to the application built on top of it.
 
 We are well aware analytics and marketing teams already use third-party services
 such as Segment, Zapier, Fivetran, or dbt. Blacksmith can act both as an addition
-or a substitute to these services depending on your needs.
+or a substitute to these services, depending on your needs and the responsabilities
+of each one.
 
 ## Why should I use Blacksmith instead of a no-code solution?
 
