@@ -4,6 +4,9 @@ After a few years we decided to crystallize all of our data engineering best
 practices into a product, on top of which organizations can layer cloud-assisted
 data solutions.
 
+Blacksmith allows organizatons to smoothly build their own data engineering platform
+so they can break the boundaries of generic approaches.
+
 ![Data engineering with Blacksmith](https://nunchi.studio/images/blacksmith/approach.png)
 
 Blacksmith is a programmable low-code ecosystem, offering a complete and consistent
@@ -19,7 +22,7 @@ leading you to save months of customized and professional work.
 By leveraging Blacksmith, organizations benefit a single source of truth for all
 their data with a unique developer experience.
 
-Powerful REST API ([Enterprise Edition](https://nunchi.studio/blacksmith/editions)):
+Powerful REST API ([Enterprise Edition](https://nunchi.studio/blacksmith/pricing)):
 ```bash
 $ curl --request GET --url 'https://example.com/admin/api/store/jobs' \
   -d events.sources_in=cms \
@@ -30,7 +33,7 @@ $ curl --request GET --url 'https://example.com/admin/api/store/jobs' \
   -d offset=0 -d limit=100
 ```
 
-Built-in dashboard ([Enterprise Edition](https://nunchi.studio/blacksmith/editions)):
+Built-in dashboard ([Enterprise Edition](https://nunchi.studio/blacksmith/pricing)):
 ![Blacksmith Dashboard](https://nunchi.studio/images/blacksmith/dashboard.002.png)
 
 ## Product offerings
@@ -46,7 +49,7 @@ Blacksmith is available in two Editions:
 - **Blacksmith Enterprise Edition** addresses the complexity of collaboration
   and governance across multi-team and multi-scope data solutions.
 
-- [Compare Editions](https://nunchi.studio/blacksmith/editions)
+- [Compare Editions](https://nunchi.studio/blacksmith/pricing)
 
 ## Links
 
