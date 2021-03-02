@@ -53,7 +53,7 @@ the options for each one.
 ## Retrieve a specific source
 
 This endpoint exposes details about a single source registered in an application,
-including its options and triggers.
+including its options and some details about its triggers.
 
 - **Method:** `GET`
 - **Path:** `/admin/api/sources/:source_name`
@@ -109,6 +109,48 @@ including its options and triggers.
         [...]
         
       ]
+    }
+  }
+
+  ```
+
+## Retrieve a specific trigger
+
+This endpoint exposes every details about a trigger, including its semaphore status
+given by the `supervisor` adapter (if enabled).
+
+- **Method:** `GET`
+- **Path:** `/admin/api/sources/:source_name/triggers/:trigger_name`
+- **Route params:**
+  - `source_name`: Name of the source to retrieve.
+  - `trigger_name`: Name of the trigger to retrieve.
+
+- **Example request:**
+  ```bash
+  $ curl --request GET --url 'http://localhost:9091/admin/api/sources/my-source/triggers/trigger-a'
+
+  ```
+- **Example response**:
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Successful",
+    "data": {
+      "name": "trigger-a",
+      "mode": {
+        "mode": "cron",
+        "cron": {
+          "interval": "@every 40s"
+        },
+      },
+      "semaphore": {
+        "key": "triggers/my-source/trigger-a",
+        "is_applicable": true,
+        "is_acquired": true,
+        "acquirer_name": "blacksmith-gateway",
+        "acquirer_address": ":9090",
+        "session_id": "1p1RzXlka08MaE2ht3jRWW36isZ"
+      }
     }
   }
 

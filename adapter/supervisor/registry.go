@@ -66,13 +66,3 @@ type Node struct {
 	// They can be different from the services.
 	Meta map[string]string `json:"meta"`
 }
-
-/*
-Lock holds information about a lock-key in the distributed system. This allows to
-acquire and release access to resources.
-*/
-type Lock struct {
-
-	// Key is the id / name / key to acquire and release.
-	Key string `json:"key"`
-}

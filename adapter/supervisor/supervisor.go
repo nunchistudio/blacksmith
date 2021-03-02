@@ -38,6 +38,9 @@ type Supervisor interface {
 	// key is successfully released.
 	Unlock(*Toolkit, *Lock) (bool, error)
 
+	// Status returns the semaphore status for a given key.
+	Status(*Toolkit, *Lock) (*Semaphore, error)
+
 	// Health returns the status of the service registry.
 	Health(*Toolkit) (*Registry, error)
 }
