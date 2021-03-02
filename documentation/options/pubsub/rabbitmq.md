@@ -82,13 +82,13 @@ from the environment variables.
 
 ## Trigger configuration
 
-Using the trigger mode `source.ModeSubscriber`, a trigger can extract events from
+Using the trigger mode `source.ModeSubscription`, a trigger can extract events from
 RabbitMQ:
 ```go
 func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
-    Mode: source.ModeSubscriber,
-    UsingSubscriber: &source.Subscription{
+    Mode: source.ModeSubscription,
+    UsingSubscription: &source.Subscription{
       Subscription: "my-queue",
     },
   }

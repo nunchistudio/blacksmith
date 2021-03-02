@@ -15,7 +15,7 @@ var _ source.TriggerCRON = {{ .CapitalizedName }}{}
 {{ else if (eq .Mode "cdc") -}}
 var _ source.TriggerCDC = {{ .CapitalizedName }}{}
 {{ else if (eq .Mode "sub") -}}
-var _ source.TriggerSubscriber = {{ .CapitalizedName }}{}
+var _ source.TriggerSubscription = {{ .CapitalizedName }}{}
 {{ end -}}
 
 {{ if .WithMigrations -}}

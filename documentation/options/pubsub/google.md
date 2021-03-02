@@ -69,13 +69,13 @@ the environment variables, or from the `*pubsub.Options.Context` if not found.
 
 ## Trigger configuration
 
-Using the trigger mode `source.ModeSubscriber`, a trigger can extract events from
+Using the trigger mode `source.ModeSubscription`, a trigger can extract events from
 Google Pub / Sub:
 ```go
 func (t MyTrigger) Mode() *source.Mode {
   return &source.Mode{
-    Mode: source.ModeSubscriber,
-    UsingSubscriber: &source.Subscription{
+    Mode: source.ModeSubscription,
+    UsingSubscription: &source.Subscription{
       Subscription: "<subscription>",
     },
   }

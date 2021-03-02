@@ -24,7 +24,7 @@ type Semaphore struct {
 
 	// IsApplicable informs the client if a semaphore is needed for the given
 	// resource. As an example, the supervisor is leveraged for CDC and CRON triggers
-	// but not for HTTP or subscriber ones.
+	// but not for HTTP or subscription ones.
 	IsApplicable bool `json:"is_applicable"`
 
 	// IsAcquired informs if the key is currently in use. It can nil if the supervisor

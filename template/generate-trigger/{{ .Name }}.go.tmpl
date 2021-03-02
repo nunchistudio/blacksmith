@@ -243,7 +243,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, notifier *source.Not
 {{ else if (eq .Mode "sub") -}}
 {{ if not .NoComments -}}
 /*
-Mode allows to register the trigger as a subscriber in a Pub / Sub
+Mode allows to register the trigger as a subscription in a Pub / Sub
 mechanism. This means, every time a message is received by a subscription,
 the Extract function will run.
 
@@ -253,8 +253,8 @@ This leverages the Pub / Sub adapter configured in the application.
 
 func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 	return &source.Mode{
-		Mode: source.ModeSubscriber,
-		UsingSubscriber: &source.Subscription{
+		Mode: source.ModeSubscription,
+		UsingSubscription: &source.Subscription{
 			Topic:        "<topic>",
 			Subscription: "<subscription>",
 		},
@@ -264,7 +264,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 {{ if not .NoComments -}}
 /*
 Extract is the function being run when a new message is received in
-the subscriber. It is in charge of the "E" in the ETL process: Extract
+the subscription. It is in charge of the "E" in the ETL process: Extract
 the data from the source.
 
 The function allows to return data to flows. It is the "T" in the ETL

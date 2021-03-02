@@ -5,19 +5,19 @@ import (
 )
 
 /*
-ModeSubscriber is used to indicate the event is triggered from a message received
-by a subscriber in a Pub / Sub mechanism.
+ModeSubscription is used to indicate the event is triggered from a message received
+by a subscription in a Pub / Sub mechanism.
 */
-var ModeSubscriber = "subscriber"
+var ModeSubscription = "subscription"
 
 /*
-TriggerSubscriber is the interface used for triggers using a Pub / Sub topic.
+TriggerSubscription is the interface used for triggers using a Pub / Sub topic.
 
 A new subscription trigger can be generated using the Blacksmith CLI:
 
   $ blacksmith generate trigger --name <name> --mode sub [--path <path>] [--migrations]
 */
-type TriggerSubscriber interface {
+type TriggerSubscription interface {
 
 	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
