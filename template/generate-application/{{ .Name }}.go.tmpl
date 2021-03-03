@@ -6,6 +6,7 @@ import (
 	"github.com/nunchistudio/blacksmith"
 	"github.com/nunchistudio/blacksmith/adapter/pubsub"
 	"github.com/nunchistudio/blacksmith/adapter/store"
+	"github.com/nunchistudio/blacksmith/adapter/supervisor"
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	"github.com/nunchistudio/blacksmith/flow/destination"
 	"github.com/nunchistudio/blacksmith/flow/source"
@@ -74,12 +75,13 @@ func Init() *blacksmith.Options {
 		Wanderer: &wanderer.Options{
 			From: "postgres",
 		},
+		Supervisor: &supervisor.Options{
+			From: "postgres",
+		},
 
 		PubSub: &pubsub.Options{
 			From: "nats",
 		},
-
-		// Supervisor: &supervisor.Options{},
 
 		Sources: []*source.Options{},
 
