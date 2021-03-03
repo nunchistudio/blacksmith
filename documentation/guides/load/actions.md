@@ -31,7 +31,7 @@ $ blacksmith generate action --name myaction \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/guides/practices/migrations)
+If you need to [handle data migrations](/blacksmith/practices/management/migrations)
 within the action, you can also add the `--migrations` flag:
 ```bash
 $ blacksmith generate action --name myaction \
@@ -79,4 +79,4 @@ Every time the flow is executed, a *job* will be created for the action.
 
 The `Version` key introduced in this last example is optional. It leverages schema
 versioning, following production best practices as explained in 
-[one of the "Best practices" guides](/blacksmith/guides/practices/versioning).
+[one of the "Best practices" guides](/blacksmith/practices/management/versioning).

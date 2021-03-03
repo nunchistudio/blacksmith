@@ -7,7 +7,7 @@ enterprise: true
 
 The HTTP API exposes endpoints to retrieve events, jobs, and jobs' status (also
 known as jobs' transitions) of a Blacksmith application. This also exposes an
-endpoint for [purging data from the `store` adapter](/blacksmith/guides/practices/purge).
+endpoint for [purging data from the `store` adapter](/blacksmith/practices/management/purge).
 
 When retrieving a collection of events or jobs, the request can have query params
 for searching, filtering, grouping, and paginating objects. This is a very powerful

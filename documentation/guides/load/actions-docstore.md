@@ -79,7 +79,7 @@ $ blacksmith generate action --name myaction \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/guides/practices/migrations)
+If you need to [handle data migrations](/blacksmith/practices/management/migrations)
 within the action, you can also add the `--migrations` flag:
 ```bash
 $ blacksmith generate action --name myaction \

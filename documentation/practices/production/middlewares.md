@@ -9,7 +9,7 @@ The `gateway` and `scheduler` services can take a Go standard HTTP middleware.
 This way, any HTTP logic can be added for authentication, authorization, or other
 security requirements.
 
-[As described in its dedicated section](/blacksmith/api/introduction/options),
+[As described in its dedicated section](/blacksmith/http/introduction/options),
 the admin REST API can also take a stack of HTTP middlewares to secure its
 endpoints.
 

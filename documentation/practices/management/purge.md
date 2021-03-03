@@ -123,4 +123,4 @@ data from the `store` adapter.
 
 This can be done with the HTTP API. It can accept an incoming request and then
 purge the data based on the request's params.
-[Read how it works.](/blacksmith/api/http/store)
+[Read how it works.](/blacksmith/http/resources/store)

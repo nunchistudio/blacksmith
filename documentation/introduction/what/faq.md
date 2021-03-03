@@ -14,11 +14,11 @@ requests to the endpoints they offer.
 You could compare Blacksmith to a SaaS because organizations consume the public
 APIs it exposes. However, unlike other SaaS, developers mainly consume a [Go
 API](https://pkg.go.dev/github.com/nunchistudio/blacksmith) in addition to the [HTTP
-one](/blacksmith/api). This API lets you define your own data engineering
+one](/blacksmith/http). This API lets you define your own data engineering
 strategy as-code. In this way, it acts like a framework to build your own data
 engineering SaaS. It runs on your servers and infrastructure.
 
-Furthermore, a Blacksmith application also [exposes HTTP endpoints](/blacksmith/api).
+Furthermore, a Blacksmith application also [exposes HTTP endpoints](/blacksmith/http).
 Developers can therefore consume these to embed any kind of data in third-party
 services and build custom dashboards on top of it.
 
@@ -29,7 +29,7 @@ of software in addition to the application built on top of it.
 
 We are well aware analytics and marketing teams already use third-party services
 such as Segment, Zapier, Fivetran, or dbt. Blacksmith can act both as an addition
-or a substitute to these services, depending on your needs and the responsabilities
+or a substitute to these services, depending on your needs and the responsibilities
 of each one.
 
 ## Why should I use Blacksmith instead of a no-code solution?
@@ -63,7 +63,7 @@ Terraform.
 ## What is an adapter?
 
 An adapter is an *implementation* of an *interface*. For example the PostgreSQL
-store adapter let you use PostgreSQL as a store for Blacksmith.
+`store` adapter let you use PostgreSQL as a store for Blacksmith.
 
 ## What is the license?
 
