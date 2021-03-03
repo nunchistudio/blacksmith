@@ -37,7 +37,7 @@ destinations.
           "tags": ["blacksmith"],
           "meta": {
             "go_version": "1.16.0",
-            "blacksmith_version": "0.15.0"
+            "blacksmith_version": "0.15.1"
           }
         }
       },
@@ -67,7 +67,7 @@ destinations.
         }
       },
       "blacksmith": {
-        "version": "0.15.0"
+        "version": "0.15.1"
       },
       "go": {
         "version": "1.16",

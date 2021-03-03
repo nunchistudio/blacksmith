@@ -37,7 +37,7 @@ module github.com/<org>/<app>
 go 1.16
 
 require (
-  github.com/nunchistudio/blacksmith v0.15.0
+  github.com/nunchistudio/blacksmith v0.15.1
   gocloud.dev v0.22.0
 )
 
@@ -50,7 +50,7 @@ module github.com/<org>/<app>
 go 1.16
 
 require (
-  github.com/nunchistudio/blacksmith v0.15.0
+  github.com/nunchistudio/blacksmith v0.15.1
   gocloud.dev v0.22.0
   gocloud.dev/pubsub/kafkapubsub v0.22.0
 )
@@ -64,7 +64,7 @@ module github.com/<org>/<app>
 go 1.16
 
 require (
-  github.com/nunchistudio/blacksmith v0.15.0
+  github.com/nunchistudio/blacksmith v0.15.1
   gocloud.dev v0.22.0
   gocloud.dev/pubsub/natspubsub v0.22.0
 )
@@ -78,7 +78,7 @@ module github.com/<org>/<app>
 go 1.16
 
 require (
-  github.com/nunchistudio/blacksmith v0.15.0
+  github.com/nunchistudio/blacksmith v0.15.1
   gocloud.dev v0.22.0
   gocloud.dev/pubsub/rabbitpubsub v0.22.0
 )

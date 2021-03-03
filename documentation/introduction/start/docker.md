@@ -18,7 +18,7 @@ an official Docker image is not supported.
 
 One should looks like this:
 ```dockerfile
-FROM nunchistudio/blacksmith-enterprise:0.15.0-alpine
+FROM nunchistudio/blacksmith-enterprise:0.15.1-alpine
 
 ADD ./ /app
 WORKDIR /app
