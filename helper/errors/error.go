@@ -14,7 +14,7 @@ type Error struct {
 	StatusCode int `json:"statusCode,omitempty"`
 
 	// Message is the error message.
-	Message string `json:"message"`
+	Message string `json:"message,omitempty"`
 
 	// Validations is a list of validation errors.
 	Validations []Validation `json:"validations,omitempty"`
