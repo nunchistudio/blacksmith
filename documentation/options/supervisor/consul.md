@@ -17,29 +17,24 @@ collision when working within a multi-node environment:
 
 ## Options
 
-- `Join`: The node of the distributed system to join. Each running instance of
-  Blacksmith must join a different Consul agent to avoid access collision.
-  - `Address`: The Consul agent URL to dial to leverage distributed locks. When
-    set, this will override the `CONSUL_ADDRESS` environment variable. **We strongly
-    recommend the use of the `CONSUL_ADDRESS` environment variable to avoid
-    connection strings in your code.**
-  - `Tags`: Slice of tags related to the node.
-  - `Meta`: Collection of meta-data related to the node.
+- `Connection`: The Consul agent URL to dial to leverage distributed locks. When
+  set, this will override the `CONSUL_ADDRESS` environment variable. **We strongly
+  recommend the use of the `CONSUL_ADDRESS` environment variable to avoid connection
+  strings in your code.**
 
 ## Environment variables
 
 Some options can be loaded from the environment variables. They will be loaded
-from `*pubsub.Options.Context` (or from `*pubsub.Options.Connection` for the
-connection string) if not found.
+from `*supervisor.Options.Context` (or from `*supervisor.Options.Connection` for
+the connection string) if not found.
 
 - `CONSUL_ADDRESS`: The Consul agent URL to dial to leverage distributed locks.
-  If `Options.Supervisor.Join.Address` is set, it will override and be used in
-  replacement of this environment variable. Each running instance of Blacksmith
-  must join a different Consul agent to avoid access collision.
+  If `Options.Supervisor.Connection` is set, it will override and be used in
+  replacement of this environment variable.
 
   **Type:** `string`
 
-  **Required:** yes (if `Options.Supervisor.Join.Address` is not set)
+  **Required:** yes (if `Options.Supervisor.Connection` is not set)
 
   **Example:** `http://127.0.0.1:8500`
 
@@ -107,9 +102,6 @@ func Init() *blacksmith.Options {
     Supervisor: &supervisor.Options{
       From:    "consul",
       Context: ctx,
-      Join: &supervisor.Node{
-        Address: "http://127.0.0.1:8500",
-      },
     },
   }
 

@@ -2,8 +2,6 @@ package supervisor
 
 import (
 	"context"
-
-	"github.com/nunchistudio/blacksmith/version"
 )
 
 /*
@@ -20,13 +18,6 @@ will automatically be applied.
 */
 var Defaults = &Options{
 	Context: context.Background(),
-	Join: &Node{
-		Tags: []string{"blacksmith"},
-		Meta: map[string]string{
-			"go_version":         version.Go(),
-			"blacksmith_version": version.Blacksmith(),
-		},
-	},
 }
 
 /*
@@ -42,8 +33,6 @@ type Options struct {
 	// adapter.
 	Context context.Context `json:"-"`
 
-	// Join allows to attach the current instance to a node of the supervisor used.
-	// Each instance shall be attached to a different node for distributed lock
-	// mechanism.
-	Join *Node `json:"node"`
+	// Connection is the connection string to connect to the supervisor.
+	Connection string `json:"-"`
 }
