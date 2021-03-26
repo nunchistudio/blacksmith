@@ -30,22 +30,37 @@ destinations.
     "message": "Successful",
     "data": {
       "supervisor": {
-        "from": "consul",
-        "node": {
-          "name": "node-1",
-          "address": "https://consul-1.example.com",
-          "tags": ["blacksmith"],
-          "meta": {
-            "go_version": "1.16.0",
-            "blacksmith_version": "0.15.1"
-          }
-        }
+        "from": "consul"
       },
       "wanderer": {
         "from": "postgres"
       },
       "store": {
-        "from": "postgres"
+        "from": "postgres",
+        "purge": [
+          {
+            "where": {
+              "jobs": {
+                "transitions": {
+                  "jobs.status_in": [
+                    "succeeded"
+                  ],
+                  "jobs.status_notin": [
+                    "acknowledged",
+                    "awaiting",
+                    "executing",
+                    "failed",
+                    "discarded",
+                    "unknown"
+                  ]
+                }
+              },
+              "offset": 0,
+              "limit": 0
+            },
+            "interval": "@weekly"
+          }
+        ]
       },
       "pubsub": {
         "from": "nats",
