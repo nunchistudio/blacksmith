@@ -82,9 +82,42 @@ type Payload struct {
 
 	// Flows defines the flows of actions to run when this trigger is executed.
 	// See package flow for more details.
-	Flows []flow.Flow
+	Flows []flow.Flow `json:"-"`
+
+	// SubEvents is a collection of events that need to be created and associated
+	// to the event being processed. This is useful for triggers accepting a batch
+	// of events in a single request.
+	SubEvents []*SubEvent `json:"sub_events"`
 
 	// SentAt allows you to keep track of the timestamp when the event was originally
 	// sent.
 	SentAt *time.Time `json:"sent_at,omitempty"`
+}
+
+/*
+SubEvent represents an event created by and associated to a parent event. A SubEvent
+can be returned by a Trigger when extracting data, allowing to process a batch of
+events in a single request.
+*/
+type SubEvent struct {
+
+	// Trigger is the trigger's name of the sub-event created.
+	Trigger string `json:"trigger"`
+
+	// Context is a dictionary of information that provides useful context about a
+	// sub-event.
+	//
+	// It must be a valid JSON since it will be used using encoding/json Marshal and
+	// Unmarshal functions.
+	Context []byte `json:"context"`
+
+	// Data is the byte representation of the data sent by the sub-event.
+	//
+	// It must be a valid JSON since it will be used using encoding/json Marshal and
+	// Unmarshal functions.
+	Data []byte `json:"data"`
+
+	// Flows defines the flows of actions to run when this trigger is executed.
+	// See package flow for more details.
+	Flows []flow.Flow `json:"-"`
 }

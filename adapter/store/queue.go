@@ -101,6 +101,11 @@ type Event struct {
 	// IngestedAt is a timestamp of the event creation date into the store.
 	// It can be nil if none was provided.
 	IngestedAt *time.Time `json:"ingested_at,omitempty"`
+
+	// ParentEventID is the ID of the parent event.
+	//
+	// Example: "1UYc8EebLqCAFMOSkbYZdJwNLAJ"
+	ParentEventID *string `json:"parent_event_id,omitempty"`
 }
 
 /*
@@ -148,7 +153,7 @@ type Job struct {
 	// EventID is the ID of the event related to this job.
 	EventID string `json:"event_id,omitempty"`
 
-	// ParentJobID is the ID of the parent job ID.
+	// ParentJobID is the ID of the parent job.
 	ParentJobID *string `json:"parent_job_id,omitempty"`
 }
 
