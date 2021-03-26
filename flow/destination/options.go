@@ -1,7 +1,6 @@
 package destination
 
 import (
-	"context"
 	"time"
 )
 
@@ -24,12 +23,6 @@ var Defaults = &Options{
 Options is the options a user can pass to use a destination.
 */
 type Options struct {
-
-	// Load is used to load and use a destination.
-	Load Destination `json:"-"`
-
-	// Context is a free key-value dictionary that will be passed to the destination.
-	Context context.Context `json:"-"`
 
 	// Versions is a collection of supported versions for a destination. The value
 	// of each version is its deprecation date. It must be set to an empty time.Time

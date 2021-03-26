@@ -1,7 +1,6 @@
 package source
 
 import (
-	"context"
 	"time"
 )
 
@@ -20,12 +19,6 @@ Options is the options a user can pass to use a source.
 */
 type Options struct {
 
-	// Load is used to load and use a source.
-	Load Source `json:"-"`
-
-	// Context is a free key-value dictionary that will be passed to the source.
-	Context context.Context `json:"-"`
-
 	// Versions is a collection of supported versions for a source. The value of
 	// each version is its deprecation date. It must be set to an empty time.Time
 	// when the version is still maintained.
@@ -42,9 +35,8 @@ type Options struct {
 	// Note: Feature only available in Blacksmith Enterprise Edition.
 	DefaultVersion string `json:"default_version,omitempty"`
 
-	// DefaultSchedule represents a schedule at which a source's trigger should run.
-	// This value can be overridden by the source triggers to benefit a per trigger
-	// basis schedule. This is used for CRON tasks so you can trigger jobs at a
-	// given time.
+	// DefaultSchedule represents a schedule at which a source's trigger in CRON
+	// mode should run. This value can be overridden by the source triggers using
+	// this mode to benefit a per trigger schedule.
 	DefaultSchedule *Schedule `json:"cron"`
 }

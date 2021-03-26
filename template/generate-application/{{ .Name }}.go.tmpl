@@ -83,9 +83,9 @@ func Init() *blacksmith.Options {
 			From: "nats",
 		},
 
-		Sources: []*source.Options{},
+		Sources: []source.Source{},
 
-		Destinations: []*destination.Options{},
+		Destinations: []destination.Destination{},
 	}
 
 	return options

@@ -62,10 +62,10 @@ func Init() *blacksmith.Options {
 
     // ...
 
-    Sources: []*source.Options{
-      {
-        Load: mysource.New(),
-      },
+    Sources: []source.Source{
+      mysource.New(&mysource.Options{
+        // ...
+      }),
     },
   }
 

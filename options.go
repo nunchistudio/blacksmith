@@ -42,11 +42,11 @@ type Options struct {
 	// Scheduler is the options passed to use the scheduler service.
 	Scheduler *service.Options `json:"scheduler"`
 
-	// Sources is a slice of options passed to create sources.
-	Sources []*source.Options `json:"-"`
+	// Sources is a slice of Blacksmith sources.
+	Sources []source.Source `json:"-"`
 
-	// Destinations is a slice of options passed to create destinations.
-	Destinations []*destination.Options `json:"-"`
+	// Destinations is a slice of Blacksmith destinations.
+	Destinations []destination.Destination `json:"-"`
 
 	// License holds the license details for using Blacksmith Enterprise Edition.
 	// This is not necessary for using the Standard Edition.

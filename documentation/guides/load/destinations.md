@@ -152,10 +152,10 @@ func Init() *blacksmith.Options {
 
     // ...
 
-    Destinations: []*destination.Options{
-      {
-        Load: mydestination.New(),
-      },
+    Destinations: []destination.Destination{
+      mydestination.New(&mydestination.Options{
+        // ...
+      }),
     },
   }
 
