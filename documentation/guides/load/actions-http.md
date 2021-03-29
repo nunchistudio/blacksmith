@@ -59,6 +59,7 @@ retries for each job.
 package mydestination
 
 import (
+  "bytes"
   "context"
   "net/http"
   "time"
@@ -100,16 +101,33 @@ func (a MyAction) Load(tk *destination.Toolkit, queue *store.Queue, then chan<- 
   // When the data is parsed and ready, we can send it to the destination.
   // Inform the scheduler and stop to load data if an error occured.
   req, _ := http.NewRequest("POST", "http://example.com", nil)
-  _, err := a.client.Do(req)
+  req.Header.Set("Content-Type", "application/json")
+  res, err := a.client.Do(req)
   if err != nil {
     then <- destination.Then{
       Error: &errors.Error{
         StatusCode: 500,
         Message:    err.Error(),
       },
-      ForceDiscard: false,
+      ForceDiscard: true,
       OnFailed:     []destination.Action{},
       OnDiscarded:  []destination.Action{},
+    }
+
+    return
+  }
+
+  // Since a non-2xx status code doesn't cause an error, catch HTTP status
+  // code to ensure nothing bad happened.
+  if res.StatusCode >= 300 {
+    buf := new(bytes.Buffer)
+    buf.ReadFrom(res.Body)
+    then <- destination.Then{
+      ForceDiscard: false,
+      Error: &errors.Error{
+        StatusCode: res.StatusCode,
+        Message:    buf.String(),
+      },
     }
 
     return

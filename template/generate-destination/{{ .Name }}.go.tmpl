@@ -20,6 +20,7 @@ import (
 	{{ if .WithMigrations -}}
 	"github.com/nunchistudio/blacksmith/helper/sqlike"
 	{{- end }}
+	"github.com/nunchistudio/blacksmith/helper/logger"
 
 	{{ if (eq .Starter "gocloud/blob") -}}
 	"gocloud.dev/blob"
@@ -56,6 +57,7 @@ for the destination "{{ .Name }}".
 {{ end -}}
 
 type {{ .CapitalizedName }} struct {
+	env     *Options
 	options *destination.Options
 	context context.Context
 
@@ -78,8 +80,14 @@ New returns a valid Blacksmith destination.Destination for {{ .CapitalizedName }
 */
 {{ end -}}
 
-func New() destination.Destination {
+func New(env *Options) destination.Destination {
 	ctx := context.Background()
+
+	// Validate the environment options passed by the application.
+	// Stop the process if any error is returned.
+	if err := env.validate(); err != nil {
+		logger.Default.Fatal(err)
+	}
 
 	{{ if (eq .Starter "net/http") -}}
 	{{ if not .NoComments -}}
@@ -113,6 +121,7 @@ func New() destination.Destination {
 	{{ end }}
 
 	return &{{ .CapitalizedName }}{
+		env: env,
 		options: &destination.Options{
 			Versions: map[string]time.Time{
 				"{{ .Version }}": time.Time{},
@@ -120,8 +129,8 @@ func New() destination.Destination {
 			DefaultVersion: "{{ .Version }}",
 			DefaultSchedule: &destination.Schedule{
 				Realtime:   true,
-				Interval:   "@every 1h",
-				MaxRetries: 50,
+				Interval:   env.Interval,
+				MaxRetries: env.MaxRetries,
 			},
 		},
 		context: ctx,

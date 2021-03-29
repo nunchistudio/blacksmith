@@ -1,6 +1,7 @@
 package {{ .Package }}
 
 import (
+	"context"
 	{{ if .WithMigrations -}}
 	"database/sql"
 	{{ end -}}
@@ -28,16 +29,16 @@ import (
 
 {{ if not .NoComments -}}
 /*
-{{ .CapitalizedName }} implements the Blacksmith source.Trigger interface
-for the trigger "{{ .Name }}".
-
-It holds the complete payload structure sent by an event and that will be
-received by the gateway. Blacksmith needs "Version", "Context", "Data", and
-"SentAt" keys to ensure consistency across triggers.
+{{ .CapitalizedName }} implements the Blacksmith source.Trigger interface for the trigger
+"{{ .Name }}". It holds the complete payload structure sent by an event and that
+will be received by the gateway.
 */
 {{ end -}}
 
 type {{ .CapitalizedName }} struct {
+	env     *Options
+	context context.Context
+
 	Version string                      `json:"version,omitempty"`
 	Context *Context                    `json:"context"`
 	Data    *{{ .CapitalizedName }}Data `json:"data"`
@@ -68,8 +69,8 @@ func (t {{ .CapitalizedName }}) String() string {
 {{ if not .NoComments -}}
 /*
 Mode allows to register the trigger as a HTTP route. This means, every
-time a "POST" request is executed against the route "/endpoint", the
-Extract function will run.
+time a "POST" request is executed against the route "/{{ .Package }}/{{ .Name }}",
+the Extract function will run.
 */
 {{ end -}}
 
@@ -78,7 +79,7 @@ func (t {{ .CapitalizedName }}) Mode() *source.Mode {
 		Mode: source.ModeHTTP,
 		UsingHTTP: &source.Route{
 			Methods:  []string{"POST"},
-			Path:     "/endpoint",
+			Path:     "/{{ .Package }}/{{ .Name }}",
 			ShowMeta: true,
 			ShowData: true,
 		},

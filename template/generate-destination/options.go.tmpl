@@ -1,0 +1,62 @@
+package {{ .Package }}
+
+import (
+	"github.com/nunchistudio/blacksmith/flow/destination"
+	"github.com/nunchistudio/blacksmith/helper/errors"
+)
+
+/*
+Options is the options the destination can take as an input to be configured.
+*/
+type Options struct {
+
+	// Interval represents an interval or a CRON string at which an event shall be
+	// loaded to the destination. It is used as the time-lapse between retries in
+	// case of a job failure.
+	//
+	// Defaults to "@every 1h".
+	Interval string
+
+	// MaxRetries indicates the maximum number of retries per job the scheduler will
+	// attempt to execute for each job. When the limit is reached, the job is marked
+	// as "discarded".
+	//
+	// Defaults to 72.
+	MaxRetries uint16
+}
+
+/*
+validate ensures the options passed to initialize the destination are valid.
+*/
+func (env *Options) validate() error {
+	var interval string = destination.Defaults.DefaultSchedule.Interval
+	var maxRetries uint16 = destination.Defaults.DefaultSchedule.MaxRetries
+
+	fail := &errors.Error{
+		Message:     "destination/{{ .Package }}: Failed to load",
+		Validations: []errors.Validation{},
+	}
+
+	if env == nil {
+		fail.Validations = append(fail.Validations, errors.Validation{
+			Message: "Options must not be nil",
+			Path:    []string{"Options", "Destinations", "{{ .Package }}"},
+		})
+
+		return fail
+	}
+
+	if env.Interval == "" {
+		env.Interval = interval
+	}
+
+	if env.MaxRetries == 0 {
+		env.MaxRetries = maxRetries
+	}
+
+	if len(fail.Validations) > 0 {
+		return fail
+	}
+
+	return nil
+}

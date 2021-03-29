@@ -14,8 +14,9 @@ import (
   {{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/source"
 	{{ if .WithMigrations -}}
-  "github.com/nunchistudio/blacksmith/helper/sqlike"
-  {{- end }}
+	"github.com/nunchistudio/blacksmith/helper/sqlike"
+	{{- end }}
+	"github.com/nunchistudio/blacksmith/helper/logger"
 )
 
 {{ if not .NoComments -}}
@@ -35,13 +36,14 @@ type Context struct {
 
 {{ if not .NoComments -}}
 /*
-{{ .CapitalizedName }} implements the Blacksmith source.Source interface for
-the source "{{ .Name }}".
+{{ .CapitalizedName }} implements the Blacksmith source.Source interface for the source "{{ .Name }}".
 */
 {{ end -}}
 
 type {{ .CapitalizedName }} struct {
+	env     *Options
 	options *source.Options
+	context context.Context
 }
 
 {{ if not .NoComments -}}
@@ -50,14 +52,24 @@ New returns a valid Blacksmith source.Source for {{ .CapitalizedName }}.
 */
 {{ end -}}
 
-func New() source.Source {
+func New(env *Options) source.Source {
+	ctx := context.Background()
+
+	// Validate the environment options passed by the application.
+	// Stop the process if any error is returned.
+	if err := env.validate(); err != nil {
+		logger.Default.Fatal(err)
+	}
+
 	return &{{ .CapitalizedName }}{
+		env: env,
 		options: &source.Options{
 			Versions: map[string]time.Time{
 				"{{ .Version }}": time.Time{},
 			},
 			DefaultVersion: "{{ .Version }}",
 		},
+		context: ctx,
 	}
 }
 

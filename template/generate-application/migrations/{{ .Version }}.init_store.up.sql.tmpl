@@ -7,6 +7,9 @@ CREATE TABLE IF NOT EXISTS blacksmith_store.events (
   version TEXT,
   context JSONB,
   data JSONB,
+  parent_event_id VARCHAR(27) REFERENCES blacksmith_store.events (id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+    DEFERRABLE INITIALLY DEFERRED,
   sent_at TIMESTAMP WITHOUT TIME ZONE,
   received_at TIMESTAMP WITHOUT TIME ZONE,
   ingested_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()

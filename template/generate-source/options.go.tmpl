@@ -1,0 +1,28 @@
+package {{ .Package }}
+
+import (
+	"github.com/nunchistudio/blacksmith/helper/errors"
+)
+
+/*
+Options is the options the source can take as an input to be configured.
+*/
+type Options struct{
+	// ...
+}
+
+/*
+validate ensures the options passed to initialize the source are valid.
+*/
+func (env *Options) validate() error {
+	fail := &errors.Error{
+		Message:     "source/{{ .Package }}: Failed to load",
+		Validations: []errors.Validation{},
+	}
+
+	if len(fail.Validations) > 0 {
+		return fail
+	}
+
+	return nil
+}
