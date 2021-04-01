@@ -4,20 +4,16 @@ After a few years we decided to crystallize all of our data engineering best
 practices into a product, on top of which organizations can layer cloud-assisted
 data solutions.
 
-Blacksmith allows organizatons to smoothly build their own data engineering platform
-so they can break the boundaries of generic approaches.
+Blacksmith is a low-code ecosystem offering a complete and consistent approach for
+building ETL platforms. It allows organizations to process, trust, and visualize
+all their data flowing from end to end in a consistent way.
+
+Any team that is building — or think about building — a data engineering platform
+knows the tremendous amount of work needed to properly accomplish this mission.
+Think of Blacksmith as the central piece of your data engineering workflow, leading
+you to save months of customized and professional work.
 
 ![Data engineering with Blacksmith](https://nunchi.studio/images/blacksmith/approach.png)
-
-Blacksmith is a programmable low-code ecosystem, offering a complete and consistent
-data engineering solution. It allows you to design, build, and deploy reliable data
-engineering platforms in a consistent way. The goal of Blacksmith is to address as
-many pain points as possible data engineering teams encounter.
-
-Any team that is building — or think about building — a complete data engineering
-platform knows the tremendous amount of work needed to properly accomplish this
-mission. Think of Blacksmith as the central piece of your data engineering workflow,
-leading you to save months of customized and professional work.
 
 By leveraging Blacksmith, organizations benefit a single source of truth for all
 their data with a unique developer experience.

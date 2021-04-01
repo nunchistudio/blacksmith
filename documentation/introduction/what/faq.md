@@ -7,12 +7,11 @@ enterprise: false
 
 ## Is Blacksmith a SaaS?
 
-Not really. Traditional SaaS are known to live on servers and domains you do not
-control. They usually expose HTTP APIs so you can consume them by making HTTP
-requests to the endpoints they offer.
+No. SaaS live on servers and domains you do not control. They usually expose HTTP
+APIs so you can consume them by making HTTP requests to the endpoints they offer.
 
 You could compare Blacksmith to a SaaS because organizations consume the public
-APIs it exposes. However, unlike other SaaS, developers mainly consume a [Go
+APIs it exposes. However, unlike SaaS, developers mainly consume a [Go
 API](https://pkg.go.dev/github.com/nunchistudio/blacksmith) in addition to the [HTTP
 one](/blacksmith/http). This API lets you define your own data engineering
 strategy as-code. In this way, it acts like a framework to build your own data
