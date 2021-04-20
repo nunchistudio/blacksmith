@@ -39,15 +39,15 @@ type Action interface {
 	// Marshal is in charge of marshalling the received data for the action. It
 	// can be in charge of the "T" in the ETL process if needed: it can Transform
 	// the data of the pointer receiver originally passed by sources' triggers or
-	// destinations' actions. It must return a payload including the context and
-	// data as JSON marshaled values.
+	// destinations' actions. It must return a job including the context and data
+	// as JSON marshaled values.
 	//
-	// If the context in the returned payload is nil, the one from the event will
+	// If the context in the returned job is nil, the one from the event will
 	// automatically be applied.
 	//
 	// If the function returns an error, the event can not be considered as transformed.
 	// Therefore, no jobs will be created and the action will never run.
-	Marshal(*Toolkit) (*Payload, error)
+	Marshal(*Toolkit) (*Job, error)
 
 	// Load is in charge of the "L" in the ETL process: it Loads the data to the
 	// destination's endpoint. It is executed either on a schedule basis or in realtime
@@ -64,10 +64,9 @@ type Action interface {
 }
 
 /*
-Payload represents the fields an action must fill when being loaded into the
-destination.
+Job represents the fields an action must fill when being loaded into the destination.
 */
-type Payload struct {
+type Job struct {
 
 	// Version is the version number of the destination used by a flow when executed.
 	//

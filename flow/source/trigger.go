@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/nunchistudio/blacksmith/flow"
+	"github.com/nunchistudio/blacksmith/flow/destination"
 )
 
 /*
@@ -39,7 +40,7 @@ type Mode struct {
 	// - When set to ModeCRON, the UsingCRON schedule is used as the trigger.
 	// - When set to ModeCDC, no trigger is registered since it is an ongoing
 	//   listener. It is up to the Extract function to include the infinite loop
-	//   and send the payload using the channel passed in params.
+	//   and send the event using the channel passed in params.
 	// - When set to ModeSubscription, the UsingPubSub options is used as the trigger.
 	//   It uses the Pub / Sub adapter configured for the application.
 	Mode string `json:"mode"`
@@ -56,13 +57,12 @@ type Mode struct {
 }
 
 /*
-Payload represents the fields a trigger must fill. It will be used across the
-application to match the fields between sources and destinations.
+Event represents the fields a trigger shall fill to create an event. It will be
+used across the application to match the fields between sources and destinations.
 */
-type Payload struct {
+type Event struct {
 
-	// Version is the version number of the source used by the event's payload
-	// when triggered.
+	// Version is the version number of the source used by the event's when triggered.
 	//
 	// Examples: "v1.0", "2020-10-01"
 	Version string `json:"version,omitempty"`
@@ -79,6 +79,11 @@ type Payload struct {
 	// It must be a valid JSON since it will be used using encoding/json Marshal and
 	// Unmarshal functions.
 	Data []byte `json:"data"`
+
+	// Actions allows to create jobs directly from the event when the trigger is
+	// executed. Where Flows is used to create jobs from a common data schema, calling
+	// Actions directly not from a flow can often be simpler.
+	Actions destination.Actions `json:"-"`
 
 	// Flows defines the flows of actions to run when this trigger is executed.
 	// See package flow for more details.
@@ -117,7 +122,18 @@ type SubEvent struct {
 	// Unmarshal functions.
 	Data []byte `json:"data"`
 
+	// Actions allows to create jobs directly from the event when the trigger is
+	// executed. Where Flows is used to create jobs from a common data schema, calling
+	// Actions directly not from a flow can often be simpler.
+	//
+	// The jobs created by the actions are related to the sub-event, not the parent
+	// event.
+	Actions destination.Actions `json:"-"`
+
 	// Flows defines the flows of actions to run when this trigger is executed.
 	// See package flow for more details.
+	//
+	// The jobs created by the actions returned are related to the sub-event, not
+	// the parent event.
 	Flows []flow.Flow `json:"-"`
 }

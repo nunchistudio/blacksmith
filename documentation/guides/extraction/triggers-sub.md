@@ -58,7 +58,7 @@ If the trigger mode is `subscription`, it must respect the interface
 
 The signature of the `Extract` function is:
 ```go
-Extract(*source.Toolkit, *pubsub.Message) (*source.Payload, error)
+Extract(*source.Toolkit, *pubsub.Message) (*source.Event, error)
 
 ```
 

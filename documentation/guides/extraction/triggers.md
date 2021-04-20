@@ -32,11 +32,11 @@ func (s *MySource) Triggers() map[string]source.Trigger {
 
 ## Notes about triggers
 
-### Payload
+### Event created
 
-When a trigger is executed, it can return a payload (in `Payload` of type
-[`*source.Payload`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Payload)).
-The payload contains:
+When a trigger is executed, it returns the created events (in `Event` of type
+[`*source.Event`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Event)).
+The event contains:
 - `Context` is a dictionary of information that provides useful context about an
   event. The context should be used inside every triggers for consistency.
   It must be a valid JSON since it will be used using `encoding/json` `Marshal`

@@ -21,7 +21,7 @@ type TriggerSubscription interface {
 
 	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Extract(*Toolkit, *pubsub.Message) (*Payload, error)
+	Extract(*Toolkit, *pubsub.Message) (*Event, error)
 }
 
 /*

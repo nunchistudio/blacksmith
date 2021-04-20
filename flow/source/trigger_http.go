@@ -20,7 +20,7 @@ type TriggerHTTP interface {
 
 	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Extract(*Toolkit, *http.Request) (*Payload, error)
+	Extract(*Toolkit, *http.Request) (*Event, error)
 }
 
 /*

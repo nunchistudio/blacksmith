@@ -48,11 +48,12 @@ the status as unknown.
 var StatusUnknown = "unknown"
 
 /*
-Queue keeps track of incoming events, their jobs, and their jobs' transitions.
+Queue keeps track of events, their jobs, and their jobs' transitions.
 */
 type Queue struct {
 
-	// Events is the collection of incoming or awaiting events.
+	// Events is the collection of events including their related jobs and jobs'
+	// status.
 	Events []*Event `json:"events"`
 }
 
@@ -66,28 +67,24 @@ type Event struct {
 	// Example: "1UYc8EebLqCAFMOSkbYZdJwNLAJ"
 	ID string `json:"id"`
 
-	// Source is the string representation of the incoming event's source.
+	// Source is the string representation of the event's source.
 	Source string `json:"source"`
 
-	// Trigger is the string representation of the incoming or awaiting event.
+	// Trigger is the string representation of the event's trigger.
 	Trigger string `json:"trigger"`
 
-	// Version is the version number of the source used by the event's payload
-	// when triggered.
+	// Version is the version number of the source used by the event when triggered.
 	//
 	// Examples: "v1.0", "2020-10-01"
 	Version string `json:"version,omitempty"`
 
-	// Context is the marshaled representation of the "context" key presents in the
-	// event's payload.
+	// Context is the marshaled representation of the event's metadata.
 	Context []byte `json:"context"`
 
-	// Data is the marshaled representation of the "data" key presents in the event's
-	// payload.
+	// Data is the marshaled representation of the event's data.
 	Data []byte `json:"data"`
 
-	// Jobs is a list of jobs to execute related to the event. A destination should
-	// have at most 1 job per event.
+	// Jobs is a list of jobs to execute related to the event.
 	Jobs []*Job `json:"jobs"`
 
 	// SentAt is the timestamp of when the event is originally sent by the source.
@@ -99,7 +96,7 @@ type Event struct {
 	ReceivedAt time.Time `json:"received_at"`
 
 	// IngestedAt is a timestamp of the event creation date into the store.
-	// It can be nil if none was provided.
+	// This shall always be overridden by the store.
 	IngestedAt *time.Time `json:"ingested_at,omitempty"`
 
 	// ParentEventID is the ID of the parent event.
@@ -132,12 +129,10 @@ type Job struct {
 	// Examples: "v1.0", "2020-10-01"
 	Version string `json:"version,omitempty"`
 
-	// Context is the marshaled representation of the "context" key presents in the
-	// event's payload when the destination's event has been marshaled.
+	// Context is the marshaled representation of the job's metadata.
 	Context []byte `json:"context"`
 
-	// Data is the marshaled representation of the "data" key presents in the event's
-	// payload when the destination's event has been marshaled.
+	// Data is the marshaled representation of the job's data.
 	Data []byte `json:"data"`
 
 	// Transitions is an array of the job's transitions. It is used to keep track of

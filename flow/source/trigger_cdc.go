@@ -37,7 +37,7 @@ Example:
       select {
       case <- notification:
         tk.Logger.Info("A notification arrived")
-        notifier.Payload <- &source.Payload{}
+        notifier.Event <- &source.Event{}
       case <-notifier.IsShuttingDown:
         tk.Logger.Warn("gateway/enterprise: Instance is shutting down, what to do?")
         time.Sleep(5 * time.Second)
@@ -48,8 +48,8 @@ Example:
 */
 type Notifier struct {
 
-	// Payload allows you to write the payload and send it to the gateway.
-	Payload chan<- *Payload
+	// Event allows you to write the event's details and send it to the gateway.
+	Event chan<- *Event
 
 	// Error allows you to write an error (if any occurred) and send it to the
 	// gateway.

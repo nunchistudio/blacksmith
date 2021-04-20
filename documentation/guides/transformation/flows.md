@@ -36,14 +36,14 @@ $ blacksmith generate flow --name myflow \
 
 ## Call a flow from a trigger
 
-Given a trigger (here is of mode HTTP), we can now call the flow from the `Payload`
+Given a trigger (here is of mode HTTP), we can now call the flow from the `Event`
 returned by the `Extract` function like this:
 ```go
-func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
+func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Event, error) {
 
   // ...
 
-  return &source.Payload{
+  return &source.Event{
     Context: ctx,
     Data:    data,
     Flows:   []flow.Flow{

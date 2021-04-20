@@ -49,7 +49,7 @@ If the trigger mode is `http`, it must respect the interface
 
 The signature of the `Extract` function is:
 ```go
-Extract(*source.Toolkit, *http.Request) (*source.Payload, error)
+Extract(*source.Toolkit, *http.Request) (*source.Event, error)
 
 ```
 

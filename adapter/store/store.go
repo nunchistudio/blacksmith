@@ -29,7 +29,7 @@ type Store interface {
 
 	// FindEvents returns a list of events matching the constraints passed in params.
 	// It also returns meta information about the query, such as pagination and the
-	// constraints really applied to it.
+	// constraints actually applied to it.
 	FindEvents(*Toolkit, *WhereEvents) ([]*Event, *Meta, error)
 
 	// AddJobs inserts a list of jobs into the datastore.
@@ -40,7 +40,7 @@ type Store interface {
 
 	// FindJobs returns a list of jobs matching the constraints passed in params.
 	// It also returns meta information about the query, such as pagination and the
-	// constraints really applied to it.
+	// constraints actually applied to it.
 	FindJobs(*Toolkit, *WhereEvents) ([]*Job, *Meta, error)
 
 	// AddTransitions inserts a list of transitions into the datastore to update

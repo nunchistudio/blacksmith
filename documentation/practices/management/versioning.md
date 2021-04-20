@@ -67,12 +67,12 @@ func New() source.Source {
 
 ### Usage
 
-Here, if the `Version` key is not in the returned `*source.Payload`, the
+Here, if the `Version` key is not in the returned `*source.Event`, the
 `DefaultVersion` of the source will be applied. Given the previous code example,
 it will be the version number `2020-10-01`.
 
 ```go
-func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
+func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Event, error) {
 
   // ...
 
@@ -85,7 +85,7 @@ func (t MyTrigger) Extract(tk *source.Toolkit, req *http.Request) (*source.Paylo
 
   }
 
-  return &source.Payload{
+  return &source.Event{
     Context: ctx,
     Data:    data,
     Flows:   []flow.Flow{},

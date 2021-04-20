@@ -16,7 +16,7 @@ type TriggerCRON interface {
 
 	// Extract in charge of the "E" in the ETL process: it Extracts the data from
 	// the source.
-	Extract(*Toolkit) (*Payload, error)
+	Extract(*Toolkit) (*Event, error)
 }
 
 /*

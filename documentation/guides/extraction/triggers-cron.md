@@ -46,6 +46,6 @@ If the trigger mode is `cron`, it must respect the interface
 
 The signature of the `Extract` function is:
 ```go
-Extract(*source.Toolkit) (*source.Payload, error)
+Extract(*source.Toolkit) (*source.Event, error)
 
 ```
