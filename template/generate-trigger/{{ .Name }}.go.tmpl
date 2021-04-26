@@ -1,7 +1,6 @@
 package {{ .Package }}
 
 import (
-	"context"
 	{{ if .WithMigrations -}}
 	"database/sql"
 	{{ end -}}
@@ -22,8 +21,9 @@ import (
 	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow"
 	"github.com/nunchistudio/blacksmith/flow/source"
+
 	{{ if .WithMigrations -}}
-	"github.com/nunchistudio/blacksmith/helper/sqlike"
+	"github.com/nunchistudio/blacksmith-integrations/sqlike"
 	{{- end }}
 )
 
@@ -37,7 +37,6 @@ will be received by the gateway.
 
 type {{ .CapitalizedName }} struct {
 	env     *Options
-	context context.Context
 
 	Version string                      `json:"version,omitempty"`
 	Context *Context                    `json:"context"`
@@ -97,7 +96,7 @@ destinations' actions.
 */
 {{ end -}}
 
-func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (*source.Payload, error) {
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (*source.Event, error) {
 
 	{{ if not .NoComments -}}
 	// Create an empty payload, catch unwanted fields, and unmarshal it.
@@ -130,7 +129,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, req *http.Request) (
 	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
-	return &source.Payload{
+	return &source.Event{
 		Version: payload.Version,
 		Context: ctx,
 		Data:    data,
@@ -171,14 +170,14 @@ destinations' actions.
 */
 {{ end -}}
 
-func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit) (*source.Payload, error) {
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit) (*source.Event, error) {
 
 	// ...
 
 	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
-	return &source.Payload{
+	return &source.Event{
 		Version: version,
 		Context: ctx,
 		Data:    data,
@@ -231,7 +230,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, notifier *source.Not
 		select {
 		{{ if not .NoComments -}}
 		// case <-notification:
-		// 	notifier.Payload <- &source.Payload{}
+		// 	notifier.Event <- &source.Event{}
 		// 	notifier.Error <- &errors.Error{}
 		{{ end -}}
 
@@ -274,7 +273,7 @@ destinations' actions.
 */
 {{ end -}}
 
-func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Payload, error) {
+func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message) (*source.Event, error) {
 
 	{{ if not .NoComments -}}
 	// Try to unmarshal the data from the message.
@@ -287,7 +286,7 @@ func (t {{ .CapitalizedName }}) Extract(tk *source.Toolkit, msg *pubsub.Message)
 	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
 	{{ end -}}
-	return &source.Payload{
+	return &source.Event{
 		Version: version,
 		Context: ctx,
 		Data:    data,

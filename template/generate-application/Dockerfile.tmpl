@@ -1,4 +1,4 @@
-FROM nunchistudio/{{ .Image }}:0.16.0-alpine
+FROM nunchistudio/{{ .Image }}:{{ .Version }}-alpine
 
 ADD ./ /{{ .Name }}
 WORKDIR /{{ .Name }}

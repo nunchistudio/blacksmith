@@ -1,14 +1,8 @@
 package {{ .Package }}
 
 import (
-	"context"
-	{{ if (or .WithMigrations (eq .Starter "database/sql")) -}}
-	"database/sql"
-	{{ end -}}
-	{{ if (eq .Starter "net/http") -}}
-	"net/http"
-	{{ end -}}
 	{{ if .WithMigrations -}}
+	"database/sql"
 	"path/filepath"
 	{{ end -}}
 	"time"
@@ -17,20 +11,10 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/destination"
-	{{ if .WithMigrations -}}
-	"github.com/nunchistudio/blacksmith/helper/sqlike"
-	{{- end }}
 	"github.com/nunchistudio/blacksmith/helper/logger"
 
-	{{ if (eq .Starter "gocloud/blob") -}}
-	"gocloud.dev/blob"
-	_ "{{ .DriverPath }}"
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	"gocloud.dev/docstore"
-	_ "{{ .DriverPath }}"
-	{{ else if (eq .Starter "gocloud/pubsub") -}}
-	"gocloud.dev/pubsub"
-	_ "{{ .DriverPath }}"
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith-integrations/sqlike"
 	{{- end }}
 )
 
@@ -59,19 +43,6 @@ for the destination "{{ .Name }}".
 type {{ .CapitalizedName }} struct {
 	env     *Options
 	options *destination.Options
-	context context.Context
-
-	{{ if (eq .Starter "net/http") -}}
-	client *http.Client
-	{{ else if (eq .Starter "database/sql") -}}
-	db *sql.DB
-	{{ else if (eq .Starter "gocloud/blob") -}}
-	bucket *blob.Bucket
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	collection *docstore.Collection
-	{{ else if (eq .Starter "gocloud/pubsub") -}}
-	topic *pubsub.Topic
-	{{- end }}
 }
 
 {{ if not .NoComments -}}
@@ -81,44 +52,12 @@ New returns a valid Blacksmith destination.Destination for {{ .CapitalizedName }
 {{ end -}}
 
 func New(env *Options) destination.Destination {
-	ctx := context.Background()
 
 	// Validate the environment options passed by the application.
 	// Stop the process if any error is returned.
 	if err := env.validate(); err != nil {
 		logger.Default.Fatal(err)
 	}
-
-	{{ if (eq .Starter "net/http") -}}
-	{{ if not .NoComments -}}
-	// Create the HTTP client.
-	{{ end -}}
-	client := http.DefaultClient
-
-	{{ else if (eq .Starter "database/sql") -}}
-	{{ if not .NoComments -}}
-	// Create the SQL client.
-	{{ end -}}
-	db, _ := sql.Open("<driver-name>", "<driver-url>")
-
-	{{ else if (eq .Starter "gocloud/blob") -}}
-	{{ if not .NoComments -}}
-	// Open a connection with the bucket.
-	{{ end -}}
-	bucket, _ := blob.OpenBucket(ctx, "<driver-url>")
-
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	{{ if not .NoComments -}}
-	// Open a connection with the collection.
-	{{ end -}}
-	collection, _ := docstore.OpenCollection(ctx, "<driver-url>")
-
-	{{ else if (eq .Starter "gocloud/pubsub") -}}
-	{{ if not .NoComments -}}
-	// Open a connection with the topic.
-	{{ end -}}
-	topic, _ := pubsub.OpenTopic(ctx, "<driver-url>")
-	{{ end }}
 
 	return &{{ .CapitalizedName }}{
 		env: env,
@@ -133,18 +72,6 @@ func New(env *Options) destination.Destination {
 				MaxRetries: env.MaxRetries,
 			},
 		},
-		context: ctx,
-		{{ if (eq .Starter "net/http") -}}
-		client: client,
-		{{ else if (eq .Starter "database/sql") -}}
-		db: db,
-		{{ else if (eq .Starter "gocloud/blob") -}}
-		bucket: bucket,
-		{{ else if (eq .Starter "gocloud/docstore") -}}
-		collection: collection,
-		{{ else if (eq .Starter "gocloud/pubsub") -}}
-		topic: topic,
-		{{- end }}
 	}
 }
 

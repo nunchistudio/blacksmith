@@ -1,17 +1,10 @@
 package {{ .Package }}
 
 import (
-	{{ if (eq .Starter "net/http") -}}
-	"bytes"
-	{{ end -}}
-	"context"
-	{{ if (or .WithMigrations (eq .Starter "database/sql")) -}}
+	{{ if .WithMigrations -}}
 	"database/sql"
 	{{ end -}}
 	"encoding/json"
-	{{ if (eq .Starter "net/http") -}}
-	"net/http"
-	{{ end -}}
 	{{ if .WithMigrations -}}
 	"path/filepath"
 	{{ end -}}
@@ -23,40 +16,21 @@ import (
 	{{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/destination"
 	"github.com/nunchistudio/blacksmith/helper/errors"
-	{{ if .WithMigrations -}}
-	"github.com/nunchistudio/blacksmith/helper/sqlike"
-	{{- end }}
 
-	{{ if (eq .Starter "gocloud/blob") -}}
-	"gocloud.dev/blob"
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	"gocloud.dev/docstore"
-	{{ else if (eq .Starter "gocloud/pubsub") -}}
-	"gocloud.dev/pubsub"
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith-integrations/sqlike"
 	{{- end }}
 )
 
 {{ if not .NoComments -}}
 /*
 {{ .CapitalizedName }} implements the Blacksmith destination.Action interface for the action
-"{{ .Name }}". It holds the complete payload structure to load into the destination.
+"{{ .Name }}". It holds the complete job's structure to load into the destination.
 */
 {{ end -}}
 
 type {{ .CapitalizedName }} struct {
 	env     *Options
-	context context.Context
-	{{ if (eq .Starter "net/http") -}}
-	client *http.Client
-	{{ else if (eq .Starter "database/sql") -}}
-	db *sql.DB
-	{{ else if (eq .Starter "gocloud/blob") -}}
-	bucket *blob.Bucket
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	collection *docstore.Collection
-	{{ else if (eq .Starter "gocloud/pubsub") -}}
-	topic *pubsub.Topic
-	{{- end }}
 
 	Version string                      `json:"version,omitempty"`
 	Context *Context                    `json:"context"`
@@ -100,11 +74,11 @@ func (a {{ .CapitalizedName }}) Schedule() *destination.Schedule {
 Marshal is the function being run when the action receives data into
 the {{ .CapitalizedName }} receiver. Like for a source's trigger, it is also
 in charge of the "T" in the ETL process: it can Transform (if needed) the
-payload to the given data structure.
+event's data for the job data structure.
 */
 {{ end -}}
 
-func (a {{ .CapitalizedName }}) Marshal(tk *destination.Toolkit) (*destination.Payload, error) {
+func (a {{ .CapitalizedName }}) Marshal(tk *destination.Toolkit) (*destination.Job, error) {
 
 	{{ if not .NoComments -}}
 	// Try to marshal the data passed directly to the receiver.
@@ -115,19 +89,19 @@ func (a {{ .CapitalizedName }}) Marshal(tk *destination.Toolkit) (*destination.P
 	}
 
 	{{ if not .NoComments -}}
-	// Create a payload with the data. Since the 'Context' key is not
+	// Create a job with the data. Since the 'Context' key is not
 	// set, the one from the event will automatically be applied.
 	{{ end -}}
-	p := &destination.Payload{
+	j := &destination.Job{
 		Version: a.Version,
 		Data:    data,
 		SentAt:  a.SentAt,
 	}
 
 	{{ if not .NoComments -}}
-	// Return the payload with the marshaled data.
+	// Return the job including the marshaled data.
 	{{ end -}}
-	return p, nil
+	return j, nil
 }
 
 {{ if not .NoComments -}}
@@ -150,31 +124,6 @@ this case, the queue of events will contain every failed jobs.
 
 func (a {{ .CapitalizedName }}) Load(tk *destination.Toolkit, queue *store.Queue, then chan<- destination.Then) {
 
-	{{ if (eq .Starter "database/sql") -}}
-	{{ if not .NoComments -}}
-	// Start a new transaction using the SQL driver.
-	{{ end -}}
-	tx, err := a.db.Begin()
-	if err != nil {
-		then <- destination.Then{
-			Error: &errors.Error{
-				Message: err.Error(),
-			},
-			ForceDiscard: false,
-			OnFailed:     []destination.Action{},
-			OnDiscarded:  []destination.Action{},
-		}
-
-		return
-	}
-
-	{{ else if (eq .Starter "gocloud/docstore") -}}
-	{{ if not .NoComments -}}
-	// Create an "action list" for the collection, allowing to optimize bulk load.
-	{{ end -}}
-	bulk := a.collection.Actions()
-	{{ end -}}
-
 	{{ if not .NoComments }}
 	// We can go through every events received from the queue and their
 	// related jobs. The queue can contain one or many events. The jobs
@@ -182,31 +131,17 @@ func (a {{ .CapitalizedName }}) Load(tk *destination.Toolkit, queue *store.Queue
 	//
 	// This allows to parse everything needed. This can also be useful for
 	// making a request to the destination for each event / job if the
-	// destination does not allow batch loads.
+	// destination does not allow batch loads. If the destination does
+	// allow batch loads, we should write to Then only once: outside these
+	// for loops with no job IDs specified.
 	{{ end -}}
 	for _, event := range queue.Events {
 		for _, job := range event.Jobs {
 
+			{{ if not .NoComments -}}
+			// If an error occured, inform the scheduler about it.
+			{{ end -}}
 			// ...
-
-			{{ if (eq .Starter "database/sql") -}}
-			{{ if not .NoComments -}}
-			// For each job, add a query in the transaction.
-			{{ end -}}
-			tx.Exec("")
-
-			{{- else if (eq .Starter "gocloud/docstore") -}}
-			{{ if not .NoComments -}}
-			// For each job, create a new document.
-			{{ end -}}
-			bulk.Create(&{{ .CapitalizedName }}Data{})
-
-			{{- else if (eq .Starter "gocloud/blob") -}}
-			{{ if not .NoComments -}}
-			// Try to write some data in the bucket.
-			{{ end -}}
-			writer, _ := a.bucket.NewWriter(a.context, "content", nil)
-			err := writer.Close()
 			if err != nil {
 				then <- destination.Then{
 					Jobs:  []string{job.ID},
@@ -222,137 +157,14 @@ func (a {{ .CapitalizedName }}) Load(tk *destination.Toolkit, queue *store.Queue
 			}
 
 			{{ if not .NoComments -}}
-			// Finally, inform the scheduler about the success.
+			// If the job was successfully loaded, inform the scheduler about
+			// its success.
 			{{ end -}}
 			then <- destination.Then{
-				Jobs:        []string{job.ID},
-				OnSucceeded: []destination.Action{},
+				Jobs: []string{job.ID},
 			}
-
-			{{- else if (eq .Starter "gocloud/pubsub") -}}
-			{{ if not .NoComments -}}
-			// Try to publish a message in the topic.
-			{{ end -}}
-			err := a.topic.Send(a.context, &pubsub.Message{})
-			if err != nil {
-				then <- destination.Then{
-					Jobs:  []string{job.ID},
-					Error: &errors.Error{
-						Message:    err.Error(),
-					},
-					ForceDiscard: false,
-					OnFailed:     []destination.Action{},
-					OnDiscarded:  []destination.Action{},
-				}
-
-				continue
-			}
-
-			{{ if not .NoComments -}}
-			// Finally, inform the scheduler about the success.
-			{{ end -}}
-			then <- destination.Then{
-				Jobs:        []string{job.ID},
-				OnSucceeded: []destination.Action{},
-			}
-			{{ end }}
 		}
 	}
-
-	{{ if (eq .Starter "net/http") -}}
-	{{ if not .NoComments -}}
-	// When the data is parsed and ready, we can send it to the destination.
-	{{ end -}}
-	req, _ := http.NewRequest("POST", "http://example.com", nil)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := a.client.Do(req)
-	if err != nil {
-		then <- destination.Then{
-			Error: &errors.Error{
-				StatusCode: 500,
-				Message:    err.Error(),
-			},
-			ForceDiscard: true,
-			OnFailed:     []destination.Action{},
-			OnDiscarded:  []destination.Action{},
-		}
-
-		return
-	}
-
-	// Since a non-2xx status code doesn't cause an error, catch HTTP status
-	// code to ensure nothing bad happened.
-	if res.StatusCode >= 300 {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(res.Body)
-		then <- destination.Then{
-			ForceDiscard: false,
-			Error: &errors.Error{
-				StatusCode: res.StatusCode,
-				Message:    buf.String(),
-			},
-		}
-
-		return
-  }
-
-	{{ if not .NoComments -}}
-	// Finally, inform the scheduler about the success.
-	{{ end -}}
-	then <- destination.Then{
-		OnSucceeded: []destination.Action{},
-	}
-
-	{{- else if (eq .Starter "database/sql") -}}
-	{{ if not .NoComments -}}
-	// When the data is parsed and ready, we can commit the transaction.
-	{{ end -}}
-	err = tx.Commit()
-	if err != nil {
-		then <- destination.Then{
-			Error: &errors.Error{
-				Message: err.Error(),
-			},
-			ForceDiscard: false,
-			OnFailed:     []destination.Action{},
-			OnDiscarded:  []destination.Action{},
-		}
-
-		return
-	}
-
-	{{ if not .NoComments -}}
-	// Finally, inform the scheduler about the success.
-	{{ end -}}
-	then <- destination.Then{
-		OnSucceeded: []destination.Action{},
-	}
-
-	{{- else if (eq .Starter "gocloud/docstore") -}}
-	{{ if not .NoComments -}}
-	// When the data is parsed and ready, we can load it into the destination.
-	{{ end -}}
-	err := bulk.Do(a.context)
-	if err != nil {
-		then <- destination.Then{
-			Error: &errors.Error{
-				Message: err.Error(),
-			},
-			ForceDiscard: false,
-			OnFailed:     []destination.Action{},
-			OnDiscarded:  []destination.Action{},
-		}
-
-		return
-	}
-
-	{{ if not .NoComments -}}
-	// Finally, inform the scheduler about the success.
-	{{ end -}}
-	then <- destination.Then{
-		OnSucceeded: []destination.Action{},
-	}
-	{{- end }}
 }
 
 {{ if .WithMigrations -}}

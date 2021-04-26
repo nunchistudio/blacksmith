@@ -3,8 +3,6 @@ package {{ .Package }}
 import (
 	{{ if .WithMigrations -}}
   "database/sql"
-  {{ end -}}
-	{{ if .WithMigrations -}}
   "path/filepath"
   {{ end -}}
 	"time"
@@ -13,10 +11,11 @@ import (
   "github.com/nunchistudio/blacksmith/adapter/wanderer"
   {{ end -}}
 	"github.com/nunchistudio/blacksmith/flow/source"
-	{{ if .WithMigrations -}}
-	"github.com/nunchistudio/blacksmith/helper/sqlike"
-	{{- end }}
 	"github.com/nunchistudio/blacksmith/helper/logger"
+
+	{{ if .WithMigrations -}}
+	"github.com/nunchistudio/blacksmith-integrations/sqlike"
+	{{- end }}
 )
 
 {{ if not .NoComments -}}
@@ -43,7 +42,6 @@ type Context struct {
 type {{ .CapitalizedName }} struct {
 	env     *Options
 	options *source.Options
-	context context.Context
 }
 
 {{ if not .NoComments -}}
@@ -53,7 +51,6 @@ New returns a valid Blacksmith source.Source for {{ .CapitalizedName }}.
 {{ end -}}
 
 func New(env *Options) source.Source {
-	ctx := context.Background()
 
 	// Validate the environment options passed by the application.
 	// Stop the process if any error is returned.
@@ -69,7 +66,6 @@ func New(env *Options) source.Source {
 			},
 			DefaultVersion: "{{ .Version }}",
 		},
-		context: ctx,
 	}
 }
 

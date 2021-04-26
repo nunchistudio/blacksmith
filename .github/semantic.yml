@@ -25,6 +25,5 @@ scopes:
   - "wanderer"
   - "errors"
   - "logger"
-  - "sqlike"
   - "cli"
   - "admin"
