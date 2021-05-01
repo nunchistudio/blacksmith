@@ -34,26 +34,30 @@ func (hook *UsingError) Fire(entry *logrus.Entry) error {
 		entry.Data = logrus.Fields{}
 	}
 
-	// Unmarshal the message.
-	var err errors.Error
-	json.Unmarshal([]byte(entry.Message), &err)
+	// Unmarshal the message. Do not continue if the underlying error type is not
+	// known.
+	var fail errors.Error
+	err := json.Unmarshal([]byte(entry.Message), &fail)
+	if err != nil {
+		return nil
+	}
 
 	// Use the given message as the error message.
-	entry.Message = err.Message
+	entry.Message = fail.Message
 
 	// Add a status code if needed.
-	if err.StatusCode > 0 {
-		entry.Data["statusCode"] = err.StatusCode
+	if fail.StatusCode > 0 {
+		entry.Data["statusCode"] = fail.StatusCode
 	}
 
 	// Add validations if needed.
-	if err.Validations != nil && len(err.Validations) > 0 {
-		entry.Data["validations"] = err.Validations
+	if fail.Validations != nil && len(fail.Validations) > 0 {
+		entry.Data["validations"] = fail.Validations
 	}
 
 	// Add meta info for HTTP response if needed.
-	if err.Meta != nil {
-		entry.Data["meta"] = err.Meta
+	if fail.Meta != nil {
+		entry.Data["meta"] = fail.Meta
 	}
 
 	return nil
