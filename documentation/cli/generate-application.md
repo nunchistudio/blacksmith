@@ -41,7 +41,7 @@ $ blacksmith generate application --name myetl
 
   **Example:**
   ```bash
-  $ blacksmith generate application --name myetl --path ./destinations/crm
+  $ blacksmith generate application --name myetl --path ./myetl
 
   ```
 

@@ -43,6 +43,18 @@ $ blacksmith generate source --name stripe
 
   ```
 
+- `--hooks`: Enable lifecycle hooks for the source by adding the `Init` and
+  `Shutdown` methods. They will respectively be executed when the gateway service
+  starts and stops, or before and after running migrations from the CLI. The `Init`
+  function will always be executed before the ones of its triggers, whereas the
+  `Shutdown` function will always be executed after.
+
+  **Example:**
+  ```bash
+  $ blacksmith generate source --name stripe --hooks
+
+  ```
+
 - `--migrations`: Enable the source to have migrations. This adds the appropriate
   methods to the source to handle migrations for the `wanderer` adapter.
 

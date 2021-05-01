@@ -52,6 +52,18 @@ $ blacksmith generate trigger --name identify --mode http
 
   ```
 
+- `--hooks`: Enable lifecycle hooks for the trigger by adding the `Init` and
+  `Shutdown` methods. They will respectively be executed when the gateway service
+  starts and stops, or before and after running migrations from the CLI. The `Init`
+  function will always be executed after the one of its parent source, whereas
+  the `Shutdown` function will always be executed before.
+
+  **Example:**
+  ```bash
+  $ blacksmith generate trigger --name identify --mode http --hooks
+
+  ```
+
 - `--migrations`: Enable the trigger to have migrations. This adds the appropriate
   method to the trigger to handle migrations for the `wanderer` adapter.
 

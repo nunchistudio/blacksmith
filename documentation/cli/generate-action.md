@@ -43,6 +43,18 @@ $ blacksmith generate action --name identify
 
   ```
 
+- `--hooks`: Enable lifecycle hooks for the action by adding the `Init` and
+  `Shutdown` methods. They will respectively be executed when the scheduler service
+  starts and stops, or before and after running migrations from the CLI. The `Init`
+  function will always be executed after the one of its parent destination, whereas
+  the `Shutdown` function will always be executed before.
+
+  **Example:**
+  ```bash
+  $ blacksmith generate action --name identify --hooks
+
+  ```
+
 - `--migrations`: Enable the action to have migrations. This adds the appropriate
   methods to the action to handle migrations for the `wanderer` adapter.
 

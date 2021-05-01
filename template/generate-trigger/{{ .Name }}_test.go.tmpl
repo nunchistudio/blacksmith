@@ -17,6 +17,9 @@ var _ source.TriggerCDC = {{ .CapitalizedName }}{}
 {{ else if (eq .Mode "sub") -}}
 var _ source.TriggerSubscription = {{ .CapitalizedName }}{}
 {{ end -}}
+{{ if .WithHooks -}}
+var _ source.WithHooks = {{ .CapitalizedName }}{}
+{{ end -}}
 
 {{ if .WithMigrations -}}
 var _ wanderer.WithMigrate = {{ .CapitalizedName }}{}

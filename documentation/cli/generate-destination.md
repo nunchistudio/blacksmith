@@ -43,6 +43,18 @@ $ blacksmith generate destination --name crm
 
   ```
 
+- `--hooks`: Enable lifecycle hooks for the destination by adding the `Init` and
+  `Shutdown` methods. They will respectively be executed when the scheduler service
+  starts and stops, or before and after running migrations from the CLI. The `Init`
+  function will always be executed before the ones of its actions, whereas the
+  `Shutdown` function will always be executed after.
+
+  **Example:**
+  ```bash
+  $ blacksmith generate destination --name crm --hooks
+
+  ```
+
 - `--migrations`: Enable the destination to have migrations. This adds the appropriate
   methods to the destination to handle migrations for the `wanderer` adapter.
 

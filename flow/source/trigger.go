@@ -38,11 +38,9 @@ type Mode struct {
 	//
 	// - When set to ModeHTTP, the UsingHTTP route is used as the trigger.
 	// - When set to ModeCRON, the UsingCRON schedule is used as the trigger.
-	// - When set to ModeCDC, no trigger is registered since it is an ongoing
-	//   listener. It is up to the Extract function to include the infinite loop
-	//   and send the event using the channel passed in params.
-	// - When set to ModeSubscription, the UsingPubSub options is used as the trigger.
-	//   It uses the Pub / Sub adapter configured for the application.
+	// - When set to ModeCDC, no additional options are required.
+	// - When set to ModeSubscription, the UsingSubscription options is used as the
+	//   trigger. It uses the Pub / Sub adapter configured for the application.
 	Mode string `json:"mode"`
 
 	// UsingHTTP defines the HTTP route the event will react to.

@@ -85,6 +85,38 @@ func (d *{{ .CapitalizedName }}) String() string {
 	return "{{ .Name }}"
 }
 
+{{ if .WithHooks -}}
+{{ if not .NoComments -}}
+/*
+Init lets you add business logic for the destination's initialization,
+such as opening a connection pool. It is called when starting the
+scheduler service or before running migrations.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Init(tk *destination.Toolkit) error {
+
+	// ...
+
+	return nil
+}
+
+{{ if not .NoComments -}}
+/*
+Shutdown lets you add business logic for the destination's shutdown,
+such as closing a connection pool. It is called when shutting down
+the scheduler service or after running migrations.
+*/
+{{ end -}}
+
+func (d *{{ .CapitalizedName }}) Shutdown(tk *destination.Toolkit) error {
+
+	// ...
+
+	return nil
+}
+{{ end -}}
+
 {{ if not .NoComments -}}
 /*
 Options returns common destination options for {{ .CapitalizedName }}. They will

@@ -8,6 +8,9 @@ import (
 )
 
 var _ destination.Destination = &{{ .CapitalizedName }}{}
+{{ if .WithHooks -}}
+var _ destination.WithHooks = &{{ .CapitalizedName }}{}
+{{ end -}}
 
 {{ if .WithMigrations -}}
 var _ wanderer.WithMigrate = &{{ .CapitalizedName }}{}

@@ -79,6 +79,38 @@ func (s *{{ .CapitalizedName }}) String() string {
 	return "{{ .Name }}"
 }
 
+{{ if .WithHooks -}}
+{{ if not .NoComments -}}
+/*
+Init lets you add business logic for the source's initialization,
+such as opening a connection pool. It is called when starting the
+gateway service or before running migrations.
+*/
+{{ end -}}
+
+func (s *{{ .CapitalizedName }}) Init(tk *source.Toolkit) error {
+
+	// ...
+
+	return nil
+}
+
+{{ if not .NoComments -}}
+/*
+Shutdown lets you add business logic for the source's shutdown,
+such as closing a connection pool. It is called when shutting down
+the gateway service or after running migrations.
+*/
+{{ end -}}
+
+func (s *{{ .CapitalizedName }}) Shutdown(tk *source.Toolkit) error {
+
+	// ...
+
+	return nil
+}
+{{ end -}}
+
 {{ if not .NoComments -}}
 /*
 Options returns common source options for {{ .CapitalizedName }}. They will be
