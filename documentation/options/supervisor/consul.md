@@ -24,9 +24,7 @@ collision when working within a multi-node environment:
 
 ## Environment variables
 
-Some options can be loaded from the environment variables. They will be loaded
-from `*supervisor.Options.Context` (or from `*supervisor.Options.Connection` for
-the connection string) if not found.
+Some options can be loaded from the environment variables.
 
 - `CONSUL_ADDRESS`: The Consul agent URL to dial to leverage distributed locks.
   If `Options.Supervisor.Connection` is set, it will override and be used in
@@ -48,8 +46,6 @@ the connection string) if not found.
 
   **Defaults:** `dc1`
 
-  **Order:** environment variable, context
-
 - `CONSUL_SCHEME`: The Consul scheme to use.
 
   **Type:** `string`
@@ -58,8 +54,6 @@ the connection string) if not found.
 
   **Defaults:** `http`
 
-  **Order:** environment variable, context
-
 - `CONSUL_HTTP_TOKEN`: The Consul token to use. It must have the read / write
   permissions for keys using the `blacksmith/` prefix.
 
@@ -67,15 +61,11 @@ the connection string) if not found.
   
   **Required:** no
 
-  **Order:** environment variable, context
-
 - `CONSUL_NAMESPACE`: The Consul namespace to use.
 
   **Type:** `string`
   
   **Required:** no
-
-  **Order:** environment variable, context
 
 ## Example
 
@@ -83,25 +73,18 @@ the connection string) if not found.
 package main
 
 import (
-  "context"
-
   "github.com/nunchistudio/blacksmith"
   "github.com/nunchistudio/blacksmith/adapter/supervisor"
 )
 
 func Init() *blacksmith.Options {
 
-  ctx := context.Background()
-  ctx = context.WithValue(ctx, "CONSUL_DATACENTER", "eu-west-1")
-  ctx = context.WithValue(ctx, "CONSUL_HTTP_TOKEN", "my-private-token")
-
   var options = &blacksmith.Options{
 
     // ...
 
     Supervisor: &supervisor.Options{
-      From:    "consul",
-      Context: ctx,
+      From: "consul",
     },
   }
 

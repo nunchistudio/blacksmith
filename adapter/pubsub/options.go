@@ -1,9 +1,5 @@
 package pubsub
 
-import (
-	"context"
-)
-
 /*
 AvailableAdapters is a list of available pubsub adapters.
 */
@@ -21,7 +17,6 @@ Defaults are the defaults options set for the pubsub. When not set, these values
 will automatically be applied.
 */
 var Defaults = &Options{
-	Context:      context.Background(),
 	Topic:        "blacksmith",
 	Subscription: "blacksmith",
 }
@@ -34,10 +29,6 @@ type Options struct {
 	// From is used to set the desired pubsub adapter. It must be one of
 	// AvailableAdapters.
 	From string `json:"from,omitempty"`
-
-	// Context is a free key-value dictionary that will be passed to the underlying
-	// adapter.
-	Context context.Context `json:"-"`
 
 	// Connection is the connection string to connect to the pubsub.
 	Connection string `json:"-"`

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"context"
 	"crypto/tls"
 	"net/http"
 )
@@ -10,10 +9,6 @@ import (
 Options is the options a user can pass to configure the gateway or the scheduler.
 */
 type Options struct {
-
-	// Context is a free key-value dictionary that will be passed to the underlying
-	// service.
-	Context context.Context `json:"-"`
 
 	// Address is the HTTP address the server is listening to.
 	Address string `json:"address"`

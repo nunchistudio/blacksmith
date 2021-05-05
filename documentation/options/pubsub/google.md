@@ -56,7 +56,7 @@ func Init() *blacksmith.Options {
 ### Environment variables
 
 Additional details must be passed to the Google adapter. They will be loaded from
-the environment variables, or from the `*pubsub.Options.Context` if not found.
+the environment variables.
 
 - `GOOGLE_APPLICATION_CREDENTIALS`: The file path of the JSON file that contains
   your service account key.
@@ -64,8 +64,6 @@ the environment variables, or from the `*pubsub.Options.Context` if not found.
   **Type:** `string`
 
   **Required:** yes
-
-  **Order:** environment variable, context
 
 ## Trigger configuration
 

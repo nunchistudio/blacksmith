@@ -56,7 +56,7 @@ func Init() *blacksmith.Options {
 ### Environment variables
 
 Additional details must be passed to the AWS adapter. They will be loaded from the
-environment variables, or from the `*pubsub.Options.Context` if not found.
+environment variables.
 
 - `AWS_ACCESS_KEY_ID`: The AWS access key identifier to use.
   
@@ -64,24 +64,17 @@ environment variables, or from the `*pubsub.Options.Context` if not found.
 
   **Required:** yes
 
-  **Order:** environment variable, context
-
 - `AWS_SECRET_ACCESS_KEY`: The AWS secret access key to use.
   
   **Type:** `string`
 
   **Required:** yes
 
-  **Order:** environment variable, context
-
 - `AWS_REGION`: The AWS region to use.
   
   **Type:** `string`
 
   **Required:** yes
-
-  **Order:** environment variable, context
-
 
 ## Trigger configuration
 

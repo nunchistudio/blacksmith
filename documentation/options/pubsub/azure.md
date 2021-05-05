@@ -56,7 +56,7 @@ func Init() *blacksmith.Options {
 ### Environment variables
 
 Additional details must be passed to the Azure adapter. They will be loaded from
-the environment variables, or from the `*pubsub.Options.Context` if not found.
+the environment variables.
 
 - `SERVICEBUS_CONNECTION_STRING`: The Service Bus connection string to use. It can
   be the one from the parent namespace.
@@ -64,8 +64,6 @@ the environment variables, or from the `*pubsub.Options.Context` if not found.
   **Type:** `string`
 
   **Required:** yes
-
-  **Order:** environment variable, context
 
 ## Trigger configuration
 
