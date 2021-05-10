@@ -57,6 +57,7 @@ func New(env *Options) destination.Destination {
 	// Stop the process if any error is returned.
 	if err := env.validate(); err != nil {
 		logger.Default.Fatal(err)
+		return nil
 	}
 
 	return &{{ .CapitalizedName }}{
