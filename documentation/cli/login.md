@@ -14,3 +14,15 @@ It uses the Blacksmith Enterprise License details of your application.
 $ blacksmith login
 
 ```
+
+## Optional flags
+
+- `--build`: Build the application before login into the Nunchi Customer Portal.
+  This is only useful if you updated the `*blacksmith.Options` with new license
+  details.
+
+  **Example:**
+  ```bash
+  $ blacksmith login --build
+
+  ```

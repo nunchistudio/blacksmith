@@ -51,6 +51,16 @@ $ blacksmith migrations run --scope destination:warehouse
 
   ```
 
+- `--build`: Build the application before running migrations. This is useful if
+  you registered new sources, triggers, destinations, or actions leveraging
+  migrations that were not registered at the last build.
+
+  **Example:**
+  ```bash
+  $ blacksmith migrations run --build
+
+  ```
+
 - `--no-cache`: Do not use the Docker cache when building the application.
 
   **Example:**

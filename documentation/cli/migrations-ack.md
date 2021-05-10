@@ -39,6 +39,16 @@ $ blacksmith migrations ack --scope destination:warehouse
 
   ```
 
+- `--build`: Build the application before acknowledging migrations. This is useful
+  if you registered new sources, triggers, destinations, or actions leveraging
+  migrations that were not registered at the last build.
+
+  **Example:**
+  ```bash
+  $ blacksmith migrations ack --build
+
+  ```
+
 - `--no-cache`: Do not use the Docker cache when building the application.
 
   **Example:**

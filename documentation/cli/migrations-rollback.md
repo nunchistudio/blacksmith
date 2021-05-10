@@ -65,10 +65,22 @@ $ blacksmith migrations rollback --version 20210422135835
 
   ```
 
+- `--build`: Build the application before rolling back migrations. This is useful
+  if you registered new sources, triggers, destinations, or actions leveraging
+  migrations that were not registered at the last build.
+
+  **Example:**
+  ```bash
+  $ blacksmith migrations rollback --version 20210422135835 \
+    --build
+
+  ```
+
 - `--no-cache`: Do not use the Docker cache when building the application.
 
   **Example:**
   ```bash
-  $ blacksmith migrations rollback --no-cache
+  $ blacksmith migrations rollback --version 20210422135835 \
+    --no-cache
 
   ```
