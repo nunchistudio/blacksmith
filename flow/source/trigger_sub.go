@@ -33,22 +33,22 @@ type Subscription struct {
 	// Topic is the topic name the pubsub adapter will use when it is required
 	// for working in tandem with the subscription name.
 	//
-	// Example for Kafka: "<topic>"
-	// Example for NATS: "<subject>"
-	// Example for RabbitMQ: N/A
-	// Example for Amazon Web Services: N/A
-	// Example for Google Cloud: N/A
-	// Example for Microsoft Azure: "<topic>"
+	// Format for AWS SNS / SQS: N/A
+	// Format for Azure Service Bus: "<topic>"
+	// Format for Google Pub / Sub: N/A
+	// Format for Apache Kafka: "<topic>"
+	// Format for NATS: "<subject>"
+	// Format for RabbitMQ: N/A
 	Topic string `json:"topic,omitempty"`
 
 	// Subscription is the queue or subscription name the pubsub adapter will use
 	// to subscribe to messages.
 	//
-	// Example for Kafka: "<consumer-group>"
-	// Example for NATS: "<queue>"
-	// Example for RabbitMQ: "<queue>"
-	// Example for Amazon Web Services: "arn:aws:sqs:<region>:<id>:<queue>"
-	// Example for Google Cloud: "projects/<project>/subscriptions/<subscription>"
-	// Example for Microsoft Azure: "<subscription>"
+	// Format for AWS SNS / SQS: "arn:aws:sqs:<region>:<id>:<queue>"
+	// Format for Azure Service Bus: "<subscription>"
+	// Format for Google Pub / Sub: "projects/<project>/subscriptions/<subscription>"
+	// Format for Apache Kafka: "<consumer-group>"
+	// Format for NATS: "<queue>"
+	// Format for RabbitMQ: "<queue>"
 	Subscription string `json:"subscription"`
 }

@@ -5,15 +5,15 @@ enterprise: false
 
 # Pub / Sub with NATS
 
-The NATS pub / sub adapter allows to subscribe to topics and therefore extract data
-from incoming messages.
+The NATS driver as the `pubsub` adapter allows to subscribe to topics and therefore
+extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
 services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
-To use NATS as the pub / sub adapter for your application, you must set the `From`
+To use NATS as the Pub / Sub adapter for your application, you must set the `From`
 key to `nats` in `*pubsub.Options`:
 ```go
 package main
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "nats",
+      From:         pubsub.DriverNATS,
       Topic:        "blacksmith",
       Subscription: "blacksmith",
       Connection:   "nats://127.0.0.1:4222",
@@ -65,10 +65,10 @@ func Init() *blacksmith.Options {
 
 ### Environment variables
 
-Additional details must be passed to the Apache Kafka adapter. They will be loaded
+Additional details must be passed to the Apache Kafka driver. They will be loaded
 from the environment variables.
 
-- `NATS_SERVER_URL`: The NATS server URL to dial to leverage pub / sub. If
+- `NATS_SERVER_URL`: The NATS server URL to dial to leverage Pub / Sub. If
   `Options.PubSub.Connection` is set, it will override and be used in replacement
   of the existing environment variable.
 
@@ -98,7 +98,8 @@ func (t MyTrigger) Mode() *source.Mode {
 ```
 
 The trigger will receive in realtime every events of a NATS topic in a given queue.
-Each event can then be transformed and loaded to destinations.
+Each event can then be transformed and execute actions or flows to load data to
+destinations.
 
 ### Subscription options
 

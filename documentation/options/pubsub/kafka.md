@@ -5,15 +5,15 @@ enterprise: false
 
 # Pub / Sub with Apache Kafka
 
-The Apache Kafka pub / sub adapter allows to subscribe to topics and therefore
-extract data from incoming messages.
+The Apache Kafka driver as the `pubsub` adapter allows to subscribe to topics and
+therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
 services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
-To use Apache Kafka as the pub / sub adapter for your application, you must set
+To use Apache Kafka as the Pub / Sub adapter for your application, you must set
 the `From` key to `kafka` in `*pubsub.Options`:
 ```go
 package main
@@ -64,10 +64,10 @@ func Init() *blacksmith.Options {
 
 ### Environment variables
 
-Additional details must be passed to the Apache Kafka adapter. They will be loaded
+Additional details must be passed to the Apache Kafka driver. They will be loaded
 from the environment variables.
 
-- `KAFKA_BROKERS`: The Kafka broker URLs to dial to leverage pub / sub. If
+- `KAFKA_BROKERS`: The Kafka broker URLs to dial to leverage Pub / Sub. If
   `Options.PubSub.Connection` is set, it will override and be used in replacement
   of the existing environment variable.
 
@@ -97,7 +97,8 @@ func (t MyTrigger) Mode() *source.Mode {
 ```
 
 The trigger will receive in realtime every events of a Kafka consumer group for
-a given topic. Each event can then be transformed and loaded to destinations.
+a given topic. Each event can then be transformed and execute actions or flows to load data to
+destinations.
 
 ### Subscription options
 

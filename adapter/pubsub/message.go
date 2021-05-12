@@ -9,6 +9,6 @@ type Message struct {
 	// Body is the marshaled content of the message.
 	Body []byte `json:"body"`
 
-	// Meta can hold some metadata about the message.
-	Meta map[string]string `json:"meta"`
+	// Metadata can hold some metadata about the message.
+	Metadata map[string]string `json:"meta"`
 }

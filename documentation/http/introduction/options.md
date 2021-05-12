@@ -1,9 +1,9 @@
 ---
-title: Configuration
+title: Configuring the API
 enterprise: true
 ---
 
-# Configuration
+# Configuring the API
 
 The admin API can be attached to at most one of the `gateway` or `scheduler`
 service. By default, it is attached to the `scheduler` service.

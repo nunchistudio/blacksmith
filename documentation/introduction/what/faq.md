@@ -59,21 +59,24 @@ Also, Go has become "*the language of the cloud*" in the past years. A major par
 of cloud infrastructures and tools rely on Go such as Docker, Kubernetes, and
 Terraform.
 
-## What is an adapter?
+## What is the difference between an adapter and a driver?
 
-An adapter is an *implementation* of an *interface*. For example the PostgreSQL
-`store` adapter let you use PostgreSQL as a store for Blacksmith.
+An adapter adapts or extends the behavior of a Blacksmith application. For example,
+the `supervisor` adapter allows data engineering in distributed systems and teams.
+
+A driver is an *implementation* of an adapter. For example the PostgreSQL driver
+for the `store` adapter let you use PostgreSQL as a store for Blacksmith.
 
 ## What is the license?
 
-The use of Blacksmith is governed by the
-[Blacksmith Terms and Conditions](http://nunchi.studio/legal/terms).
+The use of Blacksmith is governed by the [Blacksmith Terms and Conditions](/legal/terms).
 
-Public repositories:
+**Public repositories:**
 - The Go public API is [available on GitHub](https://github.com/nunchistudio/blacksmith),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith/blob/main/LICENSE).
+- The Go modules are [available on GitHub](https://github.com/nunchistudio/blacksmith-integrations),
+  and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-integrations/blob/main/LICENSE).
 - The UI kit is [available on GitHub](https://github.com/nunchistudio/blacksmith-ui),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-ui/blob/main/LICENSE).
-- The default dashboard is [available on GitHub](https://github.com/nunchistudio/blacksmith-dashboard),
+- The built-in dashboard is [available on GitHub](https://github.com/nunchistudio/blacksmith-dashboard),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-dashboard/blob/main/LICENSE).
-

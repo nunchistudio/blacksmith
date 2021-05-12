@@ -5,15 +5,15 @@ enterprise: false
 
 # Pub / Sub with RabbitMQ
 
-The RabbitMQ pub / sub adapter allows to subscribe to queues and therefore extract
-data from incoming messages.
+The RabbitMQ driver as the `pubsub` adapter allows to subscribe to queues and
+therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
 services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
-To use RabbitMQ as the pub / sub adapter for your application, you must set the
+To use RabbitMQ as the Pub / Sub adapter for your application, you must set the
 `From` key to `rabbitmq` in `*pubsub.Options`:
 ```go
 package main
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "rabbitmq",
+      From:         pubsub.DriverRabbitMQ,
       Topic:        "blacksmith",
       Subscription: "blacksmith",
       Connection:   "amqp://guest:guest@127.0.0.1:5672/",
@@ -65,10 +65,10 @@ func Init() *blacksmith.Options {
 
 ### Environment variables
 
-Additional details must be passed to the Apache Kafka adapter. They will be loaded
+Additional details must be passed to the Apache Kafka driver. They will be loaded
 from the environment variables.
 
-- `RABBIT_SERVER_URL`: The RabbitMQ server URL to dial to leverage pub / sub. If
+- `RABBIT_SERVER_URL`: The RabbitMQ server URL to dial to leverage Pub / Sub. If
   `Options.PubSub.Connection` is set, it will override and be used in replacement
   of the existing environment variable.
 
@@ -97,7 +97,8 @@ func (t MyTrigger) Mode() *source.Mode {
 ```
 
 The trigger will receive in realtime every events of a RabbitMQ queue. Each event
-can then be transformed and loaded to destinations.
+can then be transformed and execute actions or flows to load data to
+destinations.
 
 ### Subscription options
 

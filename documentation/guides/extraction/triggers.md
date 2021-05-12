@@ -5,22 +5,23 @@ enterprise: false
 
 # Triggers
 
-A trigger allows data extraction from a source. A trigger can be *triggered* when:
-- a HTTP route is called;
-- a CRON schedule is met;
-- a CDC notification arrived;
-- a message is published in a Pub / Sub mechanism.
+A trigger allows data extraction from a source's event. An event can be triggered
+when:
+- a HTTP route is requested (mode `http`);
+- a CRON schedule is met (mode `cron`);
+- a CDC notification arrived (mode `cdc`);
+- a message is received in a Pub / Sub subscription (mode `sub`).
 
 ## Create a trigger
 
-Please refer to the proper guide for each trigger mode.
+Please refer to the proper guide for each trigger *mode*.
 
 ## Register a trigger
 
-Once a trigger is created, it must be registered in the parent source triggers
-before being used.
+Once a trigger is created, regardless its mode, it must be registered in its parent
+source before being used.
 
-You can add a trigger to a source as follow:
+You can register a trigger to a source as follow:
 ```go
 func (s *MySource) Triggers() map[string]source.Trigger {
   return map[string]source.Trigger{
@@ -30,12 +31,14 @@ func (s *MySource) Triggers() map[string]source.Trigger {
 
 ```
 
+This allows to pass some source's options down to the trigger if necessary.
+
 ## Notes about triggers
 
 ### Event created
 
-When a trigger is executed, it returns the created events (in `Event` of type
-[`*source.Event`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Event)).
+When a trigger is executed, it returns the created event(s) (in `Event` of type
+[`*source.Event`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#Event)).
 The event contains:
 - `Context` is a dictionary of information that provides useful context about an
   event. The context should be used inside every triggers for consistency.
@@ -46,6 +49,12 @@ The event contains:
   functions.
 - `Flows` defines the flows of actions to run when this trigger is executed. They
   will only be executed if no error has been returned (`nil`).
+- `Actions` allows to create jobs directly from the event when the trigger is
+  executed. Where `Flows` is used to create jobs from a common data schema, calling
+	`Actions` directly not from a flow can often be simpler.
+- `SubEvents` is a collection of events that need to be created and associated
+	to the event being processed. This is useful for triggers accepting a batch of
+	events in a single request.
 - `SentAt` allows you to keep track of the timestamp when the event was originally
   sent.
 
@@ -54,7 +63,7 @@ The event contains:
 When a trigger is executed, it can return any kind of error, as long as it respects
 the builtin `error` type. However, we strongly recommend to use the
 [`errors.Error`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/helper/errors?tab=doc)
-type for better consistency between your application and the Blacksmith platform.
+type for better consistency between your application and the Blacksmith ecosystem.
 
 If `error` is not `nil`, the gateway considers the event as untrusted and will not
 continue. Therefore, no jobs will be created.

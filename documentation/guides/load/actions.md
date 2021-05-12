@@ -5,12 +5,10 @@ enterprise: false
 
 # Actions
 
-An action is in charge of loading some data to a destination.
+An action is in charge of loading some data to a destination. When an action is
+processed by a flow or directly by a trigger, this creates a *job*.
 
 ## Create an action
-
-> If the action you wish to generate relies on a *starter*, please refer to the
-  appropriate guide on the left navigation for details and examples.
 
 An action is an interface of type
 [`destination.Action`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/destination?tab=doc#Action).
@@ -31,21 +29,12 @@ $ blacksmith generate action --name myaction \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/practices/management/migrations)
-within the action, you can also add the `--migrations` flag:
-```bash
-$ blacksmith generate action --name myaction \
-  --path ./destinations/mydestination \
-  --migrations
-
-```
-
 ## Register an action
 
-Once an action is created, it must be registered in the parent destination triggers
-before being used.
+Once an action is created, it must be registered in its parent destination before
+being used.
 
-You can add an action to a destination as follow:
+You can register an action to a destination as follow:
 ```go
 func (d *MyDestination) Actions() map[string]destination.Action {
   return map[string]destination.Action{
@@ -55,9 +44,11 @@ func (d *MyDestination) Actions() map[string]destination.Action {
 
 ```
 
+This allows to pass some destiation's options down to the action if necessary.
+
 ## Add an action within a flow
 
-Given the flow we created before, we can now add the action within it:
+Given the flow created before, we can now add the action within it:
 ```go
 func (f *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
   return map[string][]destination.Action{
@@ -79,4 +70,4 @@ Every time the flow is executed, a *job* will be created for the action.
 
 The `Version` key introduced in this last example is optional. It leverages schema
 versioning, following production best practices as explained in 
-[one of the "Best practices" guides](/blacksmith/practices/management/versioning).
+[one of the "Advanced practices" guides](/blacksmith/practices/management/versioning).

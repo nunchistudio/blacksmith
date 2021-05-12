@@ -1,9 +1,9 @@
 ---
-title: Best practices
+title: Advanced practices
 enterprise: false
 ---
 
-# Best practices
+# Advanced practices
 
 The following guides are meant to provide *guidance* for an ideal deployment of
 Blacksmith, not to document requirements. It is entirely possible to use Blacksmith

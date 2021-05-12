@@ -13,21 +13,18 @@ compatibility.
 This is also true when working with Blacksmith. If a source or a destination
 changes its data schema, some changes need to be made in other places.
 
-> Schema versioning is not a mandatory practice to use Blacksmith in production.
-  It is a best practice recommendation that should be applied when possible and
-  practical.
-
 ## How it works
 
 To avoid breaking changes in your data pipeline, the best approach is to follow
-schema versioning, by using the built-in versioning feature. It allows to have a
+schema versioning by using the built-in versioning feature. It allows to have a
 collection of versions for each `source` and `destination` adapter. You can mark
 a version as the default one if none was provided by the consumer, and also mark
 a version as deprecated when needed.
 
-In the `Options`, a source and destination can set a collection of supported versions.
-The value of each version is its deprecation date. It must be set to an empty
-`time.Time` when the version is still maintained.
+In their respective `*source.Options` and `*destination.Options`, a source and a
+destination can set a collection of supported versions. The value of each version
+represents its deprecation date. It must be set to an empty `time.Time` when the
+version is still maintained.
 
 When you want to sunset a version number, simply remove its key from `Versions`.
 

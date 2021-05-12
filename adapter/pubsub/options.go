@@ -1,16 +1,41 @@
 package pubsub
 
 /*
-AvailableAdapters is a list of available pubsub adapters.
+Driver is a custom type allowing the user to only pass supported drivers when
+configuring the Pub / Sub adapter.
 */
-var AvailableAdapters = map[string]bool{
-	"aws/snssqs":       true,
-	"azure/servicebus": true,
-	"google/pubsub":    true,
-	"kafka":            true,
-	"nats":             true,
-	"rabbitmq":         true,
-}
+type Driver string
+
+/*
+DriverAWSSNSSQS is used to leverage AWS SNS / SQS as the Pub / Sub adapter.
+*/
+var DriverAWSSNSSQS Driver = "aws/snssqs"
+
+/*
+DriverAzureServiceBus is used to leverage Azure Service Bus as the Pub / Sub
+adapter.
+*/
+var DriverAzureServiceBus Driver = "azure/servicebus"
+
+/*
+DriverGooglePubSub is used to leverage Google Pub / Sub as the Pub / Sub adapter.
+*/
+var DriverGooglePubSub Driver = "google/pubsub"
+
+/*
+DriverKafka is used to leverage Apache Kafka as the Pub / Sub adapter.
+*/
+var DriverKafka Driver = "kafka"
+
+/*
+DriverNATS is used to leverage NATS as the Pub / Sub adapter.
+*/
+var DriverNATS Driver = "nats"
+
+/*
+DriverRabbitMQ is used to leverage RabbitMQ as the Pub / Sub adapter.
+*/
+var DriverRabbitMQ Driver = "rabbitmq"
 
 /*
 Defaults are the defaults options set for the pubsub. When not set, these values
@@ -26,31 +51,30 @@ Options is the options a user can pass to use the pubsub adapter.
 */
 type Options struct {
 
-	// From is used to set the desired pubsub adapter. It must be one of
-	// AvailableAdapters.
-	From string `json:"from,omitempty"`
+	// From is used to set the desired driver for the Pub / Sub adapter.
+	From Driver `json:"from,omitempty"`
 
 	// Connection is the connection string to connect to the pubsub.
 	Connection string `json:"-"`
 
 	// Topic is the topic name the pubsub adapter will use to publish messages.
 	//
-	// Example for Amazon Web Services: "arn:aws:sns:<region>:<id>:<topic>"
-	// Example for Microsoft Azure: "<topic>"
-	// Example for Google Cloud: "projects/<project>/topics/<topic>"
-	// Example for Kafka: "<topic>"
-	// Example for NATS: "<subject>"
-	// Example for RabbitMQ: "<exchange>"
+	// Format for AWS SNS / SQS: "arn:aws:sns:<region>:<id>:<topic>"
+	// Format for Azure Service Bus: "<topic>"
+	// Format for Google Pub / Sub: "projects/<project>/topics/<topic>"
+	// Format for Apache Kafka: "<topic>"
+	// Format for NATS: "<subject>"
+	// Format for RabbitMQ: "<exchange>"
 	Topic string `json:"topic"`
 
 	// Subscription is the queue or subscription name the pubsub adapter will use
 	// to subscribe to messages.
 	//
-	// Example for Amazon Web Services: "arn:aws:sqs:<region>:<id>:<queue>"
-	// Example for Microsoft Azure: "<subscription>"
-	// Example for Google Cloud: "projects/<project>/subscriptions/<subscription>"
-	// Example for Kafka: "<consumer-group>"
-	// Example for NATS: "<queue>"
-	// Example for RabbitMQ: "<queue>"
+	// Format for AWS SNS / SQS: "arn:aws:sqs:<region>:<id>:<queue>"
+	// Format for Azure Service Bus: "<subscription>"
+	// Format for Google Pub / Sub: "projects/<project>/subscriptions/<subscription>"
+	// Format for Apache Kafka: "<consumer-group>"
+	// Format for NATS: "<queue>"
+	// Format for RabbitMQ: "<queue>"
 	Subscription string `json:"subscription"`
 }

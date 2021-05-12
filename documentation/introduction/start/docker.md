@@ -35,8 +35,9 @@ EXPOSE 9090 9091
 A `Docker-compose.yml` is also generated along your application. This file is not
 required for running the application but is here for convenience to help you get
 started even faster in development. It contains:
-- a PostgreSQL database used for the `store`, `supervisor`, and `wanderer` adapters;
-- a NATS server used for the `pubsub` adapter.
+- a PostgreSQL database for using the `postgres` driver for the `store`,
+  `supervisor`, and `wanderer` adapters;
+- a NATS server for using the `nats` driver for the `pubsub` adapter.
 
 You can customize the stack as much as you need, and run it with:
 ```bash

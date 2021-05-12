@@ -84,7 +84,7 @@ func Init() *blacksmith.Options {
     // ...
 
     Supervisor: &supervisor.Options{
-      From: "consul",
+      From: supervisor.DriverConsul,
     },
   }
 

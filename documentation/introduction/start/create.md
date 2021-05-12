@@ -34,12 +34,12 @@ you understand some mechanisms.
 
 A Blacksmith application is compiled and run as a Go plugin by the CLI.
 
-Go plugins act like Go applications but can be loaded by external programs, like
-the Blacksmith CLI does. Go plugins are `main` packages without `init` and
-`main` functions.
+Go plugins act like Go applications but can be loaded by external programs. The
+CLI compiles your Go code as a Go plugin. Go plugins are `main` packages without
+a `main` function.
 
-The CLI needs to validate, load, and run an application. To achieve this, it must
-have a `main` package including the following function signature:
+To achieve this, the `main` package of your application must have a function with
+the following signature:
 ```go
 func Init() *blacksmith.Options
 
@@ -50,7 +50,7 @@ Blacksmith options is of type
 It allows to configure the different components needed by the platform to successfully
 run an application.
 
-So, the entrypoint of an application looks like this:
+So, the entrypoint of an application shall look like this:
 ```go
 package main
 
@@ -82,7 +82,11 @@ go 1.16
 
 require github.com/nunchistudio/blacksmith v0.16.0
 
-replace golang.org/x/sys => golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c
+replace golang.org/x/net => golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb
+
+replace golang.org/x/sys => golang.org/x/sys v0.0.0-20210415045647-66c3f260301c
+
+replace golang.org/x/sync => golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 
 ```
 

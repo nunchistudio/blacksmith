@@ -5,15 +5,15 @@ enterprise: false
 
 # Pub / Sub with AWS SNS / SQS
 
-The AWS pub / sub adapter allows to subscribe to SQS queues and therefore extract
-data from incoming messages.
+The AWS SNS / SQS driver as the `pubsub` adapter allows to subscribe to SQS queues
+and therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
 services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
-To use AWS as the pub / sub adapter for your application, you must set the `From`
+To use AWS as the Pub / Sub adapter for your application, you must set the `From`
 key to `aws/snssqs` in `*pubsub.Options`:
 ```go
 package main
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "aws/snssqs",
+      From:         pubsub.DriverAWSSNSSQS,
       Topic:        "arn:aws:sns:<region>:<id>:<topic>",
       Subscription: "arn:aws:sqs:<region>:<id>:<queue>",
     },
@@ -55,7 +55,7 @@ func Init() *blacksmith.Options {
 
 ### Environment variables
 
-Additional details must be passed to the AWS adapter. They will be loaded from the
+Additional details must be passed to the AWS driver. They will be loaded from the
 environment variables.
 
 - `AWS_ACCESS_KEY_ID`: The AWS access key identifier to use.
@@ -93,7 +93,8 @@ func (t MyTrigger) Mode() *source.Mode {
 ```
 
 The trigger will receive in realtime every events of a queue registered in AWS SQS.
-Each event can then be transformed and loaded to destinations.
+Each event can then be transformed and execute actions or flows to load data to
+destinations.
 
 ### Subscription options
 

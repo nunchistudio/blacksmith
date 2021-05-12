@@ -9,7 +9,7 @@ The use of PostgreSQL as the `supervisor` adapter allows to leverage distributed
 locks mechanism to avoid access collision when working within a multi-node
 environment.
 
-The PostgreSQL adapter is compatible with any PostgreSQL wire compatible database
+The PostgreSQL driver is compatible with any PostgreSQL wire compatible database
 and can work with any kind of extensions.
 
 ## Options
@@ -54,7 +54,7 @@ func Init() *blacksmith.Options {
     // ...
 
     Supervisor: &supervisor.Options{
-      From: "postgres",
+      From: supervisor.DriverPostgreSQL,
     },
   }
 
@@ -65,8 +65,8 @@ func Init() *blacksmith.Options {
 
 ## SQL migration
 
-Before using the adapter, you first need to run the following migration:
-
+Before using the PostgreSQL driver as the `supervisor` adapter, you first need to
+run the following migration:
 ```sql
 CREATE SCHEMA IF NOT EXISTS blacksmith_supervisor;
 

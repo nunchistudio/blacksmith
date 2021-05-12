@@ -36,8 +36,8 @@ Built-in dashboard ([Enterprise Edition](https://nunchi.studio/blacksmith/pricin
 
 **Blacksmith is not an open-source software.** This repository only holds the
 public Go APIs, allowing organizations to build reliable data engineering solutions
-on top of Blacksmith using Go. Blacksmith itself is [built and distributed in a
-Docker image](https://github.com/nunchistudio/blacksmith-docker).
+on top of Blacksmith using Go. Blacksmith itself is built and distributed as a CLI
+and as [a Docker image](https://github.com/nunchistudio/blacksmith-docker).
 
 Blacksmith is available in two Editions:
 - **Blacksmith Standard Edition** addresses the technical complexity of data

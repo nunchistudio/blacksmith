@@ -29,16 +29,6 @@ $ blacksmith generate trigger --name mytrigger \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/practices/management/migrations)
-within the trigger, you can also add the `--migrations` flag:
-```bash
-$ blacksmith generate trigger --name mytrigger \
-  --mode cron \
-  --path ./sources/mysource \
-  --migrations
-
-```
-
 ## Usage of a CRON trigger
 
 If the trigger mode is `cron`, it must respect the interface

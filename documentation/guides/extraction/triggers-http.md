@@ -32,16 +32,6 @@ $ blacksmith generate trigger --name mytrigger \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/practices/management/migrations)
-within the trigger, you can also add the `--migrations` flag:
-```bash
-$ blacksmith generate trigger --name mytrigger \
-  --mode http \
-  --path ./sources/mysource \
-  --migrations
-
-```
-
 ## Usage of a HTTP trigger
 
 If the trigger mode is `http`, it must respect the interface

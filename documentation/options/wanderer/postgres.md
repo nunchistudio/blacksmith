@@ -5,7 +5,7 @@ enterprise: true
 
 # PostgreSQL wanderer
 
-The PostgreSQL adapter is compatible with any PostgreSQL wire compatible database
+The PostgreSQL driver is compatible with any PostgreSQL wire compatible database
 and can work with any kind of extensions.
 
 ## Options
@@ -50,7 +50,7 @@ func Init() *blacksmith.Options {
     // ...
 
     Wanderer: &wanderer.Options{
-      From:       "postgres",
+      From:       wanderer.DriverPostgreSQL,
       Connection: "postgres://user:password@127.0.0.1/database",
     },
   }
@@ -62,8 +62,8 @@ func Init() *blacksmith.Options {
 
 ## SQL migration
 
-Before using the adapter, you first need to run the following migration:
-
+Before using the PostgreSQL driver as the `wanderer` adapter, you first need to
+run the following migration:
 ```sql
 CREATE SCHEMA IF NOT EXISTS blacksmith_wanderer;
 

@@ -5,15 +5,15 @@ enterprise: false
 
 # Pub / Sub with Service Bus
 
-The Azure pub / sub adapter allows to connect to Service Bus subscriptions and
-therefore extract data from incoming messages.
+The Azure Service Bus driver as the `pubsub` adapter allows to subscribe to Service
+Bus subscriptions and therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
 services, [as described in the introduction](/blacksmith/introduction/what/how).
 
 ## Application configuration
 
-To use Azure as the pub / sub adapter for your application, you must set the `From`
+To use Azure as the Pub / Sub adapter for your application, you must set the `From`
 key to `azure/servicebus` in `*pubsub.Options`:
 ```go
 package main
@@ -30,7 +30,7 @@ func Init() *blacksmith.Options {
     // ...
 
     PubSub: &pubsub.Options{
-      From:         "azure/servicebus",
+      From:         pubsub.DriverAzureServiceBus,
       Topic:        "<topic>",
       Subscription: "<subscription>",
     },
@@ -55,7 +55,7 @@ func Init() *blacksmith.Options {
 
 ### Environment variables
 
-Additional details must be passed to the Azure adapter. They will be loaded from
+Additional details must be passed to the Azure driver. They will be loaded from
 the environment variables.
 
 - `SERVICEBUS_CONNECTION_STRING`: The Service Bus connection string to use. It can
@@ -83,7 +83,8 @@ func (t MyTrigger) Mode() *source.Mode {
 ```
 
 The trigger will receive in realtime every events of a queue registered in Service
-Bus. Each event can then be transformed and loaded to destinations.
+Bus. Each event can then be transformed and execute actions or flows to load data to
+destinations.
 
 ### Subscription options
 

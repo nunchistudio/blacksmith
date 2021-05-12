@@ -1,9 +1,9 @@
 ---
-title: Guides & Tutorials
+title: ETL guides
 enterprise: false
 ---
 
-# Guides & Tutorials
+# ETL guides
 
 Please refer to the navigation on the left sidebar for ETL guides.
 

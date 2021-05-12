@@ -22,15 +22,16 @@ Before starting an instance of a service, Blacksmith will automatically validate
 and build your application. If the build process does not succeed, your application
 can not start.
 
-Based on what we learned in the previous guide, we can start the Docker stack with:
+Based on the Docker stack started in the previous guide, we can now run the
+application with:
 ```bash
 $ blacksmith start
 
 ```
 
 In production, it is highly recommended to run the gateway and scheduler on separate
-machines for better security and scalability. This is made possible by passing the
-desired service to run to the `--service` flag.
+*applications* for better security and scalability. This is made possible by passing
+the desired service to run in the `--service` flag.
 
 You can therefore run the `gateway` service with:
 ```bash

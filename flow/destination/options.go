@@ -59,7 +59,7 @@ type Schedule struct {
 	// Interval will be used.
 	Realtime bool `json:"realtime"`
 
-	// Interval represents an interval or a CRON string at which an event shall be
+	// Interval represents an interval or a CRON string at which a job shall be
 	// loaded to the destination. It is used as the time-lapse between retries in
 	// case of a job failure.
 	Interval string `json:"interval"`

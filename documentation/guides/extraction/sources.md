@@ -5,17 +5,25 @@ enterprise: false
 
 # Sources
 
-A source is a collection of triggers emitted from a same source. For example, a
-database could be used as a source and register:
+A source is a collection of triggers extracting events' data from a same source.
+For example, a database could be used as a source and register:
 - CRON triggers for running recurring tasks;
 - CDC triggers for watching for notifications.
 
+As you can notice, a source can register triggers of different *modes*.
+
+The triggers registered by a source return extracted events' data along other
+informations. These informations are then processed by the `gateway` service:
+
+![Blacksmith Sources](/images/blacksmith/how.005.png)
+
 ## Create a source
 
-A source is an interface of type
+A source must respect the interface
 [`source.Source`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#Source).
 
-A source can be generated with the `generate` command, as follow:
+The recommended way to create a source is by using the `generate` command, as
+follow:
 ```bash
 $ blacksmith generate source --name mysource
 
@@ -31,21 +39,12 @@ $ blacksmith generate source --name mysource \
 
 ```
 
-If you need to [handle data migrations](/blacksmith/practices/management/migrations)
-within the source, you can also add the `--migrations` flag:
-```bash
-$ blacksmith generate source --name mysource \
-  --path ./sources/mysource \
-  --migrations
-
-```
-
 ## Register a source
 
 Once a source is created, it must be registered in the Blacksmith options before
 being used.
 
-You can add a source as follow:
+You can register a source to a Blacksmith application as follow:
 ```go
 package main
 
