@@ -9,14 +9,18 @@ about: For approved feature requests only
 
 ## Impacts
 
-*Please describe the impacts on the ecosystem.*
+<!--
+Please describe the impacts on the ecosystem.
+-->
 
 - **Involved packages:**
-  - adapter/store
-  - service/scheduler
-- **Involved adapters:**
-  - store/postgres
+  - `adapter/store`
+  - `service/scheduler`
+- **Involved drivers:**
+  - `postgres`
 
 ## Changelog
 
-*Please describe the steps to update an application to use the new feature.*
+<!--
+Please describe the steps to update an application to use the new feature.
+-->
