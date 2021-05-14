@@ -60,7 +60,7 @@ type Service struct {
 
 	// Version is the Blacksmith version being run at the moment by the service.
 	//
-	// Example: "0.16.0"
+	// Example: "0.17.0"
 	Version string `json:"version"`
 
 	// Address is the address of the service.

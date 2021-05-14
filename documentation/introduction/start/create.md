@@ -80,7 +80,7 @@ module github.com/<org>/<app>
 
 go 1.16
 
-require github.com/nunchistudio/blacksmith v0.16.0
+require github.com/nunchistudio/blacksmith v0.17.0
 
 replace golang.org/x/net => golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb
 

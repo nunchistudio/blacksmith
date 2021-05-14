@@ -23,7 +23,7 @@ Please describe the behavior you were expected.
 
 ## Environment
 
-- **Blacksmith version:** Blacksmith Enterprise Edition v0.16.0
+- **Blacksmith version:** Blacksmith Enterprise Edition v0.17.0
 - **Involved packages:**
   - `adapter/store`
   - `service/scheduler`
