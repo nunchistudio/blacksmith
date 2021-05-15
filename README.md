@@ -14,9 +14,9 @@ save months of customized and professional work.
 By leveraging Blacksmith, organizations benefit a single source of truth for all
 their data with a unique developer experience.
 
-## Production-ready integrations
+## Production-ready modules
 
-![Blacksmith integrations](https://nunchi.studio/images/blacksmith/integrations.png)
+![Blacksmith modules](https://nunchi.studio/images/blacksmith/modules.png)
 
 ## Product offerings
 

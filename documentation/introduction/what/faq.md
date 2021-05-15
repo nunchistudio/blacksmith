@@ -74,8 +74,8 @@ The use of Blacksmith is governed by the [Blacksmith Terms and Conditions](/lega
 **Public repositories:**
 - The Go public API is [available on GitHub](https://github.com/nunchistudio/blacksmith),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith/blob/main/LICENSE).
-- The Go modules are [available on GitHub](https://github.com/nunchistudio/blacksmith-integrations),
-  and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-integrations/blob/main/LICENSE).
+- The Go modules are [available on GitHub](https://github.com/nunchistudio/blacksmith-modules),
+  and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-modules/blob/main/LICENSE).
 - The UI kit is [available on GitHub](https://github.com/nunchistudio/blacksmith-ui),
   and licensed under the [Apache License 2.0](https://github.com/nunchistudio/blacksmith-ui/blob/main/LICENSE).
 - The built-in dashboard is [available on GitHub](https://github.com/nunchistudio/blacksmith-dashboard),

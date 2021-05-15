@@ -23,14 +23,14 @@ and destinations.
 ## Go Modules
 
 The **Go Modules for Blacksmith** is a collection of open-source third-party
-integrations allowing to quickly integrate your Blacksmith application with the
+modules allowing to quickly integrate your Blacksmith application with the
 tools you already use and love. Each module leverages one or several packages
 from the Go API, letting you use a source or a destination within a few lines of
 code.
 
 **Related resources:**
-- [Integrations catalog on Nunchi website](/blacksmith/modules)
-- [Integrations repository on GitHub](https://github.com/nunchistudio/blacksmith-integrations)
+- [Modules catalog on Nunchi website](/blacksmith/modules)
+- [Modules repository on GitHub](https://github.com/nunchistudio/blacksmith-modules)
 
 ## Command line
 

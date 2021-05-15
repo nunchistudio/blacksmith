@@ -62,7 +62,7 @@ type WithMigrate interface {
 	// leverage the standard database/sql and run the migration inside a transaction.
 	// It is part of the sqlike module, offering production-ready tools to integrate
 	// Blacksmith applications with SQL-like databases. See Go module and package
-	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-integrations/sqlike
+	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike
 	// for more details.
 	Migrate(*Toolkit, *Migration) error
 }
@@ -83,7 +83,7 @@ type WithMigrations interface {
 	// leverage the standard database/sql and run the migration inside a transaction.
 	// It is part of the sqlike module, offering production-ready tools to integrate
 	// Blacksmith applications with SQL-like databases. See Go module and package
-	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-integrations/sqlike
+	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike
 	// for more details.
 	Migrations(*Toolkit) ([]*Migration, error)
 }
