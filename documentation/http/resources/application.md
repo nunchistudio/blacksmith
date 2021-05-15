@@ -82,7 +82,7 @@ destinations.
         }
       },
       "blacksmith": {
-        "version": "0.17.0"
+        "version": "0.17.1"
       },
       "go": {
         "version": "1.16",
