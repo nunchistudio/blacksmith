@@ -19,8 +19,8 @@ import (
 	{{ if .WithMigrations -}}
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
 	{{ end -}}
+	"github.com/nunchistudio/blacksmith/source"
 	"github.com/nunchistudio/blacksmith/flow"
-	"github.com/nunchistudio/blacksmith/flow/source"
 
 	{{ if .WithMigrations -}}
 	"github.com/nunchistudio/blacksmith-modules/sqlike"

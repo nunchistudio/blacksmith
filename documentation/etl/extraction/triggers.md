@@ -38,7 +38,7 @@ This allows to pass some source's options down to the trigger if necessary.
 ### Event created
 
 When a trigger is executed, it returns the created event(s) (in `Event` of type
-[`*source.Event`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#Event)).
+[`*source.Event`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#Event)).
 The event contains:
 - `Context` is a dictionary of information that provides useful context about an
   event. The context should be used inside every triggers for consistency.

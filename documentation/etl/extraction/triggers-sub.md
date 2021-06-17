@@ -43,7 +43,7 @@ $ blacksmith generate trigger --name mytrigger \
 ## Usage of a subscription trigger
 
 If the trigger mode is `subscription`, it must respect the interface
-[`source.TriggerSubscription`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerSubscription).
+[`source.TriggerSubscription`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#TriggerSubscription).
 
 The signature of the `Extract` function is:
 ```go

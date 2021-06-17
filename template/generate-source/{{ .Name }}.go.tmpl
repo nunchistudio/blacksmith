@@ -10,8 +10,8 @@ import (
 	{{ if .WithMigrations -}}
   "github.com/nunchistudio/blacksmith/adapter/wanderer"
   {{ end -}}
-	"github.com/nunchistudio/blacksmith/flow/source"
 	"github.com/nunchistudio/blacksmith/helper/logger"
+	"github.com/nunchistudio/blacksmith/source"
 
 	{{ if .WithMigrations -}}
 	"github.com/nunchistudio/blacksmith-modules/sqlike"

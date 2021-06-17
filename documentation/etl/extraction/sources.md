@@ -20,7 +20,7 @@ informations. These informations are then processed by the `gateway` service:
 ## Create a source
 
 A source must respect the interface
-[`source.Source`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#Source).
+[`source.Source`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#Source).
 
 The recommended way to create a source is by using the `generate` command, as
 follow:
@@ -50,7 +50,7 @@ package main
 
 import (
   "github.com/nunchistudio/blacksmith"
-  "github.com/nunchistudio/blacksmith/flow/source"
+  "github.com/nunchistudio/blacksmith/source"
 
   "github.com/<org>/<app>/mysource"
 )

@@ -5,9 +5,9 @@ import (
 	"github.com/nunchistudio/blacksmith/adapter/store"
 	"github.com/nunchistudio/blacksmith/adapter/supervisor"
 	"github.com/nunchistudio/blacksmith/adapter/wanderer"
-	"github.com/nunchistudio/blacksmith/flow/destination"
-	"github.com/nunchistudio/blacksmith/flow/source"
+	"github.com/nunchistudio/blacksmith/destination"
 	"github.com/nunchistudio/blacksmith/service"
+	"github.com/nunchistudio/blacksmith/source"
 
 	"github.com/sirupsen/logrus"
 )

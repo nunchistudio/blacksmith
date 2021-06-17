@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/nunchistudio/blacksmith/flow"
-	"github.com/nunchistudio/blacksmith/flow/destination"
+	"github.com/nunchistudio/blacksmith/destination"
 )
 
 /*

@@ -4,7 +4,7 @@ import (
 	{{ if .WithMigrations -}}
   "github.com/nunchistudio/blacksmith/adapter/wanderer"
   {{ end -}}
-	"github.com/nunchistudio/blacksmith/flow/source"
+	"github.com/nunchistudio/blacksmith/source"
 )
 
 var _ source.Source = &{{ .CapitalizedName }}{}

@@ -35,7 +35,7 @@ $ blacksmith generate trigger --name mytrigger \
 ## Usage of a HTTP trigger
 
 If the trigger mode is `http`, it must respect the interface
-[`source.TriggerHTTP`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerHTTP).
+[`source.TriggerHTTP`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#TriggerHTTP).
 
 The signature of the `Extract` function is:
 ```go

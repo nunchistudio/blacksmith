@@ -21,7 +21,7 @@ import (
   "database/sql"
 
   "github.com/nunchistudio/blacksmith"
-  "github.com/nunchistudio/blacksmith/flow/destination"
+  "github.com/nunchistudio/blacksmith/destination"
 
   "github.com/nunchistudio/blacksmith-modules/sqlike/sqlikedestination"
 )

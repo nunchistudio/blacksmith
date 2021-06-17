@@ -34,7 +34,7 @@ $ blacksmith generate trigger --name mytrigger \
 ## Usage of a CDC trigger
 
 If the trigger mode is `cdc`, it must respect the interface
-[`source.TriggerCDC`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerCDC).
+[`source.TriggerCDC`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#TriggerCDC).
 
 The signature of the `Extract` function is:
 ```go

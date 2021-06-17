@@ -32,7 +32,7 @@ $ blacksmith generate trigger --name mytrigger \
 ## Usage of a CRON trigger
 
 If the trigger mode is `cron`, it must respect the interface
-[`source.TriggerCRON`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/flow/source?tab=doc#TriggerCRON).
+[`source.TriggerCRON`](https://pkg.go.dev/github.com/nunchistudio/blacksmith/source?tab=doc#TriggerCRON).
 
 The signature of the `Extract` function is:
 ```go
