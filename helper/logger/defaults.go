@@ -11,7 +11,7 @@ Default is the default logger used by Blacksmith applications.
 */
 var Default = &logrus.Logger{
 	Out:   os.Stdout,
-	Level: logrus.DebugLevel,
+	Level: logrus.InfoLevel,
 	Hooks: logrus.LevelHooks{},
 	Formatter: &logrus.TextFormatter{
 		FullTimestamp: true,
