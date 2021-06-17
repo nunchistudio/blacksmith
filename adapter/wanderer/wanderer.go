@@ -58,12 +58,10 @@ type WithMigrate interface {
 	// a destination. The function gives access only to the migration that need to
 	// run with the appropriate direction "up" or "down".
 	//
-	// Note: The implementation can use the third-party package sqlike to easily
-	// leverage the standard database/sql and run the migration inside a transaction.
-	// It is part of the sqlike module, offering production-ready tools to integrate
-	// Blacksmith applications with SQL-like databases. See Go module and package
-	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike
-	// for more details.
+	// Note: It is implemented by the sqlike module, offering production-ready tools
+	// to integrate Blacksmith applications with SQL-like databases. See Go module
+	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike for
+	// more details.
 	Migrate(*Toolkit, *Migration) error
 }
 
@@ -79,11 +77,9 @@ type WithMigrations interface {
 	// Migrations returns a slice of migrations regardless their status. The wanderer
 	// will then be able to process and keep track of each and every one of them.
 	//
-	// Note: The implementation can use the third-party package sqlike to easily
-	// leverage the standard database/sql and run the migration inside a transaction.
-	// It is part of the sqlike module, offering production-ready tools to integrate
-	// Blacksmith applications with SQL-like databases. See Go module and package
-	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike
-	// for more details.
+	// Note: It is implemented by the sqlike module, offering production-ready tools
+	// to integrate Blacksmith applications with SQL-like databases. See Go module
+	// at https://pkg.go.dev/github.com/nunchistudio/blacksmith-modules/sqlike for
+	// more details.
 	Migrations(*Toolkit) ([]*Migration, error)
 }

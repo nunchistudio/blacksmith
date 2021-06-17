@@ -17,9 +17,9 @@ $ blacksmith generate application --name myetl
 
 **Related ressources:**
 - Getting started >
-  [Installation](/blacksmith/introduction/start/install)
+  [Installation](/blacksmith/start/onboarding/install)
 - Getting started >
-  [Creating an application](/blacksmith/introduction/start/create)
+  [Creating an application](/blacksmith/start/firstapp/create)
 
 ## Required flags
 

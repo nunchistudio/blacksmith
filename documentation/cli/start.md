@@ -17,9 +17,9 @@ $ blacksmith start --bind 3000:9090 --bind 3001:9091
 
 **Related ressources:**
 - Getting started >
-  [Docker environment](/blacksmith/introduction/start/docker)
+  [Docker environment](/blacksmith/start/firstapp/docker)
 - Getting started >
-  [Running an instance](/blacksmith/introduction/start/run)
+  [Running an instance](/blacksmith/start/firstapp/run)
 
 ## Optional flags
 

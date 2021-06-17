@@ -9,7 +9,7 @@ The NATS driver as the `pubsub` adapter allows to subscribe to topics and theref
 extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](/blacksmith/introduction/what/how).
+services, [as described in the onboarding](/blacksmith/start/onboarding/how).
 
 ## Application configuration
 

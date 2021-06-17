@@ -16,8 +16,8 @@ $ blacksmith generate flow --name identify
 ```
 
 **Related ressources:**
-- ETL guides >
-  [Flows](/blacksmith/guides/transformation/flows)
+- Guides for ETL with Go >
+  [Flows](/blacksmith/etl/transformation/flows)
 
 ## Required flags
 

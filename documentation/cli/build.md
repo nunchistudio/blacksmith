@@ -6,10 +6,10 @@ docker: true
 
 # `blacksmith build`
 
-This command builds your application as a Go plugin to be executed by the CLI. The
-build process is not required since it is automatically executed before starting
-the application. This command is here for convenience so it can be used to validate
-an application without starting it.
+This command builds your application as a Go plugin to be executed by the CLI.
+The build process is not required since it is automatically executed before
+starting the application. This command is here for convenience so it can be used
+to validate an application without starting it.
 
 **Example:**
 ```bash
@@ -19,9 +19,9 @@ $ blacksmith build
 
 **Related ressources:**
 - Getting started >
-  [Docker environment](/blacksmith/introduction/start/docker)
+  [Docker environment](/blacksmith/start/firstapp/docker)
 - Getting started >
-  [Running an instance](/blacksmith/introduction/start/run)
+  [Running an instance](/blacksmith/start/firstapp/run)
 
 ## Optional flags
 

@@ -16,8 +16,8 @@ $ blacksmith generate action --name identify
 ```
 
 **Related ressources:**
-- ETL guides >
-  [Actions](/blacksmith/guides/load/actions)
+- Guides for ETL with Go >
+  [Actions](/blacksmith/etl/load/actions)
 
 ## Required flags
 

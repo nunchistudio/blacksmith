@@ -11,7 +11,7 @@ they can be run (executing the `up` logic) and rollbacked (using the `down` logi
 
 **Example:**
 ```bash
-$ blacksmith migrations ack --scope destination:warehouse
+$ blacksmith migrations ack --scope "destination:sqlike(warehouse)"
 
 ```
 
@@ -30,12 +30,13 @@ $ blacksmith migrations ack --scope destination:warehouse
 - `--scope [scope]`: Scope(s) to acknowledge the migrations for. Multiple scopes
   can be passed if needed. If no scope is provided, migrations of all sources,
   triggers, destinations, and actions will be acknowledged. In the following
-  example, only the new migrations for the source `postgres` and for the destination
+  example, only the new migrations for the destinations `mypostgres` and
   `warehouse` will be acknowledged.
 
   **Example:**
   ```bash
-  $ blacksmith migrations ack --scope source:postgres --scope destination:warehouse
+  $ blacksmith migrations ack --scope "destination:sqlike(mypostgres)" \
+    --scope "destination:sqlike(warehouse)"
 
   ```
 
@@ -53,6 +54,6 @@ $ blacksmith migrations ack --scope destination:warehouse
 
   **Example:**
   ```bash
-  $ blacksmith migrations ack --no-cache
+  $ blacksmith migrations ack --build --no-cache
 
   ```

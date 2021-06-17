@@ -16,8 +16,8 @@ $ blacksmith generate destination --name crm
 ```
 
 **Related ressources:**
-- ETL guides >
-  [Destinations](/blacksmith/guides/load/destinations)
+- Guides for ETL with Go >
+  [Destinations](/blacksmith/etl/load/destinations)
 
 ## Required flags
 

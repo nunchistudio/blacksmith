@@ -42,12 +42,13 @@ $ blacksmith migrations run --scope destination:warehouse
 - `--scope [scope]`: Scope(s) to run the migrations for. Multiple scopes can be
   passed if needed. If no scope is provided, migrations of all sources, triggers,
   destinations, and actions will run. In the following example, only the migrations
-  acknowledged for the source `postgres` and for the destination `warehouse` will
-  run.
+  acknowledged for the destinations `mypostgres` and `warehouse` will run.
 
   **Example:**
   ```bash
-  $ blacksmith migrations run --scope source:postgres --scope destination:warehouse
+  $ blacksmith migrations run \
+    --scope "destination:sqlike(mypostgres)" \
+    --scope "destination:sqlike(warehouse)"
 
   ```
 
@@ -65,6 +66,6 @@ $ blacksmith migrations run --scope destination:warehouse
 
   **Example:**
   ```bash
-  $ blacksmith migrations run --no-cache
+  $ blacksmith migrations run --build --no-cache
 
   ```

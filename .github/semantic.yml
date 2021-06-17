@@ -27,3 +27,4 @@ scopes:
   - "supervisor"
   - "store"
   - "wanderer"
+  - "warehouse"

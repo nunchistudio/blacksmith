@@ -27,6 +27,6 @@ type Destination interface {
 	// Actions returns a list of actions the destination can handle. Destinations'
 	// actions are run from sources' triggers and can also be triggered by other
 	// destinations' actions. When a destination's action is called, it is
-	// represented as a "job" across the ecosystem.
+	// represented as a "job" in the platform.
 	Actions() map[string]Action
 }

@@ -17,7 +17,7 @@ $ blacksmith --help
 
 **Related ressources:**
 - Getting started >
-  [Installation](/blacksmith/introduction/start/install)
+  [Installation](/blacksmith/start/onboarding/install)
 
 ## Global optional flags
 

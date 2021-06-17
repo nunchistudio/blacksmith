@@ -16,8 +16,8 @@ $ blacksmith generate source --name stripe
 ```
 
 **Related ressources:**
-- ETL guides >
-  [Sources](/blacksmith/guides/extraction/sources)
+- Guides for ETL with Go >
+  [Sources](/blacksmith/etl/extraction/sources)
 
 ## Required flags
 

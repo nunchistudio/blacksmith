@@ -53,15 +53,16 @@ $ blacksmith migrations rollback --version 20210422135835
 
 - `--scope [scope]`: Scope(s) to rollback the migrations for. Multiple scopes can
   be passed if needed. If no scope is provided, migrations of all sources, triggers,
-  destinations, and actions will rollback down until the specified version is reached.
-  In the following example, only the migrations previously run for the source `postgres`
-  and for the destination `warehouse` will be rollbacked, until the version
+  destinations, and actions will rollback down until the specified version is
+  reached. In the following example, only the migrations previously run for the
+  destinations `mypostgres` and `warehouse` will be rollbacked, until the version
   `20210422135835` is reached.
 
   **Example:**
   ```bash
   $ blacksmith migrations rollback --version 20210422135835 \
-    --scope source:postgres --scope destination:warehouse
+    --scope "destination:sqlike(mypostgres)" \
+    --scope "destination:sqlike(warehouse)"
 
   ```
 
@@ -81,6 +82,6 @@ $ blacksmith migrations rollback --version 20210422135835
   **Example:**
   ```bash
   $ blacksmith migrations rollback --version 20210422135835 \
-    --no-cache
+    --build --no-cache
 
   ```

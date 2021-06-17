@@ -16,8 +16,8 @@ $ blacksmith generate trigger --name identify --mode http
 ```
 
 **Related ressources:**
-- ETL guides >
-  [Triggers](/blacksmith/guides/extraction/triggers)
+- Guides for ETL with Go >
+  [Triggers](/blacksmith/etl/extraction/triggers)
 
 ## Required flags
 

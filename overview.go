@@ -1,9 +1,10 @@
 /*
 Package blacksmith is the package to create applications on top of Blacksmith.
 
-Blacksmith is a low-code ecosystem offering a complete and consistent approach for
-building ETL platforms. It allows organizations to process, trust, and visualize
-all their data flowing from end to end in a consistent way.
+Blacksmith is a low-code platform offering a complete and consistent approach for
+self-managed data engineering. Blacksmith allows software engineers to write
+low-code ETL using the Go language. It also allows data engineers to write
+templated SQL for TLT and database migrations on top of one or multiple databases.
 
 Any team that is building — or think about building — a data engineering platform
 knows the tremendous amount of work needed to properly accomplish this mission.

@@ -9,7 +9,7 @@ The RabbitMQ driver as the `pubsub` adapter allows to subscribe to queues and
 therefore extract data from incoming messages.
 
 The adapter is also used for realtime communication between the gateway and scheduler
-services, [as described in the introduction](/blacksmith/introduction/what/how).
+services, [as described in the onboarding](/blacksmith/start/onboarding/how).
 
 ## Application configuration
 

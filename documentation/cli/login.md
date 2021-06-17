@@ -26,3 +26,11 @@ $ blacksmith login
   $ blacksmith login --build
 
   ```
+
+- `--no-cache`: Do not use the Docker cache when building the application.
+
+  **Example:**
+  ```bash
+  $ blacksmith login --build --no-cache
+
+  ```
