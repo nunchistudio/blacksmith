@@ -1,0 +1,61 @@
+package crmsource
+
+import (
+	"github.com/nunchistudio/blacksmith/source"
+)
+
+{{ if not .NoComments }}
+/*
+MyTask implements the Blacksmith source.Trigger interface for the trigger
+"mycrontask". It holds the complete payload structure sent by an event and
+that will be received by the gateway.
+*/
+{{ end -}}
+
+type MyTask struct {
+	env *Options
+}
+
+{{ if not .NoComments }}
+/*
+String returns the string representation of the trigger MyTask.
+*/
+{{ end -}}
+
+func (t MyTask) String() string {
+	return "mycrontask"
+}
+
+{{ if not .NoComments }}
+/*
+Mode allows to register the trigger as a CRON schedule. This means,
+every time the schedule is met, the Extract function will run.
+*/
+{{ end -}}
+
+func (t MyTask) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeCRON,
+		UsingCRON: &source.Schedule{
+			Interval: "@every 20s",
+		},
+	}
+}
+
+{{ if not .NoComments }}
+/*
+Extract is the function being run when the CRON schedule is met. It is in
+charge of the "E" in the ETL process: Extract the data from the source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+*/
+{{ end -}}
+
+func (t MyTask) Extract(tk *source.Toolkit) (*source.Event, error) {
+	tk.Logger.Info("Hello, this is your logger talking...")
+
+	return nil, nil
+}
+

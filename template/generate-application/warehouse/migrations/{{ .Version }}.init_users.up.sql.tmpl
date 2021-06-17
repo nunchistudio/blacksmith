@@ -1,0 +1,16 @@
+{{ if not .NoComments }}
+/*
+{{ .Version }}.init_users.up.sql
+
+The following code is the "up" migration for the version "{{ .Version }}".
+Once this migration is acknowledged, its filename must never be modified.
+*/
+{{ end -}}
+
+CREATE TABLE users (
+	id VARCHAR(27) PRIMARY KEY,
+	username TEXT UNIQUE NOT NULL,
+	first_name TEXT,
+	last_name TEXT,
+	created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()
+);

@@ -1,0 +1,136 @@
+package crmsource
+
+import (
+	"encoding/json"
+	"net/http"
+	"time"
+
+	"github.com/nunchistudio/blacksmith/destination"
+	"github.com/nunchistudio/blacksmith/source"
+
+	"github.com/nunchistudio/blacksmith-modules/sqlike/sqlikedestination"
+)
+
+{{ if not .NoComments }}
+/*
+MyWebhook implements the Blacksmith source.Trigger interface for the trigger
+"mywebhook". It holds the complete payload structure sent by an event and that
+will be received by the gateway.
+*/
+{{ end -}}
+
+type MyWebhook struct {
+	env     *Options
+
+	Context *Context       `json:"context"`
+	Data    *MyWebhookData `json:"data"`
+	SentAt  *time.Time     `json:"sent_at,omitempty"`
+}
+
+{{ if not .NoComments }}
+/*
+MyWebhookData holds the data sent by an event.
+*/
+{{ end -}}
+
+type MyWebhookData struct {
+	Username string  `json:"username"`
+	FirstName string `json:"first_name"`
+	LastName string  `json:"last_name"`
+}
+
+{{ if not .NoComments }}
+/*
+String returns the string representation of the trigger MyWebhook.
+*/
+{{ end -}}
+
+func (t MyWebhook) String() string {
+	return "mywebhook"
+}
+
+{{ if not .NoComments }}
+/*
+Mode allows to register the trigger as a HTTP route. This means, every
+time a "POST" request is executed against the route "/crm/mywebhook",
+the Extract function will run.
+*/
+{{ end -}}
+
+func (t MyWebhook) Mode() *source.Mode {
+	return &source.Mode{
+		Mode: source.ModeHTTP,
+		UsingHTTP: &source.Route{
+			Methods:  []string{"POST"},
+			Path:     "/crm/mywebhook",
+			ShowMeta: true,
+			ShowData: true,
+		},
+	}
+}
+
+{{ if not .NoComments }}
+/*
+Extract is the function being run when the HTTP route is triggered. It is
+in charge of the "E" in the ETL process: Extract the data from the source.
+
+The function allows to return data to flows. It is the "T" in the ETL
+process: it transforms the payload from the source's trigger to given
+destinations' actions.
+*/
+{{ end -}}
+
+func (t MyWebhook) Extract(tk *source.Toolkit, req *http.Request) (*source.Event, error) {
+
+  {{ if not .NoComments -}}
+	// Create an empty payload, catch unwanted fields, and unmarshal it.
+	// Return an error if any occured.
+  {{ end -}}
+	var payload MyWebhook
+	decoder := json.NewDecoder(req.Body)
+	decoder.DisallowUnknownFields()
+	err := decoder.Decode(&payload)
+	if err != nil {
+		return nil, err
+	}
+
+  {{ if not .NoComments -}}
+	// Try to marshal the context from the request payload.
+  {{ end -}}
+	ctx, err := json.Marshal(&payload.Context)
+	if err != nil {
+		return nil, err
+	}
+
+  {{ if not .NoComments -}}
+	// Try to marshal the data from the request payload.
+  {{ end -}}
+	data, err := json.Marshal(&payload.Data)
+	if err != nil {
+		return nil, err
+	}
+
+  {{ if not .NoComments -}}
+	// Return the context, data, and a collection of flows to run.
+  {{ end -}}
+	return &source.Event{
+		Context: ctx,
+		Data:    data,
+		SentAt:  payload.SentAt,
+		Actions: destination.Actions{
+			"sqlike(warehouse)": []destination.Action{
+				sqlikedestination.RunOperation{
+					Filename: "./warehouse/operations/insert-user.sql",
+					Data: map[string]interface{}{
+						"user": map[string]string{
+							"username":   payload.Data.Username,
+							"first_name": payload.Data.FirstName,
+							"last_name":  payload.Data.FirstName,
+						},
+					},
+				},
+			},
+		},
+	}, nil
+}
+

@@ -1,0 +1,97 @@
+package crmsource
+
+import (
+	"net"
+
+	"github.com/nunchistudio/blacksmith/helper/logger"
+	"github.com/nunchistudio/blacksmith/source"
+)
+
+{{ if not .NoComments }}
+/*
+Context is a dictionary of information that provides useful context about an
+event. It can be shared across triggers of a source, or event between multiple
+sources.
+
+The context should be used inside every triggers for consistency. It must be a
+valid JSON since it will be used by encoding/json Marshal and Unmarshal functions.
+*/
+{{ end -}}
+
+type Context struct {
+	IP net.IP `json:"ip,omitempty"`
+}
+
+{{ if not .NoComments }}
+/*
+CRM implements the Blacksmith source.Source interface for the source "crm".
+*/
+{{ end -}}
+
+type CRM struct {
+	env     *Options
+	options *source.Options
+}
+
+{{ if not .NoComments }}
+/*
+New returns a valid Blacksmith source.Source for CRM.
+*/
+{{ end -}}
+
+func New(env *Options) source.Source {
+
+  {{ if not .NoComments -}}
+	// Validate the environment options passed by the application.
+	// Stop the process if any error is returned.
+  {{ end -}}
+	if err := env.validate(); err != nil {
+		logger.Default.Fatal(err)
+		return nil
+	}
+
+	return &CRM{
+		env: env,
+		options: &source.Options{},
+	}
+}
+
+{{ if not .NoComments }}
+/*
+String returns the string representation of the source CRM.
+*/
+{{ end -}}
+
+func (s *CRM) String() string {
+	return "crm"
+}
+
+{{ if not .NoComments }}
+/*
+Options returns common source options for CRM. They will be
+shared across every triggers of this source, except when overridden.
+*/
+{{ end -}}
+
+func (s *CRM) Options() *source.Options {
+	return s.options
+}
+
+{{ if not .NoComments }}
+/*
+Triggers return a list of triggers the source CRM is able
+to handle.
+*/
+{{ end -}}
+
+func (s *CRM) Triggers() map[string]source.Trigger {
+	return map[string]source.Trigger{
+		"mywebhook": MyWebhook{
+			env: s.env,
+		},
+		"mycrontask": MyTask{
+			env: s.env,
+		},
+	}
+}
+

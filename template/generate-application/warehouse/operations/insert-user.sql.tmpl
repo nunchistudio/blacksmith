@@ -1,0 +1,10 @@
+{{`{% if user %}
+	INSERT INTO users (id, username, first_name, last_name, created_at)
+		VALUES (
+			'{% ksuid %}',
+			'{{ user.username }}',
+			'{{ user.first_name }}',
+			'{{ user.last_name }}',
+			'{% now "2006-01-02 15:04:05" %}'
+		);
+{% endif %}`}}

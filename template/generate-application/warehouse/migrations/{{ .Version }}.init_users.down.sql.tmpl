@@ -1,0 +1,10 @@
+{{ if not .NoComments }}
+/*
+{{ .Version }}.init_users.down.sql
+
+The following code is the "down" migration for the version "{{ .Version }}".
+Once this migration is acknowledged, its filename must never be modified.
+*/
+{{ end -}}
+
+DROP TABLE IF EXISTS users;

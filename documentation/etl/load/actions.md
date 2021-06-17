@@ -11,14 +11,14 @@ processed by a flow or directly by a trigger, this creates a *job*.
 ## Add an action within a flow
 
 Given the flow created before, we can now add the action within it. In this example,
-we call the action `RunOperation` from the destination `sqlike(mypostgres)` which
+we call the action `RunOperation` from the destination `sqlike(warehouse)` which
 is based on the `sqlike` module and its `sqlikedestination` package:
 ```go
 func (f *MyFlow) Transform(tk *flow.Toolkit) destination.Actions {
   return map[string][]destination.Action{
-    "sqlike(mypostgres)": []destination.Action{
+    "sqlike(warehouse)": []destination.Action{
       sqlikedestination.RunOperation{
-        Filename: "./mypostgres/operations/insert-user.sql",
+        Filename: "./warehouse/operations/insert-user.sql",
         Data: map[string]interface{}{
           "user": map[string]interface{}{
             "first_name": &f.FirstName,

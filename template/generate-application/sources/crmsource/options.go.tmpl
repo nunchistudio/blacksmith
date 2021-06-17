@@ -1,0 +1,34 @@
+package crmsource
+
+import (
+	"github.com/nunchistudio/blacksmith/helper/errors"
+)
+
+{{ if not .NoComments }}
+/*
+Options is the options the source can take as an input to be configured.
+*/
+{{ end -}}
+
+type Options struct{
+	// ...
+}
+
+{{ if not .NoComments }}
+/*
+validate ensures the options passed to initialize the source are valid.
+*/
+{{ end -}}
+
+func (env *Options) validate() error {
+	fail := &errors.Error{
+		Message:     "source/crm: Failed to load",
+		Validations: []errors.Validation{},
+	}
+
+	if len(fail.Validations) > 0 {
+		return fail
+	}
+
+	return nil
+}

@@ -1,0 +1,8 @@
+package crmsource
+
+import (
+	"github.com/nunchistudio/blacksmith/source"
+)
+
+var _ source.Trigger = MyTask{}
+var _ source.TriggerCRON = MyTask{}

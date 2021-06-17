@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"net/http"
+	"os"
 
 	"github.com/nunchistudio/blacksmith"
 	"github.com/nunchistudio/blacksmith/adapter/pubsub"
@@ -11,6 +13,12 @@ import (
 	"github.com/nunchistudio/blacksmith/destination"
 	"github.com/nunchistudio/blacksmith/service"
 	"github.com/nunchistudio/blacksmith/source"
+
+	"github.com/nunchistudio/blacksmith-modules/sqlike/sqlikedestination"
+
+	"github.com/{{ .Username }}/{{ .Name }}/sources/crmsource"
+
+	_ "github.com/lib/pq"
 )
 
 {{ if not .NoComments }}
@@ -23,8 +31,12 @@ Go plugin.
 
 func Init() *blacksmith.Options {
 
-	var options = &blacksmith.Options{
+	client, err := sql.Open("postgres", os.Getenv("WAREHOUSE_URL"))
+	if err != nil {
+		panic(err)
+	}
 
+	var options = &blacksmith.Options{
 		Gateway: &service.Options{
 			// KeyFile:  "server.key",
 			// CertFile: "server.crt",
@@ -83,9 +95,20 @@ func Init() *blacksmith.Options {
 			From: "nats",
 		},
 
-		Sources: []source.Source{},
+		Sources: []source.Source{
+			crmsource.New(&crmsource.Options{
+				// ...
+			}),
+		},
 
-		Destinations: []destination.Destination{},
+		Destinations: []destination.Destination{
+			sqlikedestination.New(&sqlikedestination.Options{
+				Realtime:   true,
+				Name:       "warehouse",
+				DB:         client,
+				Migrations: []string{"warehouse", "migrations"},
+			}),
+		},
 	}
 
 	return options
