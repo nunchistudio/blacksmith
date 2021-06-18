@@ -41,10 +41,10 @@ New returns a valid Blacksmith source.Source for CRM.
 
 func New(env *Options) source.Source {
 
-  {{ if not .NoComments -}}
+	{{ if not .NoComments -}}
 	// Validate the environment options passed by the application.
 	// Stop the process if any error is returned.
-  {{ end -}}
+	{{ end -}}
 	if err := env.validate(); err != nil {
 		logger.Default.Fatal(err)
 		return nil

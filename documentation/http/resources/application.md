@@ -82,10 +82,10 @@ destinations.
         }
       },
       "blacksmith": {
-        "version": "0.17.1"
+        "version": "0.18.0"
       },
       "go": {
-        "version": "1.16",
+        "version": "1.16.5",
         "environment": "darwin/amd64"
       }
     }

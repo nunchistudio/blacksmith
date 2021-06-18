@@ -33,8 +33,8 @@ $ blacksmith version
 
 You should see the version installed, similar to the following:
 ```bash
-Blacksmith Standard Edition v0.17.1
-Built with Go v1.16.0 for darwin/amd64
+Blacksmith Standard Edition v0.18.0
+Built with Go v1.16.5 for darwin/amd64
 
 ```
 

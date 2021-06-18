@@ -82,10 +82,10 @@ destinations' actions.
 
 func (t MyWebhook) Extract(tk *source.Toolkit, req *http.Request) (*source.Event, error) {
 
-  {{ if not .NoComments -}}
+	{{ if not .NoComments -}}
 	// Create an empty payload, catch unwanted fields, and unmarshal it.
 	// Return an error if any occured.
-  {{ end -}}
+	{{ end -}}
 	var payload MyWebhook
 	decoder := json.NewDecoder(req.Body)
 	decoder.DisallowUnknownFields()
@@ -94,25 +94,25 @@ func (t MyWebhook) Extract(tk *source.Toolkit, req *http.Request) (*source.Event
 		return nil, err
 	}
 
-  {{ if not .NoComments -}}
+	{{ if not .NoComments -}}
 	// Try to marshal the context from the request payload.
-  {{ end -}}
+	{{ end -}}
 	ctx, err := json.Marshal(&payload.Context)
 	if err != nil {
 		return nil, err
 	}
 
-  {{ if not .NoComments -}}
+	{{ if not .NoComments -}}
 	// Try to marshal the data from the request payload.
-  {{ end -}}
+	{{ end -}}
 	data, err := json.Marshal(&payload.Data)
 	if err != nil {
 		return nil, err
 	}
 
-  {{ if not .NoComments -}}
+	{{ if not .NoComments -}}
 	// Return the context, data, and a collection of flows to run.
-  {{ end -}}
+	{{ end -}}
 	return &source.Event{
 		Context: ctx,
 		Data:    data,

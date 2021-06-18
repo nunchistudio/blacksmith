@@ -16,7 +16,7 @@ application outside an official Docker image is not supported.
 
 One should look like this:
 ```dockerfile
-FROM nunchistudio/blacksmith-enterprise:0.17.1-alpine
+FROM nunchistudio/blacksmith-enterprise:0.18.0-alpine
 
 ADD ./ /app
 WORKDIR /app
